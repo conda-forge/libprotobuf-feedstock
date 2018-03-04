@@ -1,6 +1,6 @@
 {% set name = "libprotobuf" %}
-{% set version = "3.5.1" %}
-{% set sha256 = "826425182ee43990731217b917c5c3ea7190cfda141af4869e6d4ad9085a740f" %}
+{% set version = "3.5.1.1" %}
+{% set sha256 = "56b5d9e1ab2bf4f5736c4cfba9f4981fbc6976246721e7ded5602fbaee6d6869" %}
 
 package:
   name: {{ name }}
@@ -9,13 +9,6 @@ package:
 source:
   url: https://github.com/google/protobuf/archive/v{{ version }}/protobuf-v{{ version }}.tar.gz
   sha256: {{ sha256 }}
-  patches:
-    #######################################################
-    # Apply patches for pre-C++11 compilers.              #
-    #                                                     #
-    # xref: https://github.com/google/protobuf/pull/4124  #
-    #######################################################
-    - PR_4124.patch
 
 build:
   number: 0
