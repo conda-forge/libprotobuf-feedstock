@@ -35,7 +35,7 @@ index 4f07c389..6e60a549 100644
 +# conda-forge: add _static to output name on windows
 +if (MSVC AND NOT protobuf_BUILD_SHARED_LIBS)
 +  set_target_properties(protoc
-+    OUTPUT_NAME protoc_static)
++    PROPERTIES OUTPUT_NAME "protoc_static")
 +endif(MSVC AND NOT protobuf_BUILD_SHARED_LIBS)
 -- 
 2.15.0
