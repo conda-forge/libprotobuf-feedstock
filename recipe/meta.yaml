@@ -9,6 +9,8 @@ package:
 source:
   url: https://github.com/google/protobuf/archive/v{{ version }}/protobuf-v{{ version }}.tar.gz
   sha256: {{ sha256 }}
+  patches:
+    - windows-static-suffix.patch  # [win]
 
 build:
   number: 0
@@ -36,12 +38,15 @@ requirements:
 test:
   commands:
     - protoc --help
-    - test -f ${PREFIX}/lib/libprotobuf.a                           # [unix]
-    - test -f ${PREFIX}/lib/libprotobuf.dylib                       # [osx]
-    - test -f ${PREFIX}/lib/libprotobuf.so                          # [linux]
-    - if not exist %PREFIX%\\Library\\lib\\libprotobuf.lib exit 1   # [win]
-    - conda inspect linkages -p $PREFIX $PKG_NAME                   # [unix]
-    - conda inspect objects -p $PREFIX $PKG_NAME                    # [osx]
+    - protoc_static --help  # [win]
+    - test -f ${PREFIX}/lib/libprotobuf.a      # [unix]
+    - test -f ${PREFIX}/lib/libprotobuf.dylib  # [osx]
+    - test -f ${PREFIX}/lib/libprotobuf.so     # [linux]
+    - if not exist %LIBRARY_LIB%\\libprotobuf.lib exit 1         # [win]
+    - if not exist %LIBRARY_LIB%\\libprotobuf_static.lib exit 1  # [win]
+    - if not exist %LIBRARY_BIN%\\libprotobuf.dll exit 1         # [win]
+    - conda inspect linkages -p $PREFIX $PKG_NAME  # [unix]
+    - conda inspect objects -p $PREFIX $PKG_NAME   # [osx]
 
 about:
   home: https://developers.google.com/protocol-buffers/
@@ -57,3 +62,4 @@ extra:
     - ocefpaf
     - wesm
     - hajapy
+    - dougalsutherland
