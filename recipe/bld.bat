@@ -9,30 +9,6 @@ if errorlevel 1 exit 1
 cd cmake
 if errorlevel 1 exit 1
 
-mkdir build-static
-if errorlevel 1 exit 1
-cd build-static
-if errorlevel 1 exit 1
-
-:: Configure and install based on protobuf's instructions and other `bld.bat`s.
-cmake -G "NMake Makefiles" ^
-         -DCMAKE_BUILD_TYPE=Release ^
-         -DCMAKE_PREFIX_PATH="%LIBRARY_PREFIX%" ^
-         -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
-         -DBUILD_SHARED_LIBS=OFF ^
-         -DCMAKE_POSITION_INDEPENDENT_CODE=1 ^
-         -Dprotobuf_WITH_ZLIB=ON ^
-         ..
-if errorlevel 1 exit 1
-nmake
-if errorlevel 1 exit 1
-nmake check
-if errorlevel 1 exit 1
-nmake install
-if errorlevel 1 exit 1
-
-cd ..
-if errorlevel 1 exit 1
 mkdir build-shared
 if errorlevel 1 exit 1
 cd build-shared
@@ -49,6 +25,36 @@ if errorlevel 1 exit 1
 nmake
 if errorlevel 1 exit 1
 nmake check
+if errorlevel 1 exit 1
+:: Don't install yet; want to make sure the other build is "clean."
+
+cd ..
+if errorlevel 1 exit 1
+mkdir build-static
+if errorlevel 1 exit 1
+cd build-static
+if errorlevel 1 exit 1
+
+cmake -G "NMake Makefiles" ^
+         -DCMAKE_BUILD_TYPE=Release ^
+         -DCMAKE_PREFIX_PATH="%LIBRARY_PREFIX%" ^
+         -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
+         -DCMAKE_RELEASE_POSTFIX="_static" ^
+         -DBUILD_SHARED_LIBS=OFF ^
+         -DCMAKE_POSITION_INDEPENDENT_CODE=1 ^
+         -Dprotobuf_WITH_ZLIB=ON ^
+         ..
+if errorlevel 1 exit 1
+nmake
+if errorlevel 1 exit 1
+nmake check
+if errorlevel 1 exit 1
+nmake install
+if errorlevel 1 exit 1
+
+ren "%LIBRARY_BIN%\protoc.exe" protoc_static.exe
+
+cd ..\build-shared
 if errorlevel 1 exit 1
 nmake install
 if errorlevel 1 exit 1

@@ -9,8 +9,6 @@ package:
 source:
   url: https://github.com/google/protobuf/archive/v{{ version }}/protobuf-v{{ version }}.tar.gz
   sha256: {{ sha256 }}
-  patches:
-    - windows-static-suffix.patch  # [win]
 
 build:
   number: 0
