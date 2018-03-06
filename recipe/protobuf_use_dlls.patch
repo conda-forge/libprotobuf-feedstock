@@ -1,0 +1,42 @@
+diff --git a/cmake/tests.cmake b/cmake/tests.cmake
+index d4622c6..bef24b4 100644
+--- a/cmake/tests.cmake
++++ b/cmake/tests.cmake
+@@ -198,6 +198,9 @@ endif()
+ 
+ add_executable(tests ${tests_files} ${common_test_files} ${tests_proto_files} ${lite_test_proto_files})
+ target_link_libraries(tests libprotoc libprotobuf gmock_main)
++if(MSVC AND protobuf_BUILD_SHARED_LIBS)
++  target_compile_definitions(tests PUBLIC PROTOBUF_USE_DLLS)
++endif()
+ 
+ set(test_plugin_files
+   ${protobuf_source_dir}/src/google/protobuf/compiler/mock_code_generator.cc
+@@ -208,18 +211,27 @@ set(test_plugin_files
+ 
+ add_executable(test_plugin ${test_plugin_files})
+ target_link_libraries(test_plugin libprotoc libprotobuf gmock)
++if(MSVC AND protobuf_BUILD_SHARED_LIBS)
++  target_compile_definitions(test_plugin PUBLIC PROTOBUF_USE_DLLS)
++endif()
+ 
+ set(lite_test_files
+   ${protobuf_source_dir}/src/google/protobuf/lite_unittest.cc
+ )
+ add_executable(lite-test ${lite_test_files} ${common_lite_test_files} ${lite_test_proto_files})
+ target_link_libraries(lite-test libprotobuf-lite gmock_main)
++if(MSVC AND protobuf_BUILD_SHARED_LIBS)
++  target_compile_definitions(lite-test PUBLIC PROTOBUF_USE_DLLS)
++endif()
+ 
+ set(lite_arena_test_files
+   ${protobuf_source_dir}/src/google/protobuf/lite_arena_unittest.cc
+ )
+ add_executable(lite-arena-test ${lite_arena_test_files} ${common_lite_test_files} ${lite_test_proto_files})
+ target_link_libraries(lite-arena-test libprotobuf-lite gmock_main)
++if(MSVC AND protobuf_BUILD_SHARED_LIBS)
++  target_compile_definitions(lite-arena-test PUBLIC PROTOBUF_USE_DLLS)
++endif()
+ 
+ add_custom_target(check
+   COMMAND tests
