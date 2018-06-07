@@ -14,14 +14,16 @@ Summary: Protocol Buffers - Google's data interchange format. C++ Libraries
 Current build status
 ====================
 
-Linux: [![Circle CI](https://circleci.com/gh/conda-forge/libprotobuf-feedstock.svg?style=shield)](https://circleci.com/gh/conda-forge/libprotobuf-feedstock)
-OSX: [![TravisCI](https://travis-ci.org/conda-forge/libprotobuf-feedstock.svg?branch=master)](https://travis-ci.org/conda-forge/libprotobuf-feedstock)
-Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/conda-forge/libprotobuf-feedstock?svg=True)](https://ci.appveyor.com/project/conda-forge/libprotobuf-feedstock/branch/master)
+[![Linux](https://img.shields.io/circleci/project/github/conda-forge/libprotobuf-feedstock/master.svg?label=Linux)](https://circleci.com/gh/conda-forge/libprotobuf-feedstock)
+[![OSX](https://img.shields.io/travis/conda-forge/libprotobuf-feedstock/master.svg?label=macOS)](https://travis-ci.org/conda-forge/libprotobuf-feedstock)
+![Windows disabled](https://img.shields.io/badge/Windows-disabled-lightgrey.svg)
 
 Current release info
 ====================
-Version: [![Anaconda-Server Badge](https://anaconda.org/conda-forge/libprotobuf/badges/version.svg)](https://anaconda.org/conda-forge/libprotobuf)
-Downloads: [![Anaconda-Server Badge](https://anaconda.org/conda-forge/libprotobuf/badges/downloads.svg)](https://anaconda.org/conda-forge/libprotobuf)
+
+| Name | Downloads | Version | Platforms |
+| --- | --- | --- | --- |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-libprotobuf-green.svg)](https://anaconda.org/conda-forge/libprotobuf) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libprotobuf.svg)](https://anaconda.org/conda-forge/libprotobuf) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libprotobuf.svg)](https://anaconda.org/conda-forge/libprotobuf) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libprotobuf.svg)](https://anaconda.org/conda-forge/libprotobuf) |
 
 Installing libprotobuf
 ======================
