@@ -11,27 +11,23 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 0
-  skip: true  # [win and py35]
-  features:
-    - vc9     # [win and py27]
-    - vc10    # [win and py34]
-    - vc14    # [win and (py35 or py36)]
+  number: 1
 
 requirements:
   build:
-    - toolchain
-    - git                # [win]
     - cmake              # [win]
     - autoconf           # [unix]
     - automake           # [unix]
     - libtool            # [unix]
     - pkg-config         # [unix]
-    - zlib 1.2.11
-    - python             # [win]
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+  host:
+    - git                # [win]
+    - zlib
     - unzip              # [unix]
   run:
-    - zlib 1.2.11
+    - zlib
 
 test:
   commands:
