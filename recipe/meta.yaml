@@ -25,7 +25,7 @@ source:
   #git_rev: {{ commit }}
 
 build:
-  number: 1
+  number: 0
   run_exports:
     # breaks backwards compatibility and new SONAME each minor release
     # 3.6.1 also appears to change SONAME from 3.6.0*
