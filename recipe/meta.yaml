@@ -36,17 +36,17 @@ build:
 
 requirements:
   build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
     - cmake              # [win]
     - autoconf           # [unix]
     - automake           # [unix]
     - libtool            # [unix]
     - pkg-config         # [unix]
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-  host:
-    - git                # [win]
-    - zlib
     - unzip              # [unix]
+    - make               # [unix]
+  host:
+    - zlib
   run:
     - zlib
 
