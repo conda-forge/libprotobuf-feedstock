@@ -25,7 +25,7 @@ source:
   #git_rev: {{ commit }}
 
 build:
-  number: 0
+  number: 1000
   # Requires C++ 11, VS 2008 is not supported
   skip: True  # [win and vc<14]
   run_exports:
