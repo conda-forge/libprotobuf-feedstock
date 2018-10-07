@@ -11,6 +11,9 @@ package:
 source:
   - url: https://github.com/google/protobuf/archive/v{{ version }}/{{ name }}-v{{ version }}.tar.gz
     sha256: {{ sha256 }}
+    patches:
+      - 4854.patch
+      - 0001-remove-Werror-from-test-flags.patch  # [ppc64le]
   # these are git submodules from the 3.6.0 release
   # https://github.com/google/protobuf/tree/v3.6.0/third_party
   - url: https://github.com/google/benchmark/archive/5b7683f49e1e9223cf9927b24f6fd3d6bd82e3f8.zip
@@ -25,7 +28,7 @@ source:
   #git_rev: {{ commit }}
 
 build:
-  number: 0
+  number: 1000
   # Requires C++ 11, VS 2008 is not supported
   skip: True  # [win and vc<14]
   run_exports:
@@ -54,8 +57,7 @@ test:
   commands:
     - protoc --help
     - test -f ${PREFIX}/lib/libprotobuf.a                           # [unix]
-    - test -f ${PREFIX}/lib/libprotobuf.dylib                       # [osx]
-    - test -f ${PREFIX}/lib/libprotobuf.so                          # [linux]
+    - test -f ${PREFIX}/lib/libprotobuf${SHLIB_EXT}  # [not win]
     - if not exist %PREFIX%\\Library\\lib\\libprotobuf.lib exit 1   # [win]
 
 about:
