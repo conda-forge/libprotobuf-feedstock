@@ -1,3 +1,9 @@
+i:: Doesn't include gmock or gtest. So, need to get these ourselves for `make check`.
+git clone -b release-1.7.0 git://github.com/google/googlemock.git gmock
+if errorlevel 1 exit 1
+git clone -b release-1.7.0 git://github.com/google/googletest.git gmock/gtest
+if errorlevel 1 exit 1
+
 :: Setup directory structure per protobuf's instructions.
 cd cmake
 if errorlevel 1 exit 1
@@ -16,8 +22,6 @@ cmake -G "NMake Makefiles" ^
          -DCMAKE_PREFIX_PATH=%LIBRARY_PREFIX% ^
          -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
          -Dprotobuf_WITH_ZLIB=ON ^
-         -Dprotobuf_BUILD_SHARED_LIBS=ON ^
-         -Dprotobuf_MSVC_STATIC_RUNTIME=OFF ^
          ../..
 if errorlevel 1 exit 1
 nmake
