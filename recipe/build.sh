@@ -14,10 +14,12 @@ fi
             --with-pic \
             --enable-shared \
             --enable-static \
-	    CC="${CC}" \
-	    CXX="${CXX}" \
-	    CXXFLAGS="${CXXFLAGS} -O2" \
-	    LDFLAGS="${LDFLAGS}"
+            CC="${CC}" \
+            CXX="${CXX}" \
+            CC_FOR_BUILD=${CC}   \
+            CXX_FOR_BUILD=${CXX} \
+            CXXFLAGS="${CXXFLAGS} -O2" \
+            LDFLAGS="${LDFLAGS}"
 make -j ${CPU_COUNT}
 make check -j ${CPU_COUNT}
 make install
