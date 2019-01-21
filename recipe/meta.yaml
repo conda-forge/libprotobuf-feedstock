@@ -1,6 +1,11 @@
 {% set name = "libprotobuf" %}
-{% set version = "3.5.2" %}
-{% set sha256 = "4ffd420f39f226e96aebc3554f9c66a912f6cad6261f39f194f16af8a1f6dab2" %}
+{% set version = "3.5.1.1" %}
+{% set sha256 = "56b5d9e1ab2bf4f5736c4cfba9f4981fbc6976246721e7ded5602fbaee6d6869" %}
+# 3.5.1
+# {% set sha256 = "826425182ee43990731217b917c5c3ea7190cfda141af4869e6d4ad9085a740f" %}
+# sha256 for 3.5.2
+# {% set version = "3.5.2" %}
+#{% set sha256 = "4ffd420f39f226e96aebc3554f9c66a912f6cad6261f39f194f16af8a1f6dab2" %}
 
 package:
   name: {{ name }}
@@ -11,7 +16,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 1
+  number: 1001
 
 requirements:
   build:
