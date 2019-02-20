@@ -50,7 +50,10 @@ test:
     - protoc --help
     - test -f ${PREFIX}/lib/libprotobuf.a  # [not win]
     - test -f ${PREFIX}/lib/libprotobuf${SHLIB_EXT}  # [not win]
+    - if not exist %PREFIX%\\Library\\lib\\libprotoc.lib exit 1  # [win]
     - if not exist %PREFIX%\\Library\\lib\\libprotobuf.lib exit 1  # [win]
+    - if not exist %PREFIX%\\Library\\lib\\libprotobuf_static.lib exit 1  # [win]
+    - if not exist %PREFIX%\\Library\\lib\\libprotoc_static.lib exit 1  # [win]
 
 about:
   home: https://developers.google.com/protocol-buffers/
