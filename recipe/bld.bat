@@ -15,7 +15,7 @@ cmake -G "NMake Makefiles" ^
          -Dprotobuf_WITH_ZLIB=ON ^
          -Dprotobuf_BUILD_SHARED_LIBS=ON ^
          -Dprotobuf_MSVC_STATIC_RUNTIME=OFF ^
-         ../..
+         ..
 if errorlevel 1 exit 1
 nmake
 if errorlevel 1 exit 1
@@ -39,7 +39,7 @@ cmake -G "NMake Makefiles" ^
          -Dprotobuf_WITH_ZLIB=ON ^
          -Dprotobuf_BUILD_SHARED_LIBS=OFF ^
          -Dprotobuf_MSVC_STATIC_RUNTIME=OFF ^
-         ../..
+         ..
 if errorlevel 1 exit 1
 
 nmake
