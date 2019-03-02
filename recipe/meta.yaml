@@ -8,7 +8,6 @@ source:
   - url: https://github.com/google/protobuf/archive/v{{ version }}/libprotobuf-v{{ version }}.tar.gz
     sha256: a19dcfe9d156ae45d209b15e0faed5c7b5f109b6117bfc1974b6a7b98a850320
     patches:
-      - 4854.patch
       - 0001-remove-Werror-from-test-flags.patch  # [ppc64le]
   # these are git submodules from the 3.6.0 release
   # https://github.com/google/protobuf/tree/v3.6.0/third_party
