@@ -9,6 +9,7 @@ source:
     sha256: a19dcfe9d156ae45d209b15e0faed5c7b5f109b6117bfc1974b6a7b98a850320
     patches:
       - 0001-remove-Werror-from-test-flags.patch  # [ppc64le]
+      - 5881.patch
   # these are git submodules from the 3.6.0 release
   # https://github.com/google/protobuf/tree/v3.6.0/third_party
   - url: https://github.com/google/benchmark/archive/5b7683f49e1e9223cf9927b24f6fd3d6bd82e3f8.zip
@@ -19,7 +20,7 @@ source:
     folder: third_party/googletest
 
 build:
-  number: 1
+  number: 2
   # Requires C++ 11, VS 2008 is not supported
   skip: True  # [win and vc<14]
   run_exports:
