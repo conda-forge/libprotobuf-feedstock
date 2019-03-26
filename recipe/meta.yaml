@@ -1,4 +1,4 @@
-{% set version = "3.7.0" %}
+{% set version = "3.7.1" %}
 
 package:
   name: libprotobuf
@@ -6,7 +6,7 @@ package:
 
 source:
   - url: https://github.com/google/protobuf/archive/v{{ version }}/libprotobuf-v{{ version }}.tar.gz
-    sha256: a19dcfe9d156ae45d209b15e0faed5c7b5f109b6117bfc1974b6a7b98a850320
+    sha256: f1748989842b46fa208b2a6e4e2785133cfcc3e4d43c17fecb023733f0f5443f
     patches:
       - 0001-remove-Werror-from-test-flags.patch  # [ppc64le]
       - 5881.patch
@@ -20,7 +20,7 @@ source:
     folder: third_party/googletest
 
 build:
-  number: 2
+  number: 0
   # Requires C++ 11, VS 2008 is not supported
   skip: True  # [win and vc<14]
   run_exports:
