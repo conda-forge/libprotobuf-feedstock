@@ -24,9 +24,9 @@ build:
   skip: True  # [win and vc<14]
   run_exports:
     # breaks backwards compatibility and new SONAME each minor release
-    # 3.6.1 also appears to change SONAME from 3.6.0*
     # https://abi-laboratory.pro/tracker/timeline/protobuf/
-    - {{ pin_subpackage('libprotobuf', max_pin='x.x.x') }}
+    # One exception was that 3.6.1 was incompatible with 3.6.0
+    - {{ pin_subpackage('libprotobuf', max_pin='x.x') }}
 
 requirements:
   build:
