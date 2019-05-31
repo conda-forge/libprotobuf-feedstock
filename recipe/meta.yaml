@@ -1,4 +1,4 @@
-{% set version = "3.7.1" %}
+{% set version = "3.8.0" %}
 
 package:
   name: libprotobuf
@@ -6,16 +6,16 @@ package:
 
 source:
   - url: https://github.com/google/protobuf/archive/v{{ version }}/libprotobuf-v{{ version }}.tar.gz
-    sha256: f1748989842b46fa208b2a6e4e2785133cfcc3e4d43c17fecb023733f0f5443f
+    sha256: 03d2e5ef101aee4c2f6ddcf145d2a04926b9c19e7086944df3842b1b8502b783
     patches:
       - 0001-remove-Werror-from-test-flags.patch  # [ppc64le]
-  # these are git submodules from the 3.7.1 release
-  # https://github.com/google/protobuf/tree/v3.7.1/third_party
+  # these are git submodules from the 3.8.0 release
+  # https://github.com/google/protobuf/tree/v3.8.0/third_party
   - url: https://github.com/google/benchmark/archive/5b7683f49e1e9223cf9927b24f6fd3d6bd82e3f8.zip
     sha256: 866d3c8cadb3323251d4fe0e989ea0df51f30660badb73dad0f2d11e5bf1770f
     folder: third_party/benchmark
-  - url: https://github.com/google/googletest/archive/c3bb0ee2a63279a803aaad956b9b26d74bf9e6e2.zip
-    sha256: 8f282e6bf68956bc40bad8ac9743b9ee5c0bf3cd9a91f830fb5749a5ba8d5f76
+  - url: https://github.com/google/googletest/archive/5ec7f0c4a113e2f18ac2c6cc7df51ad6afc24081.zip
+    sha256: 629ba44a7dbc633da0add633b675add1810cd4f2e8e08558893de94b56a5808c
     folder: third_party/googletest
 
 build:

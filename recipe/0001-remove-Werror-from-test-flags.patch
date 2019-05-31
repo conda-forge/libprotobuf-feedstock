@@ -1,4 +1,4 @@
-From 9ff254fee7d91406df9091317fc9afc75d320531 Mon Sep 17 00:00:00 2001
+From b153be3cc77095c4ef91faf42431144c8bf51dba Mon Sep 17 00:00:00 2001
 From: Jonathan Helmus <jjhelmus@gmail.com>
 Date: Mon, 4 Jun 2018 17:06:30 -0400
 Subject: [PATCH] remove Werror from test flags
@@ -9,10 +9,10 @@ Remove -Werror from the CXXFLAGS used for `make check`
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/Makefile.am b/src/Makefile.am
-index 4b895b3..7eb686c 100644
+index be18ba7..ecdeab2 100644
 --- a/src/Makefile.am
 +++ b/src/Makefile.am
-@@ -888,7 +888,7 @@ no_warning_test.cc:
+@@ -894,7 +894,7 @@ no_warning_test.cc:
  
  no_warning_test_LDADD = $(PTHREAD_LIBS) libprotobuf.la libprotoc.la
  no_warning_test_CXXFLAGS = $(PTHREAD_CFLAGS) $(PTHREAD_DEF) $(ZLIB_DEF) \
@@ -22,5 +22,5 @@ index 4b895b3..7eb686c 100644
  
  TESTS = protobuf-test protobuf-lazy-descriptor-test protobuf-lite-test \
 -- 
-2.7.4
+2.17.1
 
