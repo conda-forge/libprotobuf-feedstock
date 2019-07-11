@@ -4,7 +4,6 @@ package:
   name: libprotobuf
   version: {{ version }}
 
-
 source:
   - url: https://github.com/google/protobuf/archive/v{{ version }}/libprotobuf-v{{ version }}.tar.gz
     sha256: 03d2e5ef101aee4c2f6ddcf145d2a04926b9c19e7086944df3842b1b8502b783
