@@ -9,12 +9,12 @@ source:
     sha256: 6adf73fd7f90409e479d6ac86529ade2d45f50494c5c10f539226693cb8fe4f7
     patches:
       - 0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]
-  # these are git submodules from the 3.8.0 release 
-  # https://github.com/google/protobuf/tree/v3.8.0/third_party
-  - url: https://github.com/google/benchmark/archive/5b7683f49e1e9223cf9927b24f6fd3d6bd82e3f8.zip
+  # these are git submodules from the 3.10.1 release 
+  # https://github.com/google/protobuf/tree/v3.10.1/third_party
+  - url: https://github.com/google/benchmark/archive/5b7683f49e1e9223cf9927b24f6fd3d6bd82e3f8.tar.gz
     sha256: 866d3c8cadb3323251d4fe0e989ea0df51f30660badb73dad0f2d11e5bf1770f
     folder: third_party/benchmark
-  - url: https://github.com/google/googletest/archive/5ec7f0c4a113e2f18ac2c6cc7df51ad6afc24081.zip
+  - url: https://github.com/google/googletest/archive/5ec7f0c4a113e2f18ac2c6cc7df51ad6afc24081.tar.gz
     sha256: 629ba44a7dbc633da0add633b675add1810cd4f2e8e08558893de94b56a5808c
     folder: third_party/googletest
 
