@@ -37,6 +37,11 @@ automake --add-missing
             --enable-static      \
             CC_FOR_BUILD=${CC}   \
             CXX_FOR_BUILD=${CXX}
-make -j ${CPU_COUNT}
-make check -j ${CPU_COUNT}
+if [ "${HOST}" == "powerpc64le-conda_cos7-linux-gnu" ]; then
+    make -j 2
+    make check -j 2
+else
+    make -j ${CPU_COUNT}
+    make check -j ${CPU_COUNT}
+fi
 make install
