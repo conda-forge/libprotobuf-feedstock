@@ -1,4 +1,4 @@
-{% set version = "3.11.2" %}
+{% set version = "3.11.3" %}
 
 package:
   name: libprotobuf
