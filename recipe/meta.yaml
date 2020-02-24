@@ -19,7 +19,7 @@ source:
     folder: third_party/googletest
 
 build:
-  number: 0
+  number: 1
   # Requires C++ 11, VS 2008 is not supported
   skip: True  # [win and vc<14]
   run_exports:
@@ -32,13 +32,8 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - cmake  # [win]
+    - cmake
     - ninja  # [win]
-    - autoconf  # [not win]
-    - automake  # [not win]
-    - libtool  # [not win]
-    - pkg-config  # [not win]
-    - unzip  # [not win]
     - make  # [not win]
   host:
     - zlib
@@ -48,7 +43,6 @@ requirements:
 test:
   commands:
     - protoc --help
-    - test -f ${PREFIX}/lib/libprotobuf.a  # [not win]
     - test -f ${PREFIX}/lib/libprotobuf${SHLIB_EXT}  # [not win]
     - if not exist %PREFIX%\\Library\\lib\\libprotoc.lib exit 1  # [win]
     - if not exist %PREFIX%\\Library\\lib\\libprotobuf.lib exit 1  # [win]
@@ -59,7 +53,7 @@ about:
   license: BSD-3-Clause
   license_family: BSD
   license_file: LICENSE
-  summary: "Protocol Buffers - Google's data interchange format. C++ Libraries"
+  summary: "Protocol Buffers - Google's data interchange format. C++ Libraries and protoc, the protobuf compiler."
   description: |
     Protocol buffers are Google's language-neutral,
     platform-neutral, extensible mechanism for serializing structured data-
