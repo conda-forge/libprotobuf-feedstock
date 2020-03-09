@@ -1,0 +1,83 @@
+diff --git a/cmake/CMakeLists.txt b/cmake/CMakeLists.txt
+index 849679995..1cc021c8e 100644
+--- a/cmake/CMakeLists.txt
++++ b/cmake/CMakeLists.txt
+@@ -60,6 +60,7 @@ include(protobuf-options.cmake)
+ 
+ # Path to main configure script
+ set(protobuf_CONFIGURE_SCRIPT "../configure.ac")
++set(protobuf_MAKEFILE_AM "../src/Makefile.am")
+ 
+ # Parse configure script
+ set(protobuf_AC_INIT_REGEX
+@@ -92,6 +93,22 @@ message(STATUS "${protobuf_VERSION_PRERELEASE}")
+ set(protobuf_VERSION
+   "${protobuf_VERSION_MAJOR}.${protobuf_VERSION_MINOR}.${protobuf_VERSION_PATCH}")
+ 
++file(STRINGS "${protobuf_MAKEFILE_AM}" protobuf_SO_VERSION_LINE
++  LIMIT_COUNT 1 REGEX "^PROTOBUF_VERSION")
++
++message("ENV PROTO: ${protobuf_SO_VERSION_LINE}")
++
++string(REPLACE "PROTOBUF_VERSION = " "" protobuf_SO_VERSION "${protobuf_SO_VERSION_LINE}")
++
++message("ENV PROTO: ${protobuf_SO_VERSION}")
++
++string(REGEX MATCHALL "([^:]+)" protobuf_SO_VERSION_SPLIT "${protobuf_SO_VERSION}")
++list(GET protobuf_SO_VERSION_SPLIT 0 protobuf_SO_VERSION_CURRENT)
++list(GET protobuf_SO_VERSION_SPLIT 1 protobuf_SO_VERSION_REVISION)
++list(GET protobuf_SO_VERSION_SPLIT 2 protobuf_SO_VERSION_AGE)
++set(protobuf_SO_VERSION_FULL "${protobuf_SO_VERSION_CURRENT}.${protobuf_SO_VERSION_AGE}.${protobuf_SO_VERSION_REVISION}")
++set(protobuf_SO_VERSION "${protobuf_SO_VERSION_CURRENT}")
++
+ if(protobuf_VERSION_PRERELEASE)
+   set(protobuf_VERSION "${protobuf_VERSION}.${protobuf_VERSION_PRERELEASE}")
+ else()
+diff --git a/cmake/libprotobuf-lite.cmake b/cmake/libprotobuf-lite.cmake
+index 6bf86a277..14b48782d 100644
+--- a/cmake/libprotobuf-lite.cmake
++++ b/cmake/libprotobuf-lite.cmake
+@@ -74,7 +74,10 @@ if(MSVC AND protobuf_BUILD_SHARED_LIBS)
+     PRIVATE LIBPROTOBUF_EXPORTS)
+ endif()
+ set_target_properties(libprotobuf-lite PROPERTIES
+-    VERSION ${protobuf_VERSION}
++    SOVERSION "${protobuf_SO_VERSION}"
++    VERSION "${protobuf_SO_VERSION_FULL}"
++    OSX_CURRENT_VERSION "${protobuf_SO_VERSION_FULL}"
++    OSX_COMPATIBILITY_VERSION "${protobuf_SO_VERSION}"
+     OUTPUT_NAME ${LIB_PREFIX}protobuf-lite
+     DEBUG_POSTFIX "${protobuf_DEBUG_POSTFIX}")
+ add_library(protobuf::libprotobuf-lite ALIAS libprotobuf-lite)
+diff --git a/cmake/libprotobuf.cmake b/cmake/libprotobuf.cmake
+index 0c12596c2..dd0a7292f 100644
+--- a/cmake/libprotobuf.cmake
++++ b/cmake/libprotobuf.cmake
+@@ -128,7 +128,10 @@ if(MSVC AND protobuf_BUILD_SHARED_LIBS)
+     PRIVATE LIBPROTOBUF_EXPORTS)
+ endif()
+ set_target_properties(libprotobuf PROPERTIES
+-    VERSION ${protobuf_VERSION}
++    SOVERSION "${protobuf_SO_VERSION}"
++    VERSION "${protobuf_SO_VERSION_FULL}"
++    OSX_CURRENT_VERSION "${protobuf_SO_VERSION_FULL}"
++    OSX_COMPATIBILITY_VERSION "${protobuf_SO_VERSION}"
+     OUTPUT_NAME ${LIB_PREFIX}protobuf
+     DEBUG_POSTFIX "${protobuf_DEBUG_POSTFIX}")
+ add_library(protobuf::libprotobuf ALIAS libprotobuf)
+diff --git a/cmake/libprotoc.cmake b/cmake/libprotoc.cmake
+index b71f2f1ba..11f195fb2 100644
+--- a/cmake/libprotoc.cmake
++++ b/cmake/libprotoc.cmake
+@@ -175,7 +175,10 @@ if(MSVC AND protobuf_BUILD_SHARED_LIBS)
+ endif()
+ set_target_properties(libprotoc PROPERTIES
+     COMPILE_DEFINITIONS LIBPROTOC_EXPORTS
+-    VERSION ${protobuf_VERSION}
++    SOVERSION "${protobuf_SO_VERSION}"
++    VERSION "${protobuf_SO_VERSION_FULL}"
++    OSX_CURRENT_VERSION "${protobuf_SO_VERSION_FULL}"
++    OSX_COMPATIBILITY_VERSION "${protobuf_SO_VERSION}"
+     OUTPUT_NAME ${LIB_PREFIX}protoc
+     DEBUG_POSTFIX "${protobuf_DEBUG_POSTFIX}")
+ add_library(protobuf::libprotoc ALIAS libprotoc)

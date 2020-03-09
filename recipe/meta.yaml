@@ -9,6 +9,7 @@ source:
     sha256: a79d19dcdf9139fa4b81206e318e33d245c4c9da1ffed21c87288ed4380426f9
     patches:
       - 0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]
+      - cmake_so_version.patch  # [unix]
   # these are git submodules from the 3.10.1 release
   # https://github.com/google/protobuf/tree/v3.10.1/third_party
   - url: https://github.com/google/benchmark/archive/5b7683f49e1e9223cf9927b24f6fd3d6bd82e3f8.tar.gz
@@ -44,6 +45,9 @@ test:
   commands:
     - protoc --help
     - test -f ${PREFIX}/lib/libprotobuf${SHLIB_EXT}  # [not win]
+    - test -f ${PREFIX}/lib/libprotobuf${SHLIB_EXT}.22  # [not win]
+    - test -f ${PREFIX}/lib/libprotobuf${SHLIB_EXT}.22.0.4  # [not win]
+    - 'readelf -d ${PREFIX}/lib/libprotobuf.so | grep -q "Library soname: \[libprotobuf.so.22\]"'  # [linux]
     - if not exist %PREFIX%\\Library\\lib\\libprotoc.lib exit 1  # [win]
     - if not exist %PREFIX%\\Library\\lib\\libprotobuf.lib exit 1  # [win]
     - if not exist %PREFIX%\\Library\\lib\\libprotobuf-lite.lib exit 1  # [win]
