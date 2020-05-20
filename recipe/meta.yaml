@@ -1,4 +1,4 @@
-{% set version = "3.11.4" %}
+{% set version = "3.12.1" %}
 
 package:
   name: libprotobuf
@@ -6,7 +6,7 @@ package:
 
 source:
   - url: https://github.com/google/protobuf/archive/v{{ version }}/libprotobuf-v{{ version }}.tar.gz
-    sha256: a79d19dcdf9139fa4b81206e318e33d245c4c9da1ffed21c87288ed4380426f9
+    sha256: cb9b3f9d625b5739a358268eb3421de11cacd90025f5f7672c3930553eca810e
     patches:
       - 0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]
   # these are git submodules from the 3.10.1 release
@@ -19,9 +19,9 @@ source:
     folder: third_party/googletest
 
 build:
-  number: 1
+  number: 0
   # Requires C++ 11, VS 2008 is not supported
-  skip: True  # [win and vc<14]
+  skip: true  # [win and vc<14]
   run_exports:
     # breaks backwards compatibility and new SONAME each minor release
     # https://abi-laboratory.pro/tracker/timeline/protobuf/
@@ -53,7 +53,7 @@ about:
   license: BSD-3-Clause
   license_family: BSD
   license_file: LICENSE
-  summary: "Protocol Buffers - Google's data interchange format. C++ Libraries and protoc, the protobuf compiler."
+  summary: Protocol Buffers - Google's data interchange format. C++ Libraries and protoc, the protobuf compiler.
   description: |
     Protocol buffers are Google's language-neutral,
     platform-neutral, extensible mechanism for serializing structured data-
