@@ -21,16 +21,21 @@ fi
 export CPPFLAGS="${CPPFLAGS} -I${PREFIX}/include"
 export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib"
 
-mkdir build && cd build
+# Build configure/Makefile as they are not present.
+aclocal
+libtoolize
+autoconf
+autoreconf -i
+automake --add-missing
 
-cmake -DCMAKE_PREFIX_PATH=$PREFIX \
-      -DCMAKE_INSTALL_PREFIX=$PREFIX \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_INSTALL_LIBDIR=lib \
-      -Dprotobuf_WITH_ZLIB=ON \
-      -Dprotobuf_BUILD_SHARED_LIBS=ON \
-      $SRC_DIR/cmake
-
+./configure --prefix="${PREFIX}" \
+            --build=${HOST}      \
+            --host=${HOST}       \
+            --with-pic           \
+            --with-zlib          \
+            --enable-shared      \
+            CC_FOR_BUILD=${CC}   \
+            CXX_FOR_BUILD=${CXX}
 if [ "${HOST}" == "powerpc64le-conda_cos7-linux-gnu" ]; then
     make -j 2
     make check -j 2
