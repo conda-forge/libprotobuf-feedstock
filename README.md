@@ -5,7 +5,7 @@ Home: https://developers.google.com/protocol-buffers/
 
 Package license: BSD-3-Clause
 
-Feedstock license: BSD 3-Clause
+Feedstock license: BSD-3-Clause
 
 Summary: Protocol Buffers - Google's data interchange format. C++ Libraries and protoc, the protobuf compiler.
 
