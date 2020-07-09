@@ -34,6 +34,7 @@ automake --add-missing
             --with-pic           \
             --with-zlib          \
             --enable-shared      \
+            --disable-static     \
             CC_FOR_BUILD=${CC}   \
             CXX_FOR_BUILD=${CXX}
 if [ "${HOST}" == "powerpc64le-conda_cos7-linux-gnu" ]; then
