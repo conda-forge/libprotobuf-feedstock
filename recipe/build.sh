@@ -34,7 +34,6 @@ automake --add-missing
             --with-pic           \
             --with-zlib          \
             --enable-shared      \
-            --disable-static     \
             CC_FOR_BUILD=${CC}   \
             CXX_FOR_BUILD=${CXX}
 if [ "${HOST}" == "powerpc64le-conda_cos7-linux-gnu" ]; then
@@ -45,3 +44,6 @@ else
     make check -j ${CPU_COUNT}
 fi
 make install
+rm ${PREFIX}/lib/libprotobuf.a
+rm ${PREFIX}/lib/libprotobuf-lite.a
+rm ${PREFIX}/lib/libprotoc.a
