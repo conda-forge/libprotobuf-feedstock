@@ -94,6 +94,7 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libprotobuf-green.svg)](https://anaconda.org/conda-forge/libprotobuf) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libprotobuf.svg)](https://anaconda.org/conda-forge/libprotobuf) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libprotobuf.svg)](https://anaconda.org/conda-forge/libprotobuf) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libprotobuf.svg)](https://anaconda.org/conda-forge/libprotobuf) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-libprotobuf--static-green.svg)](https://anaconda.org/conda-forge/libprotobuf-static) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libprotobuf-static.svg)](https://anaconda.org/conda-forge/libprotobuf-static) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libprotobuf-static.svg)](https://anaconda.org/conda-forge/libprotobuf-static) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libprotobuf-static.svg)](https://anaconda.org/conda-forge/libprotobuf-static) |
 
 Installing libprotobuf
 ======================
@@ -104,10 +105,10 @@ Installing `libprotobuf` from the `conda-forge` channel can be achieved by addin
 conda config --add channels conda-forge
 ```
 
-Once the `conda-forge` channel has been enabled, `libprotobuf` can be installed with:
+Once the `conda-forge` channel has been enabled, `libprotobuf, libprotobuf-static` can be installed with:
 
 ```
-conda install libprotobuf
+conda install libprotobuf libprotobuf-static
 ```
 
 It is possible to list all of the versions of `libprotobuf` available on your platform with:
