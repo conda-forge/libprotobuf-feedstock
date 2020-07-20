@@ -56,7 +56,8 @@ outputs:
         - if not exist %PREFIX%\\Library\\lib\\libprotobuf-lite.lib exit 1  # [win]
   - name: libprotobuf-static
     script: build_static.sh  # [unix]
-    skip: true  # [win]
+    build:
+      skip: true  # [win]
     test:
       commands:
         - test -f ${PREFIX}/lib/libprotobuf.a  # [unix]
