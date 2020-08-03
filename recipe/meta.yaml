@@ -1,4 +1,4 @@
-{% set version = "3.12.3" %}
+{% set version = "3.12.4" %}
 
 package:
   name: libprotobuf
@@ -6,9 +6,10 @@ package:
 
 source:
   - url: https://github.com/google/protobuf/archive/v{{ version }}/libprotobuf-v{{ version }}.tar.gz
-    sha256: 71030a04aedf9f612d2991c1c552317038c3c5a2b578ac4745267a45e7037c29
+    sha256: 512e5a674bf31f8b7928a64d8adf73ee67b8fe88339ad29adaa3b84dbaa570d8
     patches:
       - 0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]
+      - issue-7567.patch
   # these are git submodules from the 3.10.1 release
   # https://github.com/google/protobuf/tree/v3.10.1/third_party
   - url: https://github.com/google/benchmark/archive/5b7683f49e1e9223cf9927b24f6fd3d6bd82e3f8.tar.gz
@@ -19,7 +20,7 @@ source:
     folder: third_party/googletest
 
 build:
-  number: 2
+  number: 0
 
 requirements:
   build:
