@@ -5,13 +5,13 @@ package:
   version: {{ version }}
 
 source:
-  - url: https://github.com/google/protobuf/archive/v{{ version }}/libprotobuf-v{{ version }}.tar.gz
+  - url: https://github.com/protocolbuffers/protobuf/archive/v{{ version }}/libprotobuf-v{{ version }}.tar.gz
     sha256: 512e5a674bf31f8b7928a64d8adf73ee67b8fe88339ad29adaa3b84dbaa570d8
     patches:
       - 0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]
       - issue-7567.patch
   # these are git submodules from the 3.10.1 release
-  # https://github.com/google/protobuf/tree/v3.10.1/third_party
+  # https://github.com/protocolbuffers/protobuf/tree/v3.10.1/third_party
   - url: https://github.com/google/benchmark/archive/5b7683f49e1e9223cf9927b24f6fd3d6bd82e3f8.tar.gz
     sha256: 5dc92703f811f94e2aa63bdab07ab749f28a094befa6cdfd5fe177f947590a48
     folder: third_party/benchmark
@@ -76,7 +76,7 @@ about:
     platform-neutral, extensible mechanism for serializing structured data-
     think XML, but smaller, faster, and simpler.
   doc_url: https://developers.google.com/protocol-buffers/
-  doc_source_url: https://github.com/google/protobuf/releases
+  doc_source_url: https://github.com/protocolbuffers/protobuf/releases
 
 extra:
   recipe-maintainers:
