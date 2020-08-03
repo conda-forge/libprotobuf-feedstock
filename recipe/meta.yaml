@@ -9,6 +9,7 @@ source:
     sha256: 512e5a674bf31f8b7928a64d8adf73ee67b8fe88339ad29adaa3b84dbaa570d8
     patches:
       - 0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]
+      - issue-7567.patch
   # these are git submodules from the 3.10.1 release
   # https://github.com/google/protobuf/tree/v3.10.1/third_party
   - url: https://github.com/google/benchmark/archive/5b7683f49e1e9223cf9927b24f6fd3d6bd82e3f8.tar.gz
