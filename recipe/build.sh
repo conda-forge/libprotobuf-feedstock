@@ -29,7 +29,7 @@ autoreconf -i
 automake --add-missing
 
 ./configure --prefix="${PREFIX}" \
-            --build=${HOST}      \
+            --build=${BUILD}     \
             --host=${HOST}       \
             --with-pic           \
             --with-zlib          \
@@ -41,7 +41,9 @@ if [ "${HOST}" == "powerpc64le-conda_cos7-linux-gnu" ]; then
     make check -j 2
 else
     make -j ${CPU_COUNT}
-    make check -j ${CPU_COUNT}
+    if [[ "$CONDA_BUILD_CROSS_COMPILATION" != 1 ]]; then
+        make check -j ${CPU_COUNT}
+    fi
 fi
 make install
 rm ${PREFIX}/lib/libprotobuf.a
