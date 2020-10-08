@@ -1,4 +1,4 @@
-{% set version = "3.13.0" %}
+{% set version = "3.13.0.1" %}
 
 package:
   name: libprotobuf
@@ -6,7 +6,7 @@ package:
 
 source:
   - url: https://github.com/protocolbuffers/protobuf/archive/v{{ version }}/libprotobuf-v{{ version }}.tar.gz
-    sha256: 9b4ee22c250fe31b16f1a24d61467e40780a3fbb9b91c3b65be2a376ed913a1a
+    sha256: 7d663c8dc81d282dc92e884b38e9c179671e31ccacce311154420e65f7d142c6
     patches:
       - 0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]
       # This issue gets fixed and then reintroduced often
