@@ -36,6 +36,9 @@ automake --add-missing
             --enable-shared      \
             CC_FOR_BUILD=${CC}   \
             CXX_FOR_BUILD=${CXX}
+
+# Skip memory hungry tests
+export GTEST_FILTER="-IoTest.LargeOutput"
 if [ "${HOST}" == "powerpc64le-conda_cos7-linux-gnu" ]; then
     make -j 2
     make check -j 2 || (cat src/test-suite.log; exit 1)
