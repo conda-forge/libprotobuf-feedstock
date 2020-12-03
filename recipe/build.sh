@@ -36,13 +36,16 @@ automake --add-missing
             --enable-shared      \
             CC_FOR_BUILD=${CC}   \
             CXX_FOR_BUILD=${CXX}
+
+# Skip memory hungry tests
+export GTEST_FILTER="-IoTest.LargeOutput"
 if [ "${HOST}" == "powerpc64le-conda_cos7-linux-gnu" ]; then
     make -j 2
-    make check -j 2
+    make check -j 2 || (cat src/test-suite.log; exit 1)
 else
     make -j ${CPU_COUNT}
     if [[ "$CONDA_BUILD_CROSS_COMPILATION" != 1 ]]; then
-        make check -j ${CPU_COUNT}
+        make check -j ${CPU_COUNT} || (cat src/test-suite.log; exit 1)
     fi
 fi
 make install
