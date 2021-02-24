@@ -193,7 +193,6 @@ Feedstock Maintainers
 * [@dopplershift](https://github.com/dopplershift/)
 * [@hajapy](https://github.com/hajapy/)
 * [@jakirkham](https://github.com/jakirkham/)
-* [@jjhelmus](https://github.com/jjhelmus/)
 * [@ocefpaf](https://github.com/ocefpaf/)
 * [@wesm](https://github.com/wesm/)
 * [@xhochy](https://github.com/xhochy/)
