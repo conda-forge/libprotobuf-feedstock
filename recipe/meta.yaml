@@ -8,7 +8,11 @@ source:
   - url: https://github.com/protocolbuffers/protobuf/archive/v{{ version }}/protobuf-v{{ version }}.tar.gz
     sha256: d0f5f605d0d656007ce6c8b5a82df3037e1d8fe8b121ed42e536f569dec16113
     patches:
-      - 0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]
+      - 0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64 or s390x]
+      - 0002-remove-failing-json-parser-test.patch  # [s390x]
+      # our build machine does not have enough memory for this test.
+      # see: https://github.com/protocolbuffers/protobuf/issues/8082
+      - 0003-remove-large-output-test.patch         # [s390x]
       # This issue gets fixed and then reintroduced often
       # https://github.com/protocolbuffers/protobuf/issues/7567
       #- issue-7567.patch
