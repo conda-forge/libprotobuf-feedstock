@@ -22,7 +22,7 @@ source:
     folder: third_party/googletest
 
 build:
-  number: 0
+  number: 1
 
 requirements:
   build:
@@ -59,13 +59,34 @@ outputs:
         - if not exist %PREFIX%\\Library\\lib\\libprotobuf-lite.lib exit 1  # [win]
   - name: libprotobuf-static
     script: build_static.sh  # [unix]
-    build:
-      skip: true  # [win]
+    script: bld-static.bat  # [win]
+    requirements:
+      build:
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+        - cmake  # [win]
+        - ninja  # [win]
+        - autoconf  # [not win]
+        - automake  # [not win]
+        - libtool  # [not win]
+        - pkg-config  # [not win]
+        - unzip  # [not win]
+        - make  # [not win]
+      host:
+        - zlib
+      run:
+        - zlib
+      run_constrained:
+        - libprotobuf <0a0  # [win]
     test:
       commands:
         - test -f ${PREFIX}/lib/libprotobuf.a  # [unix]
         - test -f ${PREFIX}/lib/libprotobuf-lite.a  # [unix]
         - test -f ${PREFIX}/lib/libprotoc.a  # [unix]
+        - if exist %PREFIX%\\Library\\bin\\libprotoc.dll exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\lib\\libprotoc.lib exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\lib\\libprotobuf.lib exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\lib\\libprotobuf-lite.lib exit 1  # [win]
 
 about:
   home: https://developers.google.com/protocol-buffers/
