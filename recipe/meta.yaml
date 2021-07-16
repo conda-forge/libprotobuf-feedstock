@@ -22,33 +22,34 @@ source:
     folder: third_party/googletest
 
 build:
-  number: 0
-
-requirements:
-  build:
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - cmake  # [win]
-    - ninja  # [win]
-    - autoconf  # [not win]
-    - automake  # [not win]
-    - libtool  # [not win]
-    - pkg-config  # [not win]
-    - unzip  # [not win]
-    - make  # [not win]
-  host:
-    - zlib
-  run:
-    - zlib
+  number: 1
 
 outputs:
   - name: libprotobuf
+    script: build-shared.sh  # [unix]
+    script: bld-shared.bat  # [win]
     build:
       run_exports:
         # breaks backwards compatibility and new SONAME each minor release
         # https://abi-laboratory.pro/tracker/timeline/protobuf/
         # One exception was that 3.6.1 was incompatible with 3.6.0
         - {{ pin_subpackage('libprotobuf', max_pin='x.x') }}
+    requirements:
+      build:
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+        - cmake  # [win]
+        - ninja  # [win]
+        - autoconf  # [not win]
+        - automake  # [not win]
+        - libtool  # [not win]
+        - pkg-config  # [not win]
+        - unzip  # [not win]
+        - make  # [not win]
+      host:
+        - zlib
+      run:
+        - zlib
     test:
       commands:
         - protoc --help
@@ -59,13 +60,36 @@ outputs:
         - if not exist %PREFIX%\\Library\\lib\\libprotobuf-lite.lib exit 1  # [win]
   - name: libprotobuf-static
     script: build_static.sh  # [unix]
-    build:
-      skip: true  # [win]
+    script: bld-static.bat  # [win]
+    requirements:
+      build:
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+        - cmake  # [win]
+        - ninja  # [win]
+        - autoconf  # [not win]
+        - automake  # [not win]
+        - libtool  # [not win]
+        - pkg-config  # [not win]
+        - unzip  # [not win]
+        - make  # [not win]
+      host:
+        - zlib
+        - {{ pin_subpackage('libprotobuf', exact=True) }}  # [not win]
+      run:
+        - zlib
+        - {{ pin_subpackage('libprotobuf', exact=True) }}  # [not win]
+      run_constrained:
+        - libprotobuf <0a0  # [win]
     test:
       commands:
         - test -f ${PREFIX}/lib/libprotobuf.a  # [unix]
         - test -f ${PREFIX}/lib/libprotobuf-lite.a  # [unix]
         - test -f ${PREFIX}/lib/libprotoc.a  # [unix]
+        - if exist %PREFIX%\\Library\\bin\\libprotoc.dll exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\lib\\libprotoc.lib exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\lib\\libprotobuf.lib exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\lib\\libprotobuf-lite.lib exit 1  # [win]
 
 about:
   home: https://developers.google.com/protocol-buffers/
