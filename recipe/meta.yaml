@@ -33,7 +33,6 @@ outputs:
     script: build-shared.sh  # [unix]
     script: bld-shared.bat  # [win]
     build:
-      number: 0
       run_exports:
         # breaks backwards compatibility and new SONAME each minor release
         # https://abi-laboratory.pro/tracker/timeline/protobuf/
@@ -80,10 +79,10 @@ outputs:
         - unzip  # [not win]
         - make  # [not win]
       host:
-        - zlib
+        - zlib    # [not win]
         - {{ pin_subpackage('libprotobuf', exact=True) }}  # [not win]
       run:
-        - zlib
+        - zlib    # [not win]
         - {{ pin_subpackage('libprotobuf', exact=True) }}  # [not win]
       run_constrained:
         - libprotobuf <0a0  # [win]

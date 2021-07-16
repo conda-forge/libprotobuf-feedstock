@@ -6,8 +6,9 @@ if [ "$(uname)" == "Linux" ];
 then
     # protobuf uses PROTOBUF_OPT_FLAG to set the optimization level
     # unit test can fail if optmization above 0 are used.
-    CPPFLAGS="${CPPFLAGS//-O[0-9]/}"
-    CXXFLAGS="${CXXFLAGS//-O[0-9]/}"
+    # update: no -O at all is triggering warnings.
+    # CPPFLAGS="${CPPFLAGS//-O[0-9]/}"
+    # CXXFLAGS="${CXXFLAGS//-O[0-9]/}"
     export PROTOBUF_OPT_FLAG="-O2"
     # to improve performance, disable checks intended for debugging
     CXXFLAGS="$CXXFLAGS -DNDEBUG"
