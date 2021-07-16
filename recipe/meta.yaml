@@ -1,18 +1,18 @@
-{% set version = "3.14.0" %}
+{% set version = "3.17.2" %}
 
 package:
   name: libprotobuf-suite
   version: {{ version }}
 
 source:
-  - url: https://github.com/protocolbuffers/protobuf/archive/v{{ version }}/protobuf-v{{ version }}.tar.gz
-    sha256: d0f5f605d0d656007ce6c8b5a82df3037e1d8fe8b121ed42e536f569dec16113
+  - url: https://github.com/protocolbuffers/protobuf/archive/v{{ version }}/libprotobuf-v{{ version }}.tar.gz
+    sha256: 36f81e03a0702f8f935fffd5a486dac1c0fc6d4bae1cd02c7a32448ad6e63bcb
     patches:
       - 0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64 or s390x]
       - 0002-remove-failing-json-parser-test.patch  # [s390x]
       # our build machine does not have enough memory for this test.
       # see: https://github.com/protocolbuffers/protobuf/issues/8082
-      - 0003-remove-large-output-test.patch         # [s390x]
+      # - 0003-remove-large-output-test.patch         # [s390x]
       # This issue gets fixed and then reintroduced often
       # https://github.com/protocolbuffers/protobuf/issues/7567
       #- issue-7567.patch
@@ -25,25 +25,20 @@ source:
     sha256: 0e2f36e8e403c125fd0ab02171bdb786d3b6b3875b6ccf3b2eb7969be8faecd0
     folder: third_party/googletest
 
-requirements:
-  build:
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - cmake  # [win]
-    - ninja  # [win]
-    - autoconf  # [not win]
-    - automake  # [not win]
-    - libtool  # [not win]
-    - pkg-config  # [not win]
-    - unzip  # [not win]
-    - make  # [not win]
-  host:
-    - zlib
+build:
+  number: 1
 
 outputs:
   - name: libprotobuf
-    script: build_shared.sh  # [unix]
-    script: build_shared.bat  # [win]
+    script: build-shared.sh  # [unix]
+    script: bld-shared.bat  # [win]
+    build:
+      number: 0
+      run_exports:
+        # breaks backwards compatibility and new SONAME each minor release
+        # https://abi-laboratory.pro/tracker/timeline/protobuf/
+        # One exception was that 3.6.1 was incompatible with 3.6.0
+        - {{ pin_subpackage('libprotobuf', max_pin='x.x') }}
     requirements:
       build:
         - {{ compiler('c') }}
@@ -58,13 +53,8 @@ outputs:
         - make  # [not win]
       host:
         - zlib
-    build:
-      number: 0
-      run_exports:
-        # breaks backwards compatibility and new SONAME each minor release
-        # https://abi-laboratory.pro/tracker/timeline/protobuf/
-        # One exception was that 3.6.1 was incompatible with 3.6.0
-        - {{ pin_subpackage('libprotobuf', max_pin='x.x') }}
+      run:
+        - zlib
     test:
       commands:
         - protoc --help
@@ -76,10 +66,9 @@ outputs:
 
   - name: libprotobuf-static
     script: build_static.sh  # [unix]
+    script: bld-static.bat  # [win]
     requirements:
       build:
-        # This ensures correct build order.
-        - {{ pin_subpackage('libprotobuf', exact=True) }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - cmake  # [win]
@@ -92,14 +81,21 @@ outputs:
         - make  # [not win]
       host:
         - zlib
-    build:
-      skip: true  # [win]
-      number: 0
+        - {{ pin_subpackage('libprotobuf', exact=True) }}  # [not win]
+      run:
+        - zlib
+        - {{ pin_subpackage('libprotobuf', exact=True) }}  # [not win]
+      run_constrained:
+        - libprotobuf <0a0  # [win]
     test:
       commands:
         - test -f ${PREFIX}/lib/libprotobuf.a  # [unix]
         - test -f ${PREFIX}/lib/libprotobuf-lite.a  # [unix]
         - test -f ${PREFIX}/lib/libprotoc.a  # [unix]
+        - if exist %PREFIX%\\Library\\bin\\libprotoc.dll exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\lib\\libprotoc.lib exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\lib\\libprotobuf.lib exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\lib\\libprotobuf-lite.lib exit 1  # [win]
 
 about:
   home: https://developers.google.com/protocol-buffers/
@@ -118,7 +114,6 @@ extra:
   recipe-maintainers:
     - dopplershift
     - jakirkham
-    - jjhelmus
     - ocefpaf
     - wesm
     - hajapy
