@@ -18,6 +18,13 @@ then
     LDFLAGS="${LDFLAGS//-pie/}"
 fi
 
+# sed is missing from path in build for osx-arm64.  This is a
+# workaround for expediency and should be removed when possible.
+if [[ "${target_platform}" == "osx-arm64" ]]; then
+    export SED="${BUILD_PREFIX}/bin/sed"
+fi
+
+
 # required to pick up conda installed zlib
 export CPPFLAGS="${CPPFLAGS} -I${PREFIX}/include"
 export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib"
