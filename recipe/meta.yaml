@@ -57,7 +57,7 @@ outputs:
         - pkg-config  # [not win]
         - unzip  # [not win]
         - make  # [not win]
-        - sed  # [osx]
+        - sed  # [osx and arm64]
       host:
         - zlib
       run:
@@ -86,7 +86,6 @@ outputs:
         - pkg-config  # [not win]
         - unzip  # [not win]
         - make  # [not win]
-        - sed  # [osx]
       host:
         - zlib    # [not win]
         - {{ pin_subpackage('libprotobuf', exact=True) }}  # [not win]
