@@ -1,4 +1,4 @@
-{% set version = "3.17.2" %}
+{% set version = "3.19.1" %}
 
 package:
   name: libprotobuf-suite
@@ -6,10 +6,10 @@ package:
 
 source:
   - url: https://github.com/protocolbuffers/protobuf/archive/v{{ version }}/libprotobuf-v{{ version }}.tar.gz
-    sha256: 36f81e03a0702f8f935fffd5a486dac1c0fc6d4bae1cd02c7a32448ad6e63bcb
-    patches:
+    sha256: 87407cd28e7a9c95d9f61a098a53cf031109d451a7763e7dd1253abf8b4df422
+    patches:  # [ppc64le or aarch64 or s390x]
       - 0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64 or s390x]
-      - 0002-remove-failing-json-parser-test.patch  # [s390x]
+      # - 0002-remove-failing-json-parser-test.patch  # [s390x]
       # our build machine does not have enough memory for this test.
       # see: https://github.com/protocolbuffers/protobuf/issues/8082
       # - 0003-remove-large-output-test.patch         # [s390x]
@@ -26,13 +26,20 @@ source:
     folder: third_party/googletest
 
 build:
-  number: 1
+  number: 0
+
+requirements:
+  build:  # [ppc64le or aarch64 or s390x or (osx and arm64)]
+    - patch  # [ppc64le or aarch64 or s390x]
+    - sed  # [osx and arm64]
 
 outputs:
   - name: libprotobuf
     script: build-shared.sh  # [unix]
     script: bld-shared.bat  # [win]
     build:
+      missing_dso_whitelist:  # [s390x]
+        - $RPATH/ld64.so.1    # [s390x]
       run_exports:
         # breaks backwards compatibility and new SONAME each minor release
         # https://abi-laboratory.pro/tracker/timeline/protobuf/
@@ -50,6 +57,7 @@ outputs:
         - pkg-config  # [not win]
         - unzip  # [not win]
         - make  # [not win]
+        - sed  # [osx and arm64]
       host:
         - zlib
       run:
@@ -106,6 +114,7 @@ about:
     Protocol buffers are Google's language-neutral,
     platform-neutral, extensible mechanism for serializing structured data-
     think XML, but smaller, faster, and simpler.
+  dev_url: https://github.com/protocolbuffers/protobuf
   doc_url: https://developers.google.com/protocol-buffers/
   doc_source_url: https://github.com/protocolbuffers/protobuf/releases
 
