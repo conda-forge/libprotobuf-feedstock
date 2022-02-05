@@ -12,6 +12,7 @@ cmake -G "Ninja" ^
          -DCMAKE_BUILD_TYPE=Release ^
          -DCMAKE_PREFIX_PATH=%LIBRARY_PREFIX% ^
          -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
+         -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=ON ^
          -Dprotobuf_WITH_ZLIB=ON ^
          -Dprotobuf_BUILD_SHARED_LIBS=ON ^
          -Dprotobuf_MSVC_STATIC_RUNTIME=OFF ^
