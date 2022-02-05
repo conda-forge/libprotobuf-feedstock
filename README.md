@@ -179,6 +179,7 @@ Feedstock Maintainers
 =====================
 
 * [@dopplershift](https://github.com/dopplershift/)
+* [@h-vetinari](https://github.com/h-vetinari/)
 * [@hajapy](https://github.com/hajapy/)
 * [@jakirkham](https://github.com/jakirkham/)
 * [@ocefpaf](https://github.com/ocefpaf/)
