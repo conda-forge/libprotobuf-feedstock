@@ -8,19 +8,6 @@ source:
   # https://github.com/protocolbuffers/protobuf/releases/tag/v2.6.1
   - url: https://github.com/protocolbuffers/protobuf/archive/refs/tags/v{{ version }}.tar.gz
     sha256: 2667b7cda4a6bc8a09e5463adf3b5984e08d94e72338277affa8594d8b6e5cd1
-    patches:
-      - 0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]
-      # This issue gets fixed and then reintroduced often
-      # https://github.com/protocolbuffers/protobuf/issues/7567
-      #- issue-7567.patch
-  # these are git submodules from the 3.10.1 release
-  # https://github.com/protocolbuffers/protobuf/tree/v3.10.1/third_party
-  - url: https://github.com/google/benchmark/archive/5b7683f49e1e9223cf9927b24f6fd3d6bd82e3f8.tar.gz
-    sha256: 5dc92703f811f94e2aa63bdab07ab749f28a094befa6cdfd5fe177f947590a48
-    folder: third_party/benchmark
-  - url: https://github.com/google/googletest/archive/5ec7f0c4a113e2f18ac2c6cc7df51ad6afc24081.tar.gz
-    sha256: 0e2f36e8e403c125fd0ab02171bdb786d3b6b3875b6ccf3b2eb7969be8faecd0
-    folder: third_party/googletest
 
 build:
   number: 0
