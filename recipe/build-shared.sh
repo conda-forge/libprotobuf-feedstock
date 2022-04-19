@@ -41,11 +41,12 @@ automake --add-missing
 export GTEST_FILTER="-IoTest.LargeOutput"
 if [ "${HOST}" == "powerpc64le-conda_cos7-linux-gnu" ]; then
     make -j 2
-    make check -j 2 || (cat src/test-suite.log; exit 1)
+#    make check -j 2 || (cat src/test-suite.log; exit 1)
 else
     make -j ${CPU_COUNT}
     if [[ "$CONDA_BUILD_CROSS_COMPILATION" != 1 ]]; then
-        make check -j ${CPU_COUNT} # || (cat src/test-suite.log; exit 1)
+      true
+#        make check -j ${CPU_COUNT} || (cat src/test-suite.log; exit 1)
     fi
 fi
 make install
