@@ -34,6 +34,7 @@ outputs:
         - pkg-config  # [not win]
         - unzip  # [not win]
         - make  # [not win]
+        - gtest  # [not win]
       host:
         - zlib
       run:
