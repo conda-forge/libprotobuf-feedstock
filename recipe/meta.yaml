@@ -24,6 +24,7 @@ build:
   number: 0
   skip: True  # [win]
   skip: True  # [arm64]
+  skip: True  # [aarch64]
 
 outputs:
   - name: libprotobuf
