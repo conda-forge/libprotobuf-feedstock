@@ -11,17 +11,12 @@ source:
 
 build:
   number: 0
+  skip: True  # [win]
 
 outputs:
   - name: libprotobuf
     script: build-shared.sh  # [unix]
     script: bld-shared.bat  # [win]
-    build:
-      run_exports:
-        # breaks backwards compatibility and new SONAME each minor release
-        # https://abi-laboratory.pro/tracker/timeline/protobuf/
-        # One exception was that 3.6.1 was incompatible with 3.6.0
-        - {{ pin_subpackage('libprotobuf', max_pin='x.x') }}
     requirements:
       build:
         - {{ compiler('c') }}
