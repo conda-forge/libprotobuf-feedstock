@@ -1,11 +1,13 @@
 :: Setup directory structure per protobuf's instructions.
+if not exist cmake mkdir cmake
+if errorlevel 1 exit /b 1
 cd cmake
-if errorlevel 1 exit 1
+if errorlevel 1 exit /b 1
 
 mkdir build-shared
-if errorlevel 1 exit 1
+if errorlevel 1 exit /b 1
 cd build-shared
-if errorlevel 1 exit 1
+if errorlevel 1 exit /b 1
 
 :: Configure and install based on protobuf's instructions and other `bld.bat`s.
 cmake -G "Ninja" ^
@@ -16,6 +18,6 @@ cmake -G "Ninja" ^
          -Dprotobuf_BUILD_SHARED_LIBS=ON ^
          -Dprotobuf_MSVC_STATIC_RUNTIME=OFF ^
          ..
-if errorlevel 1 exit 1
+if errorlevel 1 exit /b 1
 cmake --build . --target install --config Release
-if errorlevel 1 exit 1
+if errorlevel 1 exit /b 1

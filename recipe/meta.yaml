@@ -6,8 +6,19 @@ package:
 
 source:
   # https://github.com/protocolbuffers/protobuf/releases/tag/v2.6.1
-  - url: https://github.com/protocolbuffers/protobuf/archive/refs/tags/v{{ version }}.tar.gz
-    sha256: 2667b7cda4a6bc8a09e5463adf3b5984e08d94e72338277affa8594d8b6e5cd1
+  # These assets come in different archives with three different contents
+  # DIST: protobuf-2.6.1.tar.bz2 == protobuf-2.6.1.zip
+  # RAW: protobuf-2.6.1.tar.gz == Source code (zip) == Source code (tar.gz)
+  # PROTOC: protoc-2.6.1-win32.zip
+  #
+  # DIST appears to be the same as RAW but processed-for-distribution.
+  # PROTOC contains a version of `protoc` built for windows 10.
+  - url: https://github.com/protocolbuffers/protobuf/releases/download/v{{ version }}/protobuf-{{ version }}.tar.gz  # [not win]
+    sha256: 2667b7cda4a6bc8a09e5463adf3b5984e08d94e72338277affa8594d8b6e5cd1  # [not win]
+  - url: https://github.com/protocolbuffers/protobuf/releases/download/v{{ version }}/protobuf-{{ version }}.zip  # [win]
+    sha256: 146362958DB8C07A3459E81EDF3C3B73EC81B26E54293EC7340E510BBB930504  # [win]
+  - url: https://github.com/protocolbuffers/protobuf/releases/download/v{{ version }}/protoc-{{ version }}-win32.zip  # [win]
+    sha256: EBCE7083B4A50AA94C0C62238FF56F658E99A5D87FCC5BAD33EA665DBFC7793D  # [win]
 
 build:
   number: 0
@@ -16,12 +27,6 @@ outputs:
   - name: libprotobuf
     script: build-shared.sh  # [unix]
     script: bld-shared.bat  # [win]
-    build:
-      run_exports:
-        # breaks backwards compatibility and new SONAME each minor release
-        # https://abi-laboratory.pro/tracker/timeline/protobuf/
-        # One exception was that 3.6.1 was incompatible with 3.6.0
-        - {{ pin_subpackage('libprotobuf', max_pin='x.x') }}
     requirements:
       build:
         - {{ compiler('c') }}
