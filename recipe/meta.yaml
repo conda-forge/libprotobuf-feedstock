@@ -1,4 +1,4 @@
-{% set version = "3.19.1" %}
+{% set version = "3.20.1" %}
 
 package:
   name: libprotobuf-suite
@@ -6,9 +6,11 @@ package:
 
 source:
   - url: https://github.com/protocolbuffers/protobuf/archive/v{{ version }}/libprotobuf-v{{ version }}.tar.gz
-    sha256: 87407cd28e7a9c95d9f61a098a53cf031109d451a7763e7dd1253abf8b4df422
-    patches:  # [ppc64le or aarch64 or s390x]
-      - 0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64 or s390x]
+    sha256: 8b28fdd45bab62d15db232ec404248901842e5340299a57765e48abe8a80d930
+    patches:  # [linux]
+      # We don't want the build to fail because of -Werror being used during
+      # make check.
+      - 0001-remove-Werror-from-test-flags.patch  # [linux]
       # - 0002-remove-failing-json-parser-test.patch  # [s390x]
       # our build machine does not have enough memory for this test.
       # see: https://github.com/protocolbuffers/protobuf/issues/8082
@@ -16,8 +18,8 @@ source:
       # This issue gets fixed and then reintroduced often
       # https://github.com/protocolbuffers/protobuf/issues/7567
       #- issue-7567.patch
-  # these are git submodules from the 3.10.1 release
-  # https://github.com/protocolbuffers/protobuf/tree/v3.10.1/third_party
+  # these are git submodules from the {{ version }} release
+  # https://github.com/protocolbuffers/protobuf/tree/v{{ version }}/third_party
   - url: https://github.com/google/benchmark/archive/5b7683f49e1e9223cf9927b24f6fd3d6bd82e3f8.tar.gz
     sha256: 5dc92703f811f94e2aa63bdab07ab749f28a094befa6cdfd5fe177f947590a48
     folder: third_party/benchmark
@@ -29,8 +31,8 @@ build:
   number: 0
 
 requirements:
-  build:  # [ppc64le or aarch64 or s390x or (osx and arm64)]
-    - patch  # [ppc64le or aarch64 or s390x]
+  build:  # [linux or (osx and arm64)]
+    - patch  # [linux]
     - sed  # [osx and arm64]
 
 outputs:
