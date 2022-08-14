@@ -22,7 +22,7 @@ source:
     folder: third_party/googletest
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - name: libprotobuf
@@ -47,8 +47,6 @@ outputs:
         - unzip  # [not win]
         - make  # [not win]
       host:
-        - zlib
-      run:
         - zlib
     test:
       commands:
@@ -77,7 +75,6 @@ outputs:
         - zlib
         - {{ pin_subpackage('libprotobuf', exact=True) }}  # [not win]
       run:
-        - zlib
         - {{ pin_subpackage('libprotobuf', exact=True) }}  # [not win]
       run_constrained:
         - libprotobuf <0a0  # [win]
