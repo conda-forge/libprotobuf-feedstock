@@ -1,12 +1,14 @@
-{% set version = "3.21.2" %}
-{% set minor_micro = ".".join(version.split(".")[1:]) %}
+# keep this without major version to let the bot pick it up
+{% set version = "21.2" %}
+# protobuf doesn't add the major version in the tag...
+{% set major = "3" %}
 
 package:
   name: libprotobuf
-  version: {{ version }}
+  version: {{ major + "." + version }}
 
 source:
-  - url: https://github.com/protocolbuffers/protobuf/archive/v{{ minor_micro }}/protobuf-v{{ minor_micro }}.tar.gz
+  - url: https://github.com/protocolbuffers/protobuf/archive/v{{ version }}/protobuf-v{{ version }}.tar.gz
     sha256: ca983c9d2c8f8c935513642bcc4b2cbc64e4046e0bb16bf2ff893128577ece8c
     patches:
       - 0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]
