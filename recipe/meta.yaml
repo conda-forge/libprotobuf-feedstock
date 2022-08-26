@@ -1,5 +1,5 @@
 # keep this without major version to let the bot pick it up
-{% set version = "21.2" %}
+{% set version = "21.3" %}
 # protobuf doesn't add the major version in the tag...
 {% set major = "3" %}
 
@@ -9,14 +9,14 @@ package:
 
 source:
   - url: https://github.com/protocolbuffers/protobuf/archive/v{{ version }}/protobuf-v{{ version }}.tar.gz
-    sha256: ca983c9d2c8f8c935513642bcc4b2cbc64e4046e0bb16bf2ff893128577ece8c
+    sha256: 1e958b62debbb46ebefa16d848741d17c88dc018dd57b729c0cd58965380f3f8
     patches:
       - 0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]
       # This issue gets fixed and then reintroduced often
       # https://github.com/protocolbuffers/protobuf/issues/7567
       #- issue-7567.patch
-  # these are git submodules from the v21.2 release
-  # https://github.com/protocolbuffers/protobuf/tree/v21.2/third_party
+  # these are git submodules from the v21.3 release
+  # https://github.com/protocolbuffers/protobuf/tree/v21.3/third_party
   - url: https://github.com/google/benchmark/archive/5b7683f49e1e9223cf9927b24f6fd3d6bd82e3f8.tar.gz
     sha256: 5dc92703f811f94e2aa63bdab07ab749f28a094befa6cdfd5fe177f947590a48
     folder: third_party/benchmark
