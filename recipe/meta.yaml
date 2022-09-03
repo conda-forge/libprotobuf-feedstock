@@ -63,6 +63,16 @@ outputs:
         - if exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1             # [win]
         {% endfor %}
 
+        # cmake
+        - test -f ${PREFIX}/lib/cmake/protobuf/protobuf-config.cmake              # [unix]
+        - if not exist %LIBRARY_LIB%\cmake\protobuf\protobuf-config.cmake exit 1  # [win]
+
+        # pkgconfig
+        - test -f ${PREFIX}/lib/pkgconfig/protobuf.pc                   # [unix]
+        - test -f ${PREFIX}/lib/pkgconfig/protobuf-lite.pc              # [unix]
+        - if not exist %LIBRARY_LIB%\pkgconfig\protobuf.pc exit 1       # [win]
+        - if not exist %LIBRARY_LIB%\pkgconfig\protobuf-lite.pc exit 1  # [win]
+
         # binary
         - protoc --help
 
