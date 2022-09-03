@@ -4,7 +4,7 @@
 {% set major = "3" %}
 
 package:
-  name: libprotobuf
+  name: libprotobuf-split
   version: {{ major + "." + version }}
 
 source:
@@ -115,3 +115,4 @@ extra:
     - hajapy
     - xhochy
     - h-vetinari
+  feedstock-name: libprotobuf
