@@ -27,7 +27,7 @@ build:
 outputs:
   - name: libprotobuf
     script: build-shared.sh  # [unix]
-    script: bld-shared.bat  # [win]
+    script: build-lib.bat  # [win]
     build:
       run_exports:
         # breaks backwards compatibility and new SONAME each minor release
@@ -58,7 +58,7 @@ outputs:
         - if not exist %PREFIX%\\Library\\lib\\libprotobuf-lite.lib exit 1  # [win]
   - name: libprotobuf-static
     script: build_static.sh  # [unix]
-    script: bld-static.bat  # [win]
+    script: build-lib.bat  # [win]
     requirements:
       build:
         - {{ compiler('c') }}
