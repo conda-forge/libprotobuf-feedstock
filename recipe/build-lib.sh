@@ -1,5 +1,4 @@
 #!/bin/bash
-
 set -ex
 
 if [ "$(uname)" == "Linux" ];
@@ -21,22 +20,30 @@ fi
 export CPPFLAGS="${CPPFLAGS} -I${PREFIX}/include"
 export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib"
 
-# Build configure/Makefile as they are not present.
-aclocal
-libtoolize
-autoconf
-autoreconf -i
-automake --add-missing
+# Setup directory structure per protobuf's instructions.
+cd cmake
 
-./configure --prefix="${PREFIX}" \
-            --build=${BUILD}     \
-            --host=${HOST}       \
-            --with-pic           \
-            --with-zlib          \
-            --enable-shared      \
-            CC_FOR_BUILD=${CC}   \
-            CXX_FOR_BUILD=${CXX}
+if [[ "$PKG_NAME" == "libprotobuf-static" ]]; then
+    export CF_SHARED=OFF
+    mkdir build-static
+    cd build-static
+else
+    export CF_SHARED=ON
+    mkdir build-shared
+    cd build-shared
+fi
 
+cmake -G "Ninja" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=$PREFIX \
+    -Dprotobuf_WITH_ZLIB=ON \
+    -Dprotobuf_BUILD_SHARED_LIBS=$CF_SHARED \
+    ..
+
+cmake --build .
+cmake --install .
+
+cd ../..
 # Skip memory hungry tests
 export GTEST_FILTER="-IoTest.LargeOutput"
 if [ "${HOST}" == "powerpc64le-conda_cos7-linux-gnu" ]; then
@@ -48,7 +55,5 @@ else
         make check -j ${CPU_COUNT} || (cat src/test-suite.log; exit 1)
     fi
 fi
-make install
-rm ${PREFIX}/lib/libprotobuf.a
-rm ${PREFIX}/lib/libprotobuf-lite.a
-rm ${PREFIX}/lib/libprotoc.a
+
+cd cmake

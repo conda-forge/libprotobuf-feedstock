@@ -26,7 +26,7 @@ build:
 
 outputs:
   - name: libprotobuf
-    script: build-shared.sh  # [unix]
+    script: build-lib.sh   # [unix]
     script: build-lib.bat  # [win]
     build:
       run_exports:
@@ -38,13 +38,8 @@ outputs:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - cmake  # [win]
-        - ninja  # [win]
-        - autoconf  # [not win]
-        - automake  # [not win]
-        - libtool  # [not win]
-        - pkg-config  # [not win]
-        - unzip  # [not win]
+        - cmake
+        - ninja
         - make  # [not win]
       host:
         - zlib
@@ -57,19 +52,14 @@ outputs:
         - if not exist %PREFIX%\\Library\\lib\\libprotobuf.lib exit 1  # [win]
         - if not exist %PREFIX%\\Library\\lib\\libprotobuf-lite.lib exit 1  # [win]
   - name: libprotobuf-static
-    script: build_static.sh  # [unix]
+    script: build-lib.sh   # [unix]
     script: build-lib.bat  # [win]
     requirements:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - cmake  # [win]
-        - ninja  # [win]
-        - autoconf  # [not win]
-        - automake  # [not win]
-        - libtool  # [not win]
-        - pkg-config  # [not win]
-        - unzip  # [not win]
+        - cmake
+        - ninja
         - make  # [not win]
       host:
         - zlib
