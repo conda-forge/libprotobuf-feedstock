@@ -1,5 +1,7 @@
 {% set version = "3.20.1" %}
 
+{% set libraries = ["libprotoc", "libprotobuf", "libprotobuf-lite"] %}
+
 package:
   name: libprotobuf-split
   version: {{ version }}
@@ -45,12 +47,21 @@ outputs:
         - zlib
     test:
       commands:
+        {% for each_lib in libraries %}
+        # shared libraries
+        - test -f ${PREFIX}/lib/{{ each_lib }}.so                      # [linux]
+        - test -f ${PREFIX}/lib/{{ each_lib }}.dylib                   # [osx]
+        - if not exist %LIBRARY_BIN%\{{ each_lib }}.dll exit 1         # [win]
+        - if not exist %LIBRARY_LIB%\{{ each_lib }}-import.lib exit 1  # [win]
+
+        # absence of static libraries
+        - test ! -f ${PREFIX}/lib/{{ each_lib }}.a                     # [unix]
+        - if exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1             # [win]
+        {% endfor %}
+
+        # binary
         - protoc --help
-        - test -f ${PREFIX}/lib/libprotobuf${SHLIB_EXT}  # [not win]
-        - test ! -f ${PREFIX}/lib/libprotobuf.a  # [not win]
-        - if not exist %PREFIX%\\Library\\lib\\libprotoc-import.lib exit 1  # [win]
-        - if not exist %PREFIX%\\Library\\lib\\libprotobuf-import.lib exit 1  # [win]
-        - if not exist %PREFIX%\\Library\\lib\\libprotobuf-lite-import.lib exit 1  # [win]
+
   - name: libprotobuf-static
     script: build-lib.sh   # [unix]
     script: build-lib.bat  # [win]
@@ -68,13 +79,11 @@ outputs:
         - {{ pin_subpackage('libprotobuf', exact=True) }}
     test:
       commands:
-        - test -f ${PREFIX}/lib/libprotobuf.a  # [unix]
-        - test -f ${PREFIX}/lib/libprotobuf-lite.a  # [unix]
-        - test -f ${PREFIX}/lib/libprotoc.a  # [unix]
-        - if exist %PREFIX%\\Library\\bin\\libprotoc.dll exit 1  # [win]
-        - if not exist %PREFIX%\\Library\\lib\\libprotoc.lib exit 1  # [win]
-        - if not exist %PREFIX%\\Library\\lib\\libprotobuf.lib exit 1  # [win]
-        - if not exist %PREFIX%\\Library\\lib\\libprotobuf-lite.lib exit 1  # [win]
+        {% for each_lib in libraries %}
+        # static libraries
+        - test -f ${PREFIX}/lib/{{ each_lib }}.a                       # [unix]
+        - if not exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1         # [win]
+        {% endfor %}
 
 about:
   home: https://developers.google.com/protocol-buffers/
