@@ -51,9 +51,9 @@ outputs:
         - protoc --help
         - test -f ${PREFIX}/lib/libprotobuf${SHLIB_EXT}  # [not win]
         - test ! -f ${PREFIX}/lib/libprotobuf.a  # [not win]
-        - if not exist %PREFIX%\\Library\\lib\\libprotoc.lib exit 1  # [win]
-        - if not exist %PREFIX%\\Library\\lib\\libprotobuf.lib exit 1  # [win]
-        - if not exist %PREFIX%\\Library\\lib\\libprotobuf-lite.lib exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\lib\\libprotoc-import.lib exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\lib\\libprotobuf-import.lib exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\lib\\libprotobuf-lite-import.lib exit 1  # [win]
   - name: libprotobuf-static
     script: build-lib.sh   # [unix]
     script: build-lib.bat  # [win]
@@ -66,11 +66,9 @@ outputs:
         - make  # [not win]
       host:
         - zlib
-        - {{ pin_subpackage('libprotobuf', exact=True) }}  # [not win]
+        - {{ pin_subpackage('libprotobuf', exact=True) }}
       run:
-        - {{ pin_subpackage('libprotobuf', exact=True) }}  # [not win]
-      run_constrained:
-        - libprotobuf <0a0  # [win]
+        - {{ pin_subpackage('libprotobuf', exact=True) }}
     test:
       commands:
         - test -f ${PREFIX}/lib/libprotobuf.a  # [unix]

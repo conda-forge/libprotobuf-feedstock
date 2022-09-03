@@ -16,6 +16,7 @@ cmake -G "Ninja" ^
          -DCMAKE_BUILD_TYPE=Release ^
          -DCMAKE_PREFIX_PATH=%LIBRARY_PREFIX% ^
          -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
+         -DCMAKE_IMPORT_LIBRARY_SUFFIX="-import.lib" ^
          -Dprotobuf_WITH_ZLIB=ON ^
          -Dprotobuf_BUILD_SHARED_LIBS=%CF_SHARED% ^
          -Dprotobuf_MSVC_STATIC_RUNTIME=OFF ^
