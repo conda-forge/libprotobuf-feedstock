@@ -11,10 +11,10 @@ source:
   - url: https://github.com/protocolbuffers/protobuf/archive/v{{ version }}/protobuf-v{{ version }}.tar.gz
     sha256: 4a7e87e4166c358c63342dddcde6312faee06ea9d5bb4e2fa87d3478076f6639
     patches:
-      - 0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]
+      - patches/0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]
       # This issue gets fixed and then reintroduced often
       # https://github.com/protocolbuffers/protobuf/issues/7567
-      #- issue-7567.patch
+      # - patches/issue-7567.patch
   # these are git submodules from the v21.5 release
   # https://github.com/protocolbuffers/protobuf/tree/v21.5/third_party
   - url: https://github.com/google/benchmark/archive/5b7683f49e1e9223cf9927b24f6fd3d6bd82e3f8.tar.gz
