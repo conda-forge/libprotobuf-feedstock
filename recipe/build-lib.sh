@@ -33,9 +33,13 @@ else
     cd build-shared
 fi
 
+if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
+    export CMAKE_ARGS="${CMAKE_ARGS} -Dprotobuf_BUILD_TESTS=OFF"
+fi
+
 cmake -G "Ninja" \
+    ${CMAKE_ARGS} \
     -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=$PREFIX \
     -Dprotobuf_WITH_ZLIB=ON \
     -Dprotobuf_BUILD_SHARED_LIBS=$CF_SHARED \
     ..
