@@ -1,3 +1,5 @@
+@echo on
+
 :: Setup directory structure per protobuf's instructions.
 cd cmake
 
