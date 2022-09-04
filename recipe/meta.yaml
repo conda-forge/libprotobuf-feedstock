@@ -12,6 +12,7 @@ source:
     patches:
       - patches/0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]
       - patches/0002-use-consistent-cmake-location.patch
+      - patches/0003-set-import-lib-extension-on-windows.patch
       # This issue gets fixed and then reintroduced often
       # https://github.com/protocolbuffers/protobuf/issues/7567
       # - patches/issue-7567.patch
