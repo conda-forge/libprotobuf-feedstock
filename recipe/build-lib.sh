@@ -20,9 +20,6 @@ fi
 export CPPFLAGS="${CPPFLAGS} -I${PREFIX}/include"
 export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib"
 
-# Setup directory structure per protobuf's instructions.
-cd cmake
-
 if [[ "$PKG_NAME" == "libprotobuf-static" ]]; then
     export CF_SHARED=OFF
     mkdir build-static

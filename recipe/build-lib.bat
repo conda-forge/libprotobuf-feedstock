@@ -1,8 +1,5 @@
 @echo on
 
-:: Setup directory structure per protobuf's instructions.
-cd cmake
-
 if "%PKG_NAME%"=="libprotobuf-static" (
     set CF_SHARED=OFF
     mkdir build-static
