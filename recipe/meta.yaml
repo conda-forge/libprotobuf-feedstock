@@ -46,6 +46,8 @@ outputs:
         - ninja
       host:
         - zlib
+      run:
+        - ucrt  # [win]
     test:
       commands:
         {% for each_lib in libraries %}
