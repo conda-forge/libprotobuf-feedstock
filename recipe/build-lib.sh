@@ -41,19 +41,9 @@ cmake -G "Ninja" \
     ..
 
 cmake --build .
-cmake --install .
 
-cd ../..
-# Skip memory hungry tests
-export GTEST_FILTER="-IoTest.LargeOutput"
-if [ "${HOST}" == "powerpc64le-conda_cos7-linux-gnu" ]; then
-    make -j 2
-    make check -j 2 || (cat src/test-suite.log; exit 1)
-else
-    make -j ${CPU_COUNT}
-    if [[ "$CONDA_BUILD_CROSS_COMPILATION" != 1 ]]; then
-        make check -j ${CPU_COUNT} || (cat src/test-suite.log; exit 1)
-    fi
+if [[ "$CONDA_BUILD_CROSS_COMPILATION" != 1 ]]; then
+    ninja check
 fi
 
-cd cmake
+cmake --install .
