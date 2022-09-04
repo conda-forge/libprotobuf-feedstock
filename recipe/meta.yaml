@@ -44,7 +44,6 @@ outputs:
         - {{ compiler('cxx') }}
         - cmake
         - ninja
-        - make  # [not win]
       host:
         - zlib
     test:
@@ -83,7 +82,6 @@ outputs:
         - {{ compiler('cxx') }}
         - cmake
         - ninja
-        - make  # [not win]
       host:
         - zlib
         - {{ pin_subpackage('libprotobuf', exact=True) }}
