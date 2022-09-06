@@ -9,6 +9,8 @@ Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/libprotobuf-fee
 
 Summary: Protocol Buffers - Google's data interchange format. C++ Libraries and protoc, the protobuf compiler.
 
+Development: https://github.com/protocolbuffers/protobuf
+
 Documentation: https://developers.google.com/protocol-buffers/
 
 Protocol buffers are Google's language-neutral,
@@ -20,14 +22,7 @@ Current build status
 ====================
 
 
-<table><tr>
-    <td>Travis</td>
-    <td>
-      <a href="https://app.travis-ci.com/conda-forge/libprotobuf-feedstock">
-        <img alt="linux" src="https://img.shields.io/travis/com/conda-forge/libprotobuf-feedstock/main.svg?label=Linux">
-      </a>
-    </td>
-  </tr>
+<table>
     
   <tr>
     <td>Azure</td>

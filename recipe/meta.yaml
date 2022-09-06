@@ -1,17 +1,21 @@
 {% set version = "3.20.1" %}
 
+{% set libraries = ["libprotoc", "libprotobuf", "libprotobuf-lite"] %}
+
 package:
-  name: libprotobuf
+  name: libprotobuf-split
   version: {{ version }}
 
 source:
   - url: https://github.com/protocolbuffers/protobuf/archive/v{{ version }}/libprotobuf-v{{ version }}.tar.gz
     sha256: 8b28fdd45bab62d15db232ec404248901842e5340299a57765e48abe8a80d930
     patches:
-      - 0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]
+      - patches/0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]
+      - patches/0002-use-consistent-cmake-location.patch
+      - patches/0003-set-import-lib-extension-on-windows.patch
       # This issue gets fixed and then reintroduced often
       # https://github.com/protocolbuffers/protobuf/issues/7567
-      #- issue-7567.patch
+      # - patches/issue-7567.patch
   # these are git submodules from the 3.10.1 release
   # https://github.com/protocolbuffers/protobuf/tree/v3.10.1/third_party
   - url: https://github.com/google/benchmark/archive/5b7683f49e1e9223cf9927b24f6fd3d6bd82e3f8.tar.gz
@@ -22,12 +26,12 @@ source:
     folder: third_party/googletest
 
 build:
-  number: 1
+  number: 2
 
 outputs:
   - name: libprotobuf
-    script: build-shared.sh  # [unix]
-    script: bld-shared.bat  # [win]
+    script: build-lib.sh   # [unix]
+    script: build-lib.bat  # [win]
     build:
       run_exports:
         # breaks backwards compatibility and new SONAME each minor release
@@ -38,55 +42,60 @@ outputs:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - cmake  # [win]
-        - ninja  # [win]
-        - autoconf  # [not win]
-        - automake  # [not win]
-        - libtool  # [not win]
-        - pkg-config  # [not win]
-        - unzip  # [not win]
-        - make  # [not win]
+        - cmake
+        - ninja
       host:
         - zlib
+      run:
+        - ucrt  # [win]
     test:
       commands:
+        {% for each_lib in libraries %}
+        # shared libraries
+        - test -f ${PREFIX}/lib/{{ each_lib }}.so                      # [linux]
+        - test -f ${PREFIX}/lib/{{ each_lib }}.dylib                   # [osx]
+        - if not exist %LIBRARY_BIN%\{{ each_lib }}.dll exit 1         # [win]
+        - if not exist %LIBRARY_LIB%\{{ each_lib }}-import.lib exit 1  # [win]
+
+        # absence of static libraries
+        - test ! -f ${PREFIX}/lib/{{ each_lib }}.a                     # [unix]
+        - if exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1             # [win]
+        {% endfor %}
+
+        # cmake
+        - test -f ${PREFIX}/lib/cmake/protobuf/protobuf-config.cmake              # [unix]
+        - if not exist %LIBRARY_LIB%\cmake\protobuf\protobuf-config.cmake exit 1  # [win]
+
+        # pkgconfig
+        - test -f ${PREFIX}/lib/pkgconfig/protobuf.pc                   # [unix]
+        - test -f ${PREFIX}/lib/pkgconfig/protobuf-lite.pc              # [unix]
+        - if not exist %LIBRARY_LIB%\pkgconfig\protobuf.pc exit 1       # [win]
+        - if not exist %LIBRARY_LIB%\pkgconfig\protobuf-lite.pc exit 1  # [win]
+
+        # binary
         - protoc --help
-        - test -f ${PREFIX}/lib/libprotobuf${SHLIB_EXT}  # [not win]
-        - test ! -f ${PREFIX}/lib/libprotobuf.a  # [not win]
-        - if not exist %PREFIX%\\Library\\lib\\libprotoc.lib exit 1  # [win]
-        - if not exist %PREFIX%\\Library\\lib\\libprotobuf.lib exit 1  # [win]
-        - if not exist %PREFIX%\\Library\\lib\\libprotobuf-lite.lib exit 1  # [win]
+
   - name: libprotobuf-static
-    script: build_static.sh  # [unix]
-    script: bld-static.bat  # [win]
+    script: build-lib.sh   # [unix]
+    script: build-lib.bat  # [win]
     requirements:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - cmake  # [win]
-        - ninja  # [win]
-        - autoconf  # [not win]
-        - automake  # [not win]
-        - libtool  # [not win]
-        - pkg-config  # [not win]
-        - unzip  # [not win]
-        - make  # [not win]
+        - cmake
+        - ninja
       host:
         - zlib
-        - {{ pin_subpackage('libprotobuf', exact=True) }}  # [not win]
+        - {{ pin_subpackage('libprotobuf', exact=True) }}
       run:
-        - {{ pin_subpackage('libprotobuf', exact=True) }}  # [not win]
-      run_constrained:
-        - libprotobuf <0a0  # [win]
+        - {{ pin_subpackage('libprotobuf', exact=True) }}
     test:
       commands:
-        - test -f ${PREFIX}/lib/libprotobuf.a  # [unix]
-        - test -f ${PREFIX}/lib/libprotobuf-lite.a  # [unix]
-        - test -f ${PREFIX}/lib/libprotoc.a  # [unix]
-        - if exist %PREFIX%\\Library\\bin\\libprotoc.dll exit 1  # [win]
-        - if not exist %PREFIX%\\Library\\lib\\libprotoc.lib exit 1  # [win]
-        - if not exist %PREFIX%\\Library\\lib\\libprotobuf.lib exit 1  # [win]
-        - if not exist %PREFIX%\\Library\\lib\\libprotobuf-lite.lib exit 1  # [win]
+        {% for each_lib in libraries %}
+        # static libraries
+        - test -f ${PREFIX}/lib/{{ each_lib }}.a                       # [unix]
+        - if not exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1         # [win]
+        {% endfor %}
 
 about:
   home: https://developers.google.com/protocol-buffers/
@@ -98,6 +107,7 @@ about:
     Protocol buffers are Google's language-neutral,
     platform-neutral, extensible mechanism for serializing structured data-
     think XML, but smaller, faster, and simpler.
+  dev_url: https://github.com/protocolbuffers/protobuf
   doc_url: https://developers.google.com/protocol-buffers/
   doc_source_url: https://github.com/protocolbuffers/protobuf/releases
 
@@ -110,3 +120,4 @@ extra:
     - hajapy
     - xhochy
     - h-vetinari
+  feedstock-name: libprotobuf
