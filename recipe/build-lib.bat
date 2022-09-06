@@ -1,11 +1,14 @@
-:: Setup directory structure per protobuf's instructions.
-cd cmake
-if errorlevel 1 exit 1
+@echo on
 
-mkdir build-static
-if errorlevel 1 exit 1
-cd build-static
-if errorlevel 1 exit 1
+if "%PKG_NAME%"=="libprotobuf-static" (
+    set CF_SHARED=OFF
+    mkdir build-static
+    cd build-static
+) else (
+    set CF_SHARED=ON
+    mkdir build-shared
+    cd build-shared
+)
 
 :: Configure and install based on protobuf's instructions and other `bld.bat`s.
 cmake -G "Ninja" ^
@@ -13,10 +16,9 @@ cmake -G "Ninja" ^
          -DCMAKE_PREFIX_PATH=%LIBRARY_PREFIX% ^
          -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
          -Dprotobuf_WITH_ZLIB=ON ^
-         -Dprotobuf_BUILD_SHARED_LIBS=OFF ^
+         -Dprotobuf_BUILD_SHARED_LIBS=%CF_SHARED% ^
          -Dprotobuf_MSVC_STATIC_RUNTIME=OFF ^
          ..
-if errorlevel 1 exit 1
+if %ERRORLEVEL% neq 0 exit 1
 cmake --build . --target install --config Release
-if errorlevel 1 exit 1
-
+if %ERRORLEVEL% neq 0 exit 1

@@ -1,0 +1,29 @@
+From 4276a93dfc60f5104733b66b91cbe5350689f920 Mon Sep 17 00:00:00 2001
+From: "H. Vetinari" <h.vetinari@gmx.com>
+Date: Sun, 4 Sep 2022 10:57:08 +0200
+Subject: [PATCH 3/3] set import lib extension on windows
+
+---
+ CMakeLists.txt | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 04cb3303a..f585628e7 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -316,6 +316,12 @@ if (protobuf_BUILD_PROTOC_BINARIES)
+   endif (NOT DEFINED protobuf_PROTOC_EXE)
+ endif (protobuf_BUILD_PROTOC_BINARIES)
+ 
++if (MSVC)
++  set_target_properties(libprotoc PROPERTIES IMPORT_SUFFIX "-import.lib")
++  set_target_properties(libprotobuf PROPERTIES IMPORT_SUFFIX "-import.lib")
++  set_target_properties(libprotobuf-lite PROPERTIES IMPORT_SUFFIX "-import.lib")
++endif (MSVC)
++
+ # Ensure we have a protoc executable if we need one
+ if (protobuf_BUILD_TESTS OR protobuf_BUILD_CONFORMANCE OR protobuf_BUILD_EXAMPLES)
+   if (NOT DEFINED protobuf_PROTOC_EXE)
+-- 
+2.37.0.windows.1
+
