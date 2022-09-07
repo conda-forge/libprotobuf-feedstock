@@ -15,7 +15,7 @@ source:
     patches:
       - patches/0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]
       - patches/0002-use-consistent-cmake-location.patch
-      - patches/0003-set-import-lib-extension-on-windows.patch
+      - patches/0003-set-static-lib-extension-on-windows.patch
       # This issue gets fixed and then reintroduced often
       # https://github.com/protocolbuffers/protobuf/issues/7567
       # - patches/issue-7567.patch
@@ -29,7 +29,7 @@ source:
     folder: third_party/googletest
 
 build:
-  number: 2
+  number: 3
 
 outputs:
   - name: libprotobuf
@@ -61,17 +61,24 @@ outputs:
       run:
         - ucrt  # [win]
     test:
+      requires:
+        # cmake needs compiler to be able to run package detection, see
+        # https://discourse.cmake.org/t/questions-about-find-package-cli-msvc/6194
+        - {{ compiler('cxx') }}  # [win]
+        - cmake                  # [win]
+      files:
+        - cmake_test/
       commands:
         {% for each_lib in libraries %}
         # shared libraries
         - test -f ${PREFIX}/lib/{{ each_lib }}.so                      # [linux]
         - test -f ${PREFIX}/lib/{{ each_lib }}.dylib                   # [osx]
         - if not exist %LIBRARY_BIN%\{{ each_lib }}.dll exit 1         # [win]
-        - if not exist %LIBRARY_LIB%\{{ each_lib }}-import.lib exit 1  # [win]
+        - if not exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1         # [win]
 
         # absence of static libraries
         - test ! -f ${PREFIX}/lib/{{ each_lib }}.a                     # [unix]
-        - if exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1             # [win]
+        - if exist %LIBRARY_LIB%\{{ each_lib }}-static.lib exit 1      # [win]
         {% endfor %}
 
         # cmake (disabled on unix currently)
@@ -86,6 +93,10 @@ outputs:
 
         # binary
         - protoc --help
+
+        # more CMake integration (CMake uses its own FindProtobuf)
+        - cd cmake_test         # [win]
+        - cmake %CMAKE_ARGS% .  # [win]
 
   - name: libprotobuf-static
     script: build-static.sh  # [unix]
@@ -105,12 +116,23 @@ outputs:
       run:
         - {{ pin_subpackage('libprotobuf', exact=True) }}
     test:
+      requires:
+        # cmake needs compiler to be able to run package detection, see
+        # https://discourse.cmake.org/t/questions-about-find-package-cli-msvc/6194
+        - {{ compiler('cxx') }}  # [win]
+        - cmake                  # [win]
+      files:
+        - cmake_test/
       commands:
         {% for each_lib in libraries %}
         # static libraries
         - test -f ${PREFIX}/lib/{{ each_lib }}.a                       # [unix]
         - if not exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1         # [win]
         {% endfor %}
+
+        # more CMake integration (CMake uses its own FindProtobuf)
+        - cd cmake_test         # [win]
+        - cmake %CMAKE_ARGS% .  # [win]
 
 about:
   home: https://developers.google.com/protocol-buffers/
