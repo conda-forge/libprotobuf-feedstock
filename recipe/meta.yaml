@@ -29,7 +29,7 @@ source:
     folder: third_party/googletest
 
 build:
-  number: 2
+  number: 3
 
 outputs:
   - name: libprotobuf
