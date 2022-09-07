@@ -15,7 +15,7 @@ source:
     patches:
       - patches/0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]
       - patches/0002-use-consistent-cmake-location.patch
-      - patches/0003-set-import-lib-extension-on-windows.patch
+      - patches/0003-set-static-lib-extension-on-windows.patch
       # This issue gets fixed and then reintroduced often
       # https://github.com/protocolbuffers/protobuf/issues/7567
       # - patches/issue-7567.patch
@@ -67,11 +67,11 @@ outputs:
         - test -f ${PREFIX}/lib/{{ each_lib }}.so                      # [linux]
         - test -f ${PREFIX}/lib/{{ each_lib }}.dylib                   # [osx]
         - if not exist %LIBRARY_BIN%\{{ each_lib }}.dll exit 1         # [win]
-        - if not exist %LIBRARY_LIB%\{{ each_lib }}-import.lib exit 1  # [win]
+        - if not exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1         # [win]
 
         # absence of static libraries
         - test ! -f ${PREFIX}/lib/{{ each_lib }}.a                     # [unix]
-        - if exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1             # [win]
+        - if exist %LIBRARY_LIB%\{{ each_lib }}-static.lib exit 1      # [win]
         {% endfor %}
 
         # cmake (disabled on unix currently)
