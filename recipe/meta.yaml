@@ -58,6 +58,13 @@ outputs:
       run:
         - ucrt  # [win]
     test:
+      requires:
+        # cmake needs compiler to be able to run package detection, see
+        # https://discourse.cmake.org/t/questions-about-find-package-cli-msvc/6194
+        - {{ compiler('cxx') }}  # [win]
+        - cmake                  # [win]
+      files:
+        - cmake_test/
       commands:
         {% for each_lib in libraries %}
         # shared libraries
@@ -84,6 +91,10 @@ outputs:
         # binary
         - protoc --help
 
+        # more CMake integration (CMake uses its own FindProtobuf)
+        - cd cmake_test         # [win]
+        - cmake %CMAKE_ARGS% .  # [win]
+
   - name: libprotobuf-static
     script: build-static.sh  # [unix]
     # cmake script currently disabled due to compatibility issues with
@@ -102,12 +113,23 @@ outputs:
       run:
         - {{ pin_subpackage('libprotobuf', exact=True) }}
     test:
+      requires:
+        # cmake needs compiler to be able to run package detection, see
+        # https://discourse.cmake.org/t/questions-about-find-package-cli-msvc/6194
+        - {{ compiler('cxx') }}  # [win]
+        - cmake                  # [win]
+      files:
+        - cmake_test/
       commands:
         {% for each_lib in libraries %}
         # static libraries
         - test -f ${PREFIX}/lib/{{ each_lib }}.a                       # [unix]
         - if not exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1         # [win]
         {% endfor %}
+
+        # more CMake integration (CMake uses its own FindProtobuf)
+        - cd cmake_test         # [win]
+        - cmake %CMAKE_ARGS% .  # [win]
 
 about:
   home: https://developers.google.com/protocol-buffers/
