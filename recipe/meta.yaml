@@ -127,7 +127,7 @@ outputs:
         {% for each_lib in libraries %}
         # static libraries
         - test -f ${PREFIX}/lib/{{ each_lib }}.a                       # [unix]
-        - if not exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1         # [win]
+        - if not exist %LIBRARY_LIB%\{{ each_lib }}-static.lib exit 1  # [win]
         {% endfor %}
 
         # more CMake integration (CMake uses its own FindProtobuf)
