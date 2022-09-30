@@ -1,5 +1,5 @@
 # keep this without major version to let the bot pick it up
-{% set version = "21.6" %}
+{% set version = "21.7" %}
 # protobuf doesn't add the major version in the tag...
 {% set major = "3" %}
 
@@ -11,7 +11,7 @@ package:
 
 source:
   - url: https://github.com/protocolbuffers/protobuf/archive/v{{ version }}/protobuf-v{{ version }}.tar.gz
-    sha256: dbb16fdbca8f277c9a194d9a837395cde408ca136738d94743130dd0de015efd
+    sha256: 75be42bd736f4df6d702a0e4e4d30de9ee40eac024c4b845d17ae4cc831fe4ae
     patches:
       - patches/0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]
       - patches/0002-use-consistent-cmake-location.patch
@@ -29,7 +29,7 @@ source:
     folder: third_party/googletest
 
 build:
-  number: 1
+  number: 0
 
 outputs:
   - name: libprotobuf
