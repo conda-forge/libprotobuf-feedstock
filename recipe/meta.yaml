@@ -1,4 +1,4 @@
-{% set version = "3.20.1" %}
+{% set version = "3.20.2" %}
 
 {% set libraries = ["libprotoc", "libprotobuf", "libprotobuf-lite"] %}
 
@@ -8,7 +8,7 @@ package:
 
 source:
   - url: https://github.com/protocolbuffers/protobuf/archive/v{{ version }}/libprotobuf-v{{ version }}.tar.gz
-    sha256: 8b28fdd45bab62d15db232ec404248901842e5340299a57765e48abe8a80d930
+    sha256: 88231778cffebf93bc905e76ea757fae0f2ef497cc00f64973e41f1acd4fc781
     patches:
       - patches/0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]
       - patches/0002-use-consistent-cmake-location.patch
@@ -26,7 +26,7 @@ source:
     folder: third_party/googletest
 
 build:
-  number: 4
+  number: 0
 
 outputs:
   - name: libprotobuf
