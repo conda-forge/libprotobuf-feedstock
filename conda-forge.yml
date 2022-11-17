@@ -4,3 +4,5 @@ build_platform: {osx_arm64: osx_64, linux_ppc64le: linux_64}
 test_on_native_only: true
 bot:
   automerge: true
+conda_build:
+  pkg_format: '2'
