@@ -1,4 +1,4 @@
-{% set version = "3.20.1" %}
+{% set version = "3.20.3" %}
 
 package:
   name: libprotobuf-suite
@@ -6,7 +6,7 @@ package:
 
 source:
   - url: https://github.com/protocolbuffers/protobuf/archive/v{{ version }}/libprotobuf-v{{ version }}.tar.gz
-    sha256: 8b28fdd45bab62d15db232ec404248901842e5340299a57765e48abe8a80d930
+    sha256: 9c0fd39c7a08dff543c643f0f4baf081988129a411b977a07c46221793605638
     patches:  # [linux]
       # We don't want the build to fail because of -Werror being used during
       # make check.
