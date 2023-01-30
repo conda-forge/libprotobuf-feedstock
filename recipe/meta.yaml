@@ -21,10 +21,10 @@ source:
   # these are git submodules from the {{ version }} release
   # https://github.com/protocolbuffers/protobuf/tree/v{{ version }}/third_party
   - url: https://github.com/google/benchmark/archive/5b7683f49e1e9223cf9927b24f6fd3d6bd82e3f8.tar.gz
-    sha256: 5dc92703f811f94e2aa63bdab07ab749f28a094befa6cdfd5fe177f947590a48
+    sha256: df8c636240df6d0139282dc507e240d04a2893195b7574aa489cc6b6a67fa034
     folder: third_party/benchmark
   - url: https://github.com/google/googletest/archive/5ec7f0c4a113e2f18ac2c6cc7df51ad6afc24081.tar.gz
-    sha256: 0e2f36e8e403c125fd0ab02171bdb786d3b6b3875b6ccf3b2eb7969be8faecd0
+    sha256: 53674b2fd7b4499e2b8019b0943c3a37fa394c86a9ab52bf8910749c0414bb47
     folder: third_party/googletest
 
 build:
