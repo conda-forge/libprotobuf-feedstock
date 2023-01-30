@@ -6,7 +6,7 @@ package:
 
 source:
   - url: https://github.com/protocolbuffers/protobuf/archive/v{{ version }}/libprotobuf-v{{ version }}.tar.gz
-    sha256: 9c0fd39c7a08dff543c643f0f4baf081988129a411b977a07c46221793605638
+    sha256: a4d420a7b727a183475641c2b372389395101bc06aa00525720039fb3a9d8389
     patches:  # [linux]
       # We don't want the build to fail because of -Werror being used during
       # make check.
