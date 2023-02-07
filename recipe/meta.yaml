@@ -16,14 +16,15 @@ source:
     patches:
       - patches/0001-use-consistent-cmake-location.patch
       - patches/0002-set-static-lib-extension-on-windows.patch
-  # these are git submodules from the v21.5 release
-  # https://github.com/protocolbuffers/protobuf/tree/v21.5/third_party
-  - url: https://github.com/google/benchmark/archive/5b7683f49e1e9223cf9927b24f6fd3d6bd82e3f8.tar.gz
-    sha256: 5dc92703f811f94e2aa63bdab07ab749f28a094befa6cdfd5fe177f947590a48
-    folder: third_party/benchmark
-  - url: https://github.com/google/googletest/archive/5ec7f0c4a113e2f18ac2c6cc7df51ad6afc24081.tar.gz
-    sha256: 0e2f36e8e403c125fd0ab02171bdb786d3b6b3875b6ccf3b2eb7969be8faecd0
+  # git submodules (except abseil) as of:
+  # https://github.com/protocolbuffers/protobuf/tree/v22.0-rc2/third_party
+  - url: https://github.com/google/googletest/archive/4c9a3bb62bf3ba1f1010bf96f9c8ed767b363774.tar.gz
+    sha256: ea54c9845568cb31c03f2eddc7a40f7f83912d04ab977ff50ec33278119548dd
     folder: third_party/googletest
+  # use our own jsoncpp for this; https://github.com/protocolbuffers/protobuf/issues/11827
+  - url: https://github.com/open-source-parsers/jsoncpp/archive/9059f5cad030ba11d37818847443a53918c327b1.tar.gz
+    sha256: e7a12f50c2125abc9e4b2a38f399393503b6eebd5b4ab75ebb7df1664e768ce7
+    folder: third_party/jsoncpp
 
 build:
   number: 0
