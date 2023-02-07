@@ -12,14 +12,10 @@ package:
 
 source:
   - url: https://github.com/protocolbuffers/protobuf/archive/refs/tags/v{{ version.replace(".rc", "-rc") }}.tar.gz
-    sha256: 22fdaf641b31655d4b2297f9981fa5203b2866f8332d3c6333f6b0107bb320de
+    sha256: 4d9f024ce9b1651535f243e05e2aee8df57177f2ed4cf63d5989082a096cafb5
     patches:
-      - patches/0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]
-      - patches/0002-use-consistent-cmake-location.patch
-      - patches/0003-set-static-lib-extension-on-windows.patch
-      # This issue gets fixed and then reintroduced often
-      # https://github.com/protocolbuffers/protobuf/issues/7567
-      # - patches/issue-7567.patch
+      - patches/0001-use-consistent-cmake-location.patch
+      - patches/0002-set-static-lib-extension-on-windows.patch
   # these are git submodules from the v21.5 release
   # https://github.com/protocolbuffers/protobuf/tree/v21.5/third_party
   - url: https://github.com/google/benchmark/archive/5b7683f49e1e9223cf9927b24f6fd3d6bd82e3f8.tar.gz
