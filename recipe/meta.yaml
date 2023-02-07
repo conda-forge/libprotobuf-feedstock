@@ -1,7 +1,8 @@
 # keep this without major version to let the bot pick it up
-{% set version = "21.12" %}
-# protobuf doesn't add the major version in the tag...
-{% set major = "3" %}
+{% set version = "22.0.rc2" %}
+# protobuf doesn't add the major version in the tag, it's defined per language in
+# https://github.com/protocolbuffers/protobuf/blob/main/version.json
+{% set major = "4" %}
 
 {% set libraries = ["libprotoc", "libprotobuf", "libprotobuf-lite"] %}
 
@@ -10,7 +11,7 @@ package:
   version: {{ major + "." + version }}
 
 source:
-  - url: https://github.com/protocolbuffers/protobuf/archive/refs/tags/v{{ version }}.tar.gz
+  - url: https://github.com/protocolbuffers/protobuf/archive/refs/tags/v{{ version.replace(".rc", "-rc") }}.tar.gz
     sha256: 22fdaf641b31655d4b2297f9981fa5203b2866f8332d3c6333f6b0107bb320de
     patches:
       - patches/0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]
