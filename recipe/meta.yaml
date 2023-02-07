@@ -10,7 +10,7 @@ package:
   version: {{ major + "." + version }}
 
 source:
-  - url: https://github.com/protocolbuffers/protobuf/archive/v{{ version }}/protobuf-v{{ version }}.tar.gz
+  - url: https://github.com/protocolbuffers/protobuf/archive/refs/tags/v{{ version }}.tar.gz
     sha256: 22fdaf641b31655d4b2297f9981fa5203b2866f8332d3c6333f6b0107bb320de
     patches:
       - patches/0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]
