@@ -12,13 +12,14 @@ if "%PKG_NAME%"=="libprotobuf-static" (
 
 :: Configure and install based on protobuf's instructions and other `bld.bat`s.
 cmake -G "Ninja" ^
-         -DCMAKE_BUILD_TYPE=Release ^
-         -DCMAKE_PREFIX_PATH=%LIBRARY_PREFIX% ^
-         -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
-         -Dprotobuf_WITH_ZLIB=ON ^
-         -Dprotobuf_BUILD_SHARED_LIBS=%CF_SHARED% ^
-         -Dprotobuf_MSVC_STATIC_RUNTIME=OFF ^
-         ..
+    -DCMAKE_BUILD_TYPE=Release ^
+    -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
+    -DCMAKE_PREFIX_PATH=%LIBRARY_PREFIX% ^
+    -Dprotobuf_BUILD_SHARED_LIBS=%CF_SHARED% ^
+    -Dprotobuf_MSVC_STATIC_RUNTIME=OFF ^
+    -Dprotobuf_WITH_ZLIB=ON ^
+    ..
 if %ERRORLEVEL% neq 0 exit 1
+
 cmake --build . --target install --config Release
 if %ERRORLEVEL% neq 0 exit 1
