@@ -15,6 +15,7 @@ cmake -G "Ninja" ^
     -DCMAKE_BUILD_TYPE=Release ^
     -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
     -DCMAKE_PREFIX_PATH=%LIBRARY_PREFIX% ^
+    -Dprotobuf_ABSL_PROVIDER="package" ^
     -Dprotobuf_BUILD_SHARED_LIBS=%CF_SHARED% ^
     -Dprotobuf_MSVC_STATIC_RUNTIME=OFF ^
     -Dprotobuf_WITH_ZLIB=ON ^

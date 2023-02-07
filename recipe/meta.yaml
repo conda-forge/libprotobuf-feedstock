@@ -45,6 +45,7 @@ outputs:
         - cmake
         - ninja
       host:
+        - libabseil
         - zlib
       run:
         - ucrt  # [win]
@@ -96,6 +97,7 @@ outputs:
         - cmake
         - ninja
       host:
+        - libabseil
         - zlib
         - {{ pin_subpackage('libprotobuf', exact=True) }}
       run:
