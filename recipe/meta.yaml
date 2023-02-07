@@ -30,10 +30,7 @@ build:
 
 outputs:
   - name: libprotobuf
-    script: build-shared.sh  # [unix]
-    # cmake script currently disabled due to compatibility issues with
-    # existing builds; see #49 for potential solution, or switch with 3.22
-    # script: build-lib.sh   # [unix]
+    script: build-lib.sh   # [unix]
     script: build-lib.bat  # [win]
     build:
       run_exports:
@@ -45,14 +42,8 @@ outputs:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - cmake       # [win]
-        - ninja       # [win]
-        - autoconf    # [not win]
-        - automake    # [not win]
-        - libtool     # [not win]
-        - pkg-config  # [not win]
-        - unzip       # [not win]
-        - make        # [not win]
+        - cmake
+        - ninja
       host:
         - zlib
       run:
@@ -78,8 +69,8 @@ outputs:
         - if exist %LIBRARY_LIB%\{{ each_lib }}-static.lib exit 1      # [win]
         {% endfor %}
 
-        # cmake (disabled on unix currently)
-        # - test -f ${PREFIX}/lib/cmake/protobuf/protobuf-config.cmake              # [unix]
+        # cmake
+        - test -f ${PREFIX}/lib/cmake/protobuf/protobuf-config.cmake              # [unix]
         - if not exist %LIBRARY_LIB%\cmake\protobuf\protobuf-config.cmake exit 1  # [win]
 
         # pkgconfig
@@ -96,17 +87,14 @@ outputs:
         - cmake %CMAKE_ARGS% .  # [win]
 
   - name: libprotobuf-static
-    script: build-static.sh  # [unix]
-    # cmake script currently disabled due to compatibility issues with
-    # existing builds; see #49 for potential solution, or switch with 3.22
-    # script: build-lib.sh   # [unix]
+    script: build-lib.sh   # [unix]
     script: build-lib.bat  # [win]
     requirements:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - cmake  # [win]
-        - ninja  # [win]
+        - cmake
+        - ninja
       host:
         - zlib
         - {{ pin_subpackage('libprotobuf', exact=True) }}
