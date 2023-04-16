@@ -13,9 +13,9 @@ source:
   - url: https://github.com/protocolbuffers/protobuf/archive/v{{ version }}/protobuf-v{{ version }}.tar.gz
     sha256: 786bf22c8fd3f20b7242df3b9649900714b0ba77b24a4971573088f41dfe9f8a
     patches:
+    
       - patches/0002-use-consistent-cmake-location.patch
-      - patches/0003-set-static-li
-      \b-extension-on-windows.patch
+      - patches/0003-set-static-lib-extension-on-windows.patch
       # This issue gets fixed and then reintroduced often
       # https://github.com/protocolbuffers/protobuf/issues/7567
       # - patches/issue-7567.patch
