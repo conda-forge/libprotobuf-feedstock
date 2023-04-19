@@ -1,5 +1,5 @@
 # keep this without major version to let the bot pick it up
-{% set version = "22.0.rc2" %}
+{% set version = "22.3" %}
 # protobuf doesn't add the major version in the tag, it's defined per language in
 # https://github.com/protocolbuffers/protobuf/blob/main/version.json
 {% set major = "4" %}
@@ -12,16 +12,16 @@ package:
 
 source:
   - url: https://github.com/protocolbuffers/protobuf/archive/refs/tags/v{{ version.replace(".rc", "-rc") }}.tar.gz
-    sha256: 4d9f024ce9b1651535f243e05e2aee8df57177f2ed4cf63d5989082a096cafb5
+    sha256: 786bf22c8fd3f20b7242df3b9649900714b0ba77b24a4971573088f41dfe9f8a
     patches:
       - patches/0001-use-consistent-cmake-location.patch
       - patches/0002-set-static-lib-extension-on-windows.patch
   # git submodules (except abseil) as of:
-  # https://github.com/protocolbuffers/protobuf/tree/v22.0-rc2/third_party
+  # https://github.com/protocolbuffers/protobuf/tree/v22.3/third_party
   - url: https://github.com/google/googletest/archive/4c9a3bb62bf3ba1f1010bf96f9c8ed767b363774.tar.gz
     sha256: ea54c9845568cb31c03f2eddc7a40f7f83912d04ab977ff50ec33278119548dd
     folder: third_party/googletest
-  # use our own jsoncpp for this; https://github.com/protocolbuffers/protobuf/issues/11827
+  # TODO: use our own jsoncpp for this; see https://github.com/protocolbuffers/protobuf/issues/11827
   - url: https://github.com/open-source-parsers/jsoncpp/archive/9059f5cad030ba11d37818847443a53918c327b1.tar.gz
     sha256: e7a12f50c2125abc9e4b2a38f399393503b6eebd5b4ab75ebb7df1664e768ce7
     folder: third_party/jsoncpp
