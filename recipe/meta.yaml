@@ -47,6 +47,8 @@ outputs:
         - ninja
       host:
         - libabseil
+        # requires abseil test targets to build with tests enabled
+        - libabseil-tests
         - zlib
       run:
         - ucrt  # [win]
@@ -99,6 +101,7 @@ outputs:
         - ninja
       host:
         - libabseil
+        - libabseil-tests
         - zlib
         - {{ pin_subpackage('libprotobuf', exact=True) }}
       run:
