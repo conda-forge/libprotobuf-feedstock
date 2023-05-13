@@ -32,6 +32,8 @@ outputs:
         # https://abi-laboratory.pro/tracker/timeline/protobuf/
         # One exception was that 3.6.1 was incompatible with 3.6.0
         - {{ pin_subpackage('libprotobuf', max_pin='x.x') }}
+      ignore_run_exports_from:
+        - jsoncpp
     requirements:
       build:
         - {{ compiler('c') }}
@@ -90,6 +92,9 @@ outputs:
   - name: libprotobuf-static
     script: build-lib.sh   # [unix]
     script: build-lib.bat  # [win]
+    build:
+      ignore_run_exports_from:
+        - jsoncpp
     requirements:
       build:
         - {{ compiler('c') }}
