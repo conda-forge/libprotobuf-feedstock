@@ -18,6 +18,7 @@ source:
       - patches/0002-set-static-lib-extension-on-windows.patch
       # backport https://github.com/protocolbuffers/protobuf/pull/12577
       - patches/0003-Enable-the-selection-of-system-provided-jsoncpp-1257.patch
+      - patches/0004-always-look-for-shared-abseil-builds.patch
 
 build:
   number: 0

@@ -1,7 +1,7 @@
 From d579c6f73dfcded302170a4812e0db0a3698ed2f Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Sun, 4 Sep 2022 10:57:08 +0200
-Subject: [PATCH 2/3] set static lib extension on windows
+Subject: [PATCH 2/4] set static lib extension on windows
 
 ---
  CMakeLists.txt | 6 ++++++
