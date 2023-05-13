@@ -1,8 +1,7 @@
 #!/bin/bash
 set -ex
 
-if [ "$(uname)" == "Linux" ];
-then
+if [[ "$(uname)" == "Linux" ]]; then
     # protobuf uses PROTOBUF_OPT_FLAG to set the optimization level
     # unit test can fail if optmization above 0 are used.
     CPPFLAGS="${CPPFLAGS//-O[0-9]/}"
@@ -10,8 +9,9 @@ then
     export PROTOBUF_OPT_FLAG="-O2"
     # to improve performance, disable checks intended for debugging
     CXXFLAGS="$CXXFLAGS -DNDEBUG"
-elif [ "$(uname)" == "Darwin" ];
-then
+elif [[ "$(uname)" == "Darwin" ]]; then
+    # See https://conda-forge.org/docs/maintainer/knowledge_base.html#newer-c-features-with-old-sdk
+    CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
     # remove pie from LDFLAGS
     LDFLAGS="${LDFLAGS//-pie/}"
 fi
