@@ -53,6 +53,7 @@ outputs:
         # https://discourse.cmake.org/t/questions-about-find-package-cli-msvc/6194
         - {{ compiler('cxx') }}
         - cmake
+        - ninja
       files:
         - cmake_test/
       commands:
@@ -83,8 +84,8 @@ outputs:
 
         # more CMake integration (CMake uses its own FindProtobuf)
         - cd cmake_test
-        - cmake $CMAKE_ARGS .   # [unix]
-        - cmake %CMAKE_ARGS% .  # [win]
+        - cmake -GNinja $CMAKE_ARGS .   # [unix]
+        - cmake -GNinja %CMAKE_ARGS% .  # [win]
 
   - name: libprotobuf-static
     script: build-lib.sh   # [unix]
@@ -110,6 +111,7 @@ outputs:
         # https://discourse.cmake.org/t/questions-about-find-package-cli-msvc/6194
         - {{ compiler('cxx') }}
         - cmake
+        - ninja
       files:
         - cmake_test/
       commands:
@@ -121,8 +123,8 @@ outputs:
 
         # more CMake integration (CMake uses its own FindProtobuf)
         - cd cmake_test
-        - cmake $CMAKE_ARGS .   # [unix]
-        - cmake %CMAKE_ARGS% .  # [win]
+        - cmake -GNinja $CMAKE_ARGS .   # [unix]
+        - cmake -GNinja %CMAKE_ARGS% .  # [win]
 
 about:
   home: https://developers.google.com/protocol-buffers/
