@@ -25,5 +25,8 @@ cmake -G "Ninja" ^
     ..
 if %ERRORLEVEL% neq 0 exit 1
 
+ctest --progress --output-on-failure
+if %ERRORLEVEL% neq 0 exit 1
+
 cmake --build . --target install --config Release
 if %ERRORLEVEL% neq 0 exit 1
