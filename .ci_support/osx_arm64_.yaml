@@ -3,7 +3,7 @@ MACOSX_DEPLOYMENT_TARGET:
 c_compiler:
 - clang
 c_compiler_version:
-- '14'
+- '15'
 channel_sources:
 - conda-forge
 channel_targets:
@@ -11,7 +11,9 @@ channel_targets:
 cxx_compiler:
 - clangxx
 cxx_compiler_version:
-- '14'
+- '15'
+jsoncpp:
+- 1.9.5
 libabseil:
 - '20230125'
 macos_machine:
