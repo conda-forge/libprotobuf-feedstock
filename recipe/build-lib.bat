@@ -19,6 +19,7 @@ cmake -G "Ninja" ^
     -Dprotobuf_BUILD_SHARED_LIBS=%CF_SHARED% ^
     -Dprotobuf_JSONCPP_PROVIDER="package" ^
     -Dprotobuf_MSVC_STATIC_RUNTIME=OFF ^
+    -Dprotobuf_USE_EXTERNAL_GTEST=ON ^
     -Dprotobuf_WITH_ZLIB=ON ^
     ..
 if %ERRORLEVEL% neq 0 exit 1

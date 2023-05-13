@@ -40,6 +40,7 @@ cmake -G "Ninja" \
     -Dprotobuf_ABSL_PROVIDER="package" \
     -Dprotobuf_BUILD_SHARED_LIBS=$CF_SHARED \
     -Dprotobuf_JSONCPP_PROVIDER="package" \
+    -Dprotobuf_USE_EXTERNAL_GTEST=ON \
     -Dprotobuf_WITH_ZLIB=ON \
     ..
 

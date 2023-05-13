@@ -18,11 +18,6 @@ source:
       - patches/0002-set-static-lib-extension-on-windows.patch
       # backport https://github.com/protocolbuffers/protobuf/pull/12577
       - patches/0003-Enable-the-selection-of-system-provided-jsoncpp-1257.patch
-  # git submodules (except abseil & jsoncpp) as of:
-  # https://github.com/protocolbuffers/protobuf/tree/v22.3/third_party
-  - url: https://github.com/google/googletest/archive/4c9a3bb62bf3ba1f1010bf96f9c8ed767b363774.tar.gz
-    sha256: ea54c9845568cb31c03f2eddc7a40f7f83912d04ab977ff50ec33278119548dd
-    folder: third_party/googletest
 
 build:
   number: 0
@@ -44,6 +39,7 @@ outputs:
         - cmake
         - ninja
       host:
+        - gtest
         - jsoncpp
         - libabseil
         # requires abseil test targets to build with tests enabled
@@ -99,6 +95,7 @@ outputs:
         - cmake
         - ninja
       host:
+        - gtest
         - jsoncpp
         - libabseil
         - libabseil-tests
