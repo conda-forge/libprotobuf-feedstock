@@ -38,8 +38,9 @@ cmake -G "Ninja" \
     ${CMAKE_ARGS} \
     -DCMAKE_BUILD_TYPE=Release \
     -Dprotobuf_ABSL_PROVIDER="package" \
-    -Dprotobuf_WITH_ZLIB=ON \
     -Dprotobuf_BUILD_SHARED_LIBS=$CF_SHARED \
+    -Dprotobuf_JSONCPP_PROVIDER="package" \
+    -Dprotobuf_WITH_ZLIB=ON \
     ..
 
 cmake --build .
