@@ -51,8 +51,8 @@ outputs:
       requires:
         # cmake needs compiler to be able to run package detection, see
         # https://discourse.cmake.org/t/questions-about-find-package-cli-msvc/6194
-        - {{ compiler('cxx') }}  # [win]
-        - cmake                  # [win]
+        - {{ compiler('cxx') }}
+        - cmake
       files:
         - cmake_test/
       commands:
@@ -82,7 +82,8 @@ outputs:
         - protoc --help
 
         # more CMake integration (CMake uses its own FindProtobuf)
-        - cd cmake_test         # [win]
+        - cd cmake_test
+        - cmake $CMAKE_ARGS .   # [unix]
         - cmake %CMAKE_ARGS% .  # [win]
 
   - name: libprotobuf-static
@@ -107,8 +108,8 @@ outputs:
       requires:
         # cmake needs compiler to be able to run package detection, see
         # https://discourse.cmake.org/t/questions-about-find-package-cli-msvc/6194
-        - {{ compiler('cxx') }}  # [win]
-        - cmake                  # [win]
+        - {{ compiler('cxx') }}
+        - cmake
       files:
         - cmake_test/
       commands:
@@ -119,7 +120,8 @@ outputs:
         {% endfor %}
 
         # more CMake integration (CMake uses its own FindProtobuf)
-        - cd cmake_test         # [win]
+        - cd cmake_test
+        - cmake $CMAKE_ARGS .   # [unix]
         - cmake %CMAKE_ARGS% .  # [win]
 
 about:
