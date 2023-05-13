@@ -8,7 +8,7 @@
 
 package:
   name: libprotobuf-split
-  version: {{ major + "." + version }}
+  version: {{ major ~ "." ~ version }}
 
 source:
   - url: https://github.com/protocolbuffers/protobuf/archive/refs/tags/v{{ version.replace(".rc", "-rc") }}.tar.gz
