@@ -1,7 +1,7 @@
-From 854c487d6b54096d57a58af9eb2066e0ccb761cc Mon Sep 17 00:00:00 2001
+From 1fdffe322b2deb870d08977a34349706100e50b3 Mon Sep 17 00:00:00 2001
 From: Mike Rochefort <mroche@omenos.dev>
 Date: Mon, 1 May 2023 09:34:17 -0700
-Subject: [PATCH 3/4] Enable the selection of system provided jsoncpp (#12577)
+Subject: [PATCH 3/5] Enable the selection of system provided jsoncpp (#12577)
 
 Allows the use of an external `jsoncpp` library to be used. Replicates the model used by `abseil-cpp` as a "package" or "module" to the `protobuf_JSONCPP_PROVIDER` option.
 
