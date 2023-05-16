@@ -1,0 +1,604 @@
+From 57b6cbd1c0fa4e770e6335d57277a0c05b08e0f4 Mon Sep 17 00:00:00 2001
+From: Mike Kruskal <mkruskal@google.com>
+Date: Mon, 15 May 2023 16:11:41 -0700
+Subject: [PATCH 6/6] Add a workaround for GCC constexpr bug
+
+This turns the constexpr constructors into templates to silence errors when constexpr isn't valid.  We are also switching to 12.2 for GCC/cmake tests to prevent regressions (9.5 and 13.1 are already tested by GCC/bazel tests).
+
+Fixes #12807
+
+PiperOrigin-RevId: 532258101
+---
+ .github/workflows/test_cpp.yml              |  2 +-
+ src/google/protobuf/compiler/cpp/message.cc | 12 +++++++++
+ src/google/protobuf/compiler/plugin.pb.cc   |  4 +++
+ src/google/protobuf/compiler/plugin.pb.h    |  4 +++
+ src/google/protobuf/descriptor.pb.cc        | 28 +++++++++++++++++++++
+ src/google/protobuf/descriptor.pb.h         | 28 +++++++++++++++++++++
+ 6 files changed, 77 insertions(+), 1 deletion(-)
+
+diff --git a/.github/workflows/test_cpp.yml b/.github/workflows/test_cpp.yml
+index a8e7b0406..f45b59ed1 100644
+--- a/.github/workflows/test_cpp.yml
++++ b/.github/workflows/test_cpp.yml
+@@ -234,7 +234,7 @@ jobs:
+       - name: Run tests
+         uses: protocolbuffers/protobuf-ci/docker@v1
+         with:
+-          image: us-docker.pkg.dev/protobuf-build/containers/test/linux/gcc:13.1-5.4.0-307caa02808127e49720f3e77d6a9f3b3ef5a915
++          image: us-docker.pkg.dev/protobuf-build/containers/test/linux/gcc:12.2-5.4.0-307caa02808127e49720f3e77d6a9f3b3ef5a915
+           credentials: ${{ secrets.GAR_SERVICE_ACCOUNT }}
+           entrypoint: bash
+           command: >-
+diff --git a/src/google/protobuf/compiler/cpp/message.cc b/src/google/protobuf/compiler/cpp/message.cc
+index e34f19bde..a7c70cdaf 100644
+--- a/src/google/protobuf/compiler/cpp/message.cc
++++ b/src/google/protobuf/compiler/cpp/message.cc
+@@ -1155,6 +1155,9 @@ void MessageGenerator::GenerateClassDefinition(io::Printer* p) {
+         "    ::$proto_ns$::internal::WireFormatLite::$val_wire_type$> "
+         "SuperType;\n"
+         "  $classname$();\n"
++        // Templatize constexpr constructor as a workaround for a bug in gcc 12
++        // (warning in gcc 13).
++        "  template <typename = void>\n"
+         "  explicit PROTOBUF_CONSTEXPR $classname$(\n"
+         "      ::$proto_ns$::internal::ConstantInitialized);\n"
+         "  explicit $classname$(::$proto_ns$::Arena* arena);\n"
+@@ -1248,6 +1251,9 @@ void MessageGenerator::GenerateClassDefinition(io::Printer* p) {
+     format("~$classname$() override;\n");
+   }
+   format(
++      // Templatize constexpr constructor as a workaround for a bug in gcc 12
++      // (warning in gcc 13).
++      "template<typename = void>\n"
+       "explicit PROTOBUF_CONSTEXPR "
+       "$classname$(::$proto_ns$::internal::ConstantInitialized);\n"
+       "\n"
+@@ -2449,13 +2455,19 @@ void MessageGenerator::GenerateConstexprConstructor(io::Printer* p) {
+   Formatter format(p);
+ 
+   if (IsMapEntryMessage(descriptor_) || !HasImplData(descriptor_, options_)) {
++    // Templatize constexpr constructor as a workaround for a bug in gcc 12
++    // (warning in gcc 13).
+     format(
++        "template <typename>\n"
+         "PROTOBUF_CONSTEXPR $classname$::$classname$(\n"
+         "    ::_pbi::ConstantInitialized) {}\n");
+     return;
+   }
+ 
++  // Templatize constexpr constructor as a workaround for a bug in gcc 12
++  // (warning in gcc 13).
+   format(
++      "template <typename>\n"
+       "PROTOBUF_CONSTEXPR $classname$::$classname$(\n"
+       "    ::_pbi::ConstantInitialized)");
+ 
+diff --git a/src/google/protobuf/compiler/plugin.pb.cc b/src/google/protobuf/compiler/plugin.pb.cc
+index 94cc6f5dd..88c0c8845 100644
+--- a/src/google/protobuf/compiler/plugin.pb.cc
++++ b/src/google/protobuf/compiler/plugin.pb.cc
+@@ -20,6 +20,7 @@ namespace _pb = ::PROTOBUF_NAMESPACE_ID;
+ namespace _pbi = ::PROTOBUF_NAMESPACE_ID::internal;
+ PROTOBUF_NAMESPACE_OPEN
+ namespace compiler {
++template <typename>
+ PROTOBUF_CONSTEXPR Version::Version(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._has_bits_)*/{}
+@@ -44,6 +45,7 @@ struct VersionDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 VersionDefaultTypeInternal _Version_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR CodeGeneratorRequest::CodeGeneratorRequest(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._has_bits_)*/{}
+@@ -65,6 +67,7 @@ struct CodeGeneratorRequestDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CodeGeneratorRequestDefaultTypeInternal _CodeGeneratorRequest_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR CodeGeneratorResponse_File::CodeGeneratorResponse_File(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._has_bits_)*/{}
+@@ -92,6 +95,7 @@ struct CodeGeneratorResponse_FileDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CodeGeneratorResponse_FileDefaultTypeInternal _CodeGeneratorResponse_File_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR CodeGeneratorResponse::CodeGeneratorResponse(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._has_bits_)*/{}
+diff --git a/src/google/protobuf/compiler/plugin.pb.h b/src/google/protobuf/compiler/plugin.pb.h
+index e9bf2a479..4a7049b49 100644
+--- a/src/google/protobuf/compiler/plugin.pb.h
++++ b/src/google/protobuf/compiler/plugin.pb.h
+@@ -124,6 +124,7 @@ class PROTOC_EXPORT Version final :
+  public:
+   inline Version() : Version(nullptr) {}
+   ~Version() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR Version(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   Version(const Version& from);
+@@ -329,6 +330,7 @@ class PROTOC_EXPORT CodeGeneratorRequest final :
+  public:
+   inline CodeGeneratorRequest() : CodeGeneratorRequest(nullptr) {}
+   ~CodeGeneratorRequest() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR CodeGeneratorRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   CodeGeneratorRequest(const CodeGeneratorRequest& from);
+@@ -565,6 +567,7 @@ class PROTOC_EXPORT CodeGeneratorResponse_File final :
+  public:
+   inline CodeGeneratorResponse_File() : CodeGeneratorResponse_File(nullptr) {}
+   ~CodeGeneratorResponse_File() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR CodeGeneratorResponse_File(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   CodeGeneratorResponse_File(const CodeGeneratorResponse_File& from);
+@@ -793,6 +796,7 @@ class PROTOC_EXPORT CodeGeneratorResponse final :
+  public:
+   inline CodeGeneratorResponse() : CodeGeneratorResponse(nullptr) {}
+   ~CodeGeneratorResponse() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR CodeGeneratorResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   CodeGeneratorResponse(const CodeGeneratorResponse& from);
+diff --git a/src/google/protobuf/descriptor.pb.cc b/src/google/protobuf/descriptor.pb.cc
+index 7a97dadf7..ea25bff5b 100644
+--- a/src/google/protobuf/descriptor.pb.cc
++++ b/src/google/protobuf/descriptor.pb.cc
+@@ -19,6 +19,7 @@ PROTOBUF_PRAGMA_INIT_SEG
+ namespace _pb = ::PROTOBUF_NAMESPACE_ID;
+ namespace _pbi = ::PROTOBUF_NAMESPACE_ID::internal;
+ PROTOBUF_NAMESPACE_OPEN
++template <typename>
+ PROTOBUF_CONSTEXPR FileDescriptorSet::FileDescriptorSet(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_.file_)*/{}
+@@ -33,6 +34,7 @@ struct FileDescriptorSetDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FileDescriptorSetDefaultTypeInternal _FileDescriptorSet_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR FileDescriptorProto::FileDescriptorProto(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._has_bits_)*/{}
+@@ -74,6 +76,7 @@ struct FileDescriptorProtoDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FileDescriptorProtoDefaultTypeInternal _FileDescriptorProto_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR DescriptorProto_ExtensionRange::DescriptorProto_ExtensionRange(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._has_bits_)*/{}
+@@ -93,6 +96,7 @@ struct DescriptorProto_ExtensionRangeDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DescriptorProto_ExtensionRangeDefaultTypeInternal _DescriptorProto_ExtensionRange_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR DescriptorProto_ReservedRange::DescriptorProto_ReservedRange(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._has_bits_)*/{}
+@@ -111,6 +115,7 @@ struct DescriptorProto_ReservedRangeDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DescriptorProto_ReservedRangeDefaultTypeInternal _DescriptorProto_ReservedRange_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR DescriptorProto::DescriptorProto(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._has_bits_)*/{}
+@@ -138,6 +143,7 @@ struct DescriptorProtoDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DescriptorProtoDefaultTypeInternal _DescriptorProto_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR ExtensionRangeOptions_Declaration::ExtensionRangeOptions_Declaration(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._has_bits_)*/{}
+@@ -168,6 +174,7 @@ struct ExtensionRangeOptions_DeclarationDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ExtensionRangeOptions_DeclarationDefaultTypeInternal _ExtensionRangeOptions_Declaration_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR ExtensionRangeOptions::ExtensionRangeOptions(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._extensions_)*/{}
+@@ -187,6 +194,7 @@ struct ExtensionRangeOptionsDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ExtensionRangeOptionsDefaultTypeInternal _ExtensionRangeOptions_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR FieldDescriptorProto::FieldDescriptorProto(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._has_bits_)*/{}
+@@ -232,6 +240,7 @@ struct FieldDescriptorProtoDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FieldDescriptorProtoDefaultTypeInternal _FieldDescriptorProto_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR OneofDescriptorProto::OneofDescriptorProto(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._has_bits_)*/{}
+@@ -251,6 +260,7 @@ struct OneofDescriptorProtoDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 OneofDescriptorProtoDefaultTypeInternal _OneofDescriptorProto_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR EnumDescriptorProto_EnumReservedRange::EnumDescriptorProto_EnumReservedRange(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._has_bits_)*/{}
+@@ -269,6 +279,7 @@ struct EnumDescriptorProto_EnumReservedRangeDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 EnumDescriptorProto_EnumReservedRangeDefaultTypeInternal _EnumDescriptorProto_EnumReservedRange_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR EnumDescriptorProto::EnumDescriptorProto(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._has_bits_)*/{}
+@@ -291,6 +302,7 @@ struct EnumDescriptorProtoDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 EnumDescriptorProtoDefaultTypeInternal _EnumDescriptorProto_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR EnumValueDescriptorProto::EnumValueDescriptorProto(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._has_bits_)*/{}
+@@ -312,6 +324,7 @@ struct EnumValueDescriptorProtoDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 EnumValueDescriptorProtoDefaultTypeInternal _EnumValueDescriptorProto_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR ServiceDescriptorProto::ServiceDescriptorProto(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._has_bits_)*/{}
+@@ -332,6 +345,7 @@ struct ServiceDescriptorProtoDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ServiceDescriptorProtoDefaultTypeInternal _ServiceDescriptorProto_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR MethodDescriptorProto::MethodDescriptorProto(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._has_bits_)*/{}
+@@ -363,6 +377,7 @@ struct MethodDescriptorProtoDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MethodDescriptorProtoDefaultTypeInternal _MethodDescriptorProto_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR FileOptions::FileOptions(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._extensions_)*/{}
+@@ -439,6 +454,7 @@ struct FileOptionsDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FileOptionsDefaultTypeInternal _FileOptions_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR MessageOptions::MessageOptions(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._extensions_)*/{}
+@@ -465,6 +481,7 @@ struct MessageOptionsDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MessageOptionsDefaultTypeInternal _MessageOptions_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR FieldOptions::FieldOptions(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._extensions_)*/{}
+@@ -503,6 +520,7 @@ struct FieldOptionsDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FieldOptionsDefaultTypeInternal _FieldOptions_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR OneofOptions::OneofOptions(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._extensions_)*/{}
+@@ -518,6 +536,7 @@ struct OneofOptionsDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 OneofOptionsDefaultTypeInternal _OneofOptions_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR EnumOptions::EnumOptions(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._extensions_)*/{}
+@@ -540,6 +559,7 @@ struct EnumOptionsDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 EnumOptionsDefaultTypeInternal _EnumOptions_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR EnumValueOptions::EnumValueOptions(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._extensions_)*/{}
+@@ -558,6 +578,7 @@ struct EnumValueOptionsDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 EnumValueOptionsDefaultTypeInternal _EnumValueOptions_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR ServiceOptions::ServiceOptions(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._extensions_)*/{}
+@@ -576,6 +597,7 @@ struct ServiceOptionsDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ServiceOptionsDefaultTypeInternal _ServiceOptions_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR MethodOptions::MethodOptions(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._extensions_)*/{}
+@@ -596,6 +618,7 @@ struct MethodOptionsDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MethodOptionsDefaultTypeInternal _MethodOptions_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR UninterpretedOption_NamePart::UninterpretedOption_NamePart(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._has_bits_)*/{}
+@@ -616,6 +639,7 @@ struct UninterpretedOption_NamePartDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UninterpretedOption_NamePartDefaultTypeInternal _UninterpretedOption_NamePart_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR UninterpretedOption::UninterpretedOption(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._has_bits_)*/{}
+@@ -649,6 +673,7 @@ struct UninterpretedOptionDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UninterpretedOptionDefaultTypeInternal _UninterpretedOption_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR SourceCodeInfo_Location::SourceCodeInfo_Location(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._has_bits_)*/{}
+@@ -678,6 +703,7 @@ struct SourceCodeInfo_LocationDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SourceCodeInfo_LocationDefaultTypeInternal _SourceCodeInfo_Location_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR SourceCodeInfo::SourceCodeInfo(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_.location_)*/{}
+@@ -692,6 +718,7 @@ struct SourceCodeInfoDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SourceCodeInfoDefaultTypeInternal _SourceCodeInfo_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR GeneratedCodeInfo_Annotation::GeneratedCodeInfo_Annotation(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_._has_bits_)*/{}
+@@ -719,6 +746,7 @@ struct GeneratedCodeInfo_AnnotationDefaultTypeInternal {
+ 
+ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GeneratedCodeInfo_AnnotationDefaultTypeInternal _GeneratedCodeInfo_Annotation_default_instance_;
++template <typename>
+ PROTOBUF_CONSTEXPR GeneratedCodeInfo::GeneratedCodeInfo(
+     ::_pbi::ConstantInitialized): _impl_{
+     /*decltype(_impl_.annotation_)*/{}
+diff --git a/src/google/protobuf/descriptor.pb.h b/src/google/protobuf/descriptor.pb.h
+index 80fd85b99..ee7dbbe36 100644
+--- a/src/google/protobuf/descriptor.pb.h
++++ b/src/google/protobuf/descriptor.pb.h
+@@ -517,6 +517,7 @@ class PROTOBUF_EXPORT FileDescriptorSet final :
+  public:
+   inline FileDescriptorSet() : FileDescriptorSet(nullptr) {}
+   ~FileDescriptorSet() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR FileDescriptorSet(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   FileDescriptorSet(const FileDescriptorSet& from);
+@@ -681,6 +682,7 @@ class PROTOBUF_EXPORT FileDescriptorProto final :
+  public:
+   inline FileDescriptorProto() : FileDescriptorProto(nullptr) {}
+   ~FileDescriptorProto() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR FileDescriptorProto(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   FileDescriptorProto(const FileDescriptorProto& from);
+@@ -1112,6 +1114,7 @@ class PROTOBUF_EXPORT DescriptorProto_ExtensionRange final :
+  public:
+   inline DescriptorProto_ExtensionRange() : DescriptorProto_ExtensionRange(nullptr) {}
+   ~DescriptorProto_ExtensionRange() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR DescriptorProto_ExtensionRange(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   DescriptorProto_ExtensionRange(const DescriptorProto_ExtensionRange& from);
+@@ -1297,6 +1300,7 @@ class PROTOBUF_EXPORT DescriptorProto_ReservedRange final :
+  public:
+   inline DescriptorProto_ReservedRange() : DescriptorProto_ReservedRange(nullptr) {}
+   ~DescriptorProto_ReservedRange() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR DescriptorProto_ReservedRange(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   DescriptorProto_ReservedRange(const DescriptorProto_ReservedRange& from);
+@@ -1466,6 +1470,7 @@ class PROTOBUF_EXPORT DescriptorProto final :
+  public:
+   inline DescriptorProto() : DescriptorProto(nullptr) {}
+   ~DescriptorProto() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR DescriptorProto(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   DescriptorProto(const DescriptorProto& from);
+@@ -1837,6 +1842,7 @@ class PROTOBUF_EXPORT ExtensionRangeOptions_Declaration final :
+  public:
+   inline ExtensionRangeOptions_Declaration() : ExtensionRangeOptions_Declaration(nullptr) {}
+   ~ExtensionRangeOptions_Declaration() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR ExtensionRangeOptions_Declaration(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   ExtensionRangeOptions_Declaration(const ExtensionRangeOptions_Declaration& from);
+@@ -2078,6 +2084,7 @@ class PROTOBUF_EXPORT ExtensionRangeOptions final :
+  public:
+   inline ExtensionRangeOptions() : ExtensionRangeOptions(nullptr) {}
+   ~ExtensionRangeOptions() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR ExtensionRangeOptions(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   ExtensionRangeOptions(const ExtensionRangeOptions& from);
+@@ -2453,6 +2460,7 @@ class PROTOBUF_EXPORT FieldDescriptorProto final :
+  public:
+   inline FieldDescriptorProto() : FieldDescriptorProto(nullptr) {}
+   ~FieldDescriptorProto() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR FieldDescriptorProto(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   FieldDescriptorProto(const FieldDescriptorProto& from);
+@@ -2849,6 +2857,7 @@ class PROTOBUF_EXPORT OneofDescriptorProto final :
+  public:
+   inline OneofDescriptorProto() : OneofDescriptorProto(nullptr) {}
+   ~OneofDescriptorProto() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR OneofDescriptorProto(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   OneofDescriptorProto(const OneofDescriptorProto& from);
+@@ -3031,6 +3040,7 @@ class PROTOBUF_EXPORT EnumDescriptorProto_EnumReservedRange final :
+  public:
+   inline EnumDescriptorProto_EnumReservedRange() : EnumDescriptorProto_EnumReservedRange(nullptr) {}
+   ~EnumDescriptorProto_EnumReservedRange() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR EnumDescriptorProto_EnumReservedRange(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   EnumDescriptorProto_EnumReservedRange(const EnumDescriptorProto_EnumReservedRange& from);
+@@ -3200,6 +3210,7 @@ class PROTOBUF_EXPORT EnumDescriptorProto final :
+  public:
+   inline EnumDescriptorProto() : EnumDescriptorProto(nullptr) {}
+   ~EnumDescriptorProto() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR EnumDescriptorProto(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   EnumDescriptorProto(const EnumDescriptorProto& from);
+@@ -3460,6 +3471,7 @@ class PROTOBUF_EXPORT EnumValueDescriptorProto final :
+  public:
+   inline EnumValueDescriptorProto() : EnumValueDescriptorProto(nullptr) {}
+   ~EnumValueDescriptorProto() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR EnumValueDescriptorProto(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   EnumValueDescriptorProto(const EnumValueDescriptorProto& from);
+@@ -3655,6 +3667,7 @@ class PROTOBUF_EXPORT ServiceDescriptorProto final :
+  public:
+   inline ServiceDescriptorProto() : ServiceDescriptorProto(nullptr) {}
+   ~ServiceDescriptorProto() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR ServiceDescriptorProto(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   ServiceDescriptorProto(const ServiceDescriptorProto& from);
+@@ -3859,6 +3872,7 @@ class PROTOBUF_EXPORT MethodDescriptorProto final :
+  public:
+   inline MethodDescriptorProto() : MethodDescriptorProto(nullptr) {}
+   ~MethodDescriptorProto() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR MethodDescriptorProto(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   MethodDescriptorProto(const MethodDescriptorProto& from);
+@@ -4113,6 +4127,7 @@ class PROTOBUF_EXPORT FileOptions final :
+  public:
+   inline FileOptions() : FileOptions(nullptr) {}
+   ~FileOptions() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR FileOptions(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   FileOptions(const FileOptions& from);
+@@ -4812,6 +4827,7 @@ class PROTOBUF_EXPORT MessageOptions final :
+  public:
+   inline MessageOptions() : MessageOptions(nullptr) {}
+   ~MessageOptions() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR MessageOptions(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   MessageOptions(const MessageOptions& from);
+@@ -5195,6 +5211,7 @@ class PROTOBUF_EXPORT FieldOptions final :
+  public:
+   inline FieldOptions() : FieldOptions(nullptr) {}
+   ~FieldOptions() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR FieldOptions(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   FieldOptions(const FieldOptions& from);
+@@ -5757,6 +5774,7 @@ class PROTOBUF_EXPORT OneofOptions final :
+  public:
+   inline OneofOptions() : OneofOptions(nullptr) {}
+   ~OneofOptions() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR OneofOptions(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   OneofOptions(const OneofOptions& from);
+@@ -6074,6 +6092,7 @@ class PROTOBUF_EXPORT EnumOptions final :
+  public:
+   inline EnumOptions() : EnumOptions(nullptr) {}
+   ~EnumOptions() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR EnumOptions(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   EnumOptions(const EnumOptions& from);
+@@ -6431,6 +6450,7 @@ class PROTOBUF_EXPORT EnumValueOptions final :
+  public:
+   inline EnumValueOptions() : EnumValueOptions(nullptr) {}
+   ~EnumValueOptions() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR EnumValueOptions(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   EnumValueOptions(const EnumValueOptions& from);
+@@ -6762,6 +6782,7 @@ class PROTOBUF_EXPORT ServiceOptions final :
+  public:
+   inline ServiceOptions() : ServiceOptions(nullptr) {}
+   ~ServiceOptions() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR ServiceOptions(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   ServiceOptions(const ServiceOptions& from);
+@@ -7093,6 +7114,7 @@ class PROTOBUF_EXPORT MethodOptions final :
+  public:
+   inline MethodOptions() : MethodOptions(nullptr) {}
+   ~MethodOptions() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR MethodOptions(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   MethodOptions(const MethodOptions& from);
+@@ -7458,6 +7480,7 @@ class PROTOBUF_EXPORT UninterpretedOption_NamePart final :
+  public:
+   inline UninterpretedOption_NamePart() : UninterpretedOption_NamePart(nullptr) {}
+   ~UninterpretedOption_NamePart() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR UninterpretedOption_NamePart(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   UninterpretedOption_NamePart(const UninterpretedOption_NamePart& from);
+@@ -7640,6 +7663,7 @@ class PROTOBUF_EXPORT UninterpretedOption final :
+  public:
+   inline UninterpretedOption() : UninterpretedOption(nullptr) {}
+   ~UninterpretedOption() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR UninterpretedOption(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   UninterpretedOption(const UninterpretedOption& from);
+@@ -7915,6 +7939,7 @@ class PROTOBUF_EXPORT SourceCodeInfo_Location final :
+  public:
+   inline SourceCodeInfo_Location() : SourceCodeInfo_Location(nullptr) {}
+   ~SourceCodeInfo_Location() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR SourceCodeInfo_Location(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   SourceCodeInfo_Location(const SourceCodeInfo_Location& from);
+@@ -8182,6 +8207,7 @@ class PROTOBUF_EXPORT SourceCodeInfo final :
+  public:
+   inline SourceCodeInfo() : SourceCodeInfo(nullptr) {}
+   ~SourceCodeInfo() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR SourceCodeInfo(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   SourceCodeInfo(const SourceCodeInfo& from);
+@@ -8348,6 +8374,7 @@ class PROTOBUF_EXPORT GeneratedCodeInfo_Annotation final :
+  public:
+   inline GeneratedCodeInfo_Annotation() : GeneratedCodeInfo_Annotation(nullptr) {}
+   ~GeneratedCodeInfo_Annotation() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR GeneratedCodeInfo_Annotation(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   GeneratedCodeInfo_Annotation(const GeneratedCodeInfo_Annotation& from);
+@@ -8597,6 +8624,7 @@ class PROTOBUF_EXPORT GeneratedCodeInfo final :
+  public:
+   inline GeneratedCodeInfo() : GeneratedCodeInfo(nullptr) {}
+   ~GeneratedCodeInfo() override;
++  template<typename = void>
+   explicit PROTOBUF_CONSTEXPR GeneratedCodeInfo(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+ 
+   GeneratedCodeInfo(const GeneratedCodeInfo& from);

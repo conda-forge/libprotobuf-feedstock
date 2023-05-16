@@ -1,7 +1,7 @@
 From b289a82a362c22550dbc9ca71006f1f2fab758e7 Mon Sep 17 00:00:00 2001
 From: Mike Kruskal <mkruskal@google.com>
 Date: Tue, 9 May 2023 13:11:33 -0700
-Subject: [PATCH 5/5] Fix C++17 gcc issues.
+Subject: [PATCH 5/6] Fix C++17 gcc issues.
 
 This also adds tests for C++17 and C++20 to prevent further regressions.
 
