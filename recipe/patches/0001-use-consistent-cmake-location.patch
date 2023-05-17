@@ -1,7 +1,7 @@
-From fd5ddf4467843052d55daf8d753a8364ad8c1f30 Mon Sep 17 00:00:00 2001
+From 5f59e8cbbea1aab58dc41e81b844d2da05863f4b Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Sat, 3 Sep 2022 19:48:04 +0200
-Subject: [PATCH 1/6] use consistent cmake location
+Subject: [PATCH 1/5] use consistent cmake location
 
 ---
  cmake/install.cmake | 12 +++---------
