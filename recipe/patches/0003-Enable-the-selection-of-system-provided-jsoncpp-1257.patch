@@ -1,7 +1,7 @@
-From 1fdffe322b2deb870d08977a34349706100e50b3 Mon Sep 17 00:00:00 2001
+From ec985b8640e701f2e21f395b453729d5b85466d3 Mon Sep 17 00:00:00 2001
 From: Mike Rochefort <mroche@omenos.dev>
 Date: Mon, 1 May 2023 09:34:17 -0700
-Subject: [PATCH 3/6] Enable the selection of system provided jsoncpp (#12577)
+Subject: [PATCH 3/5] Enable the selection of system provided jsoncpp (#12577)
 
 Allows the use of an external `jsoncpp` library to be used. Replicates the model used by `abseil-cpp` as a "package" or "module" to the `protobuf_JSONCPP_PROVIDER` option.
 
@@ -17,7 +17,7 @@ PiperOrigin-RevId: 528492610
  2 files changed, 22 insertions(+), 12 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index d546a5c66..f74743a3c 100644
+index 97a39e4ba..7d2dc8bab 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -332,6 +332,9 @@ endif (protobuf_UNICODE)

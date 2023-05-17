@@ -19,10 +19,7 @@ source:
       # backport https://github.com/protocolbuffers/protobuf/pull/12577
       - patches/0003-Enable-the-selection-of-system-provided-jsoncpp-1257.patch
       - patches/0004-always-look-for-shared-abseil-builds.patch
-      # backport https://github.com/protocolbuffers/protobuf/pull/12743
-      - patches/0005-Fix-C-17-gcc-issues.patch
-      # backport 67ecdde4f257094c4019ebfda62b2ae60facb6fa from 23.x branch
-      - patches/0006-Add-a-workaround-for-GCC-constexpr-bug.patch
+      - patches/0005-be-more-lenient-with-abseil-version.patch
 
 build:
   number: 0
