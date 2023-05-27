@@ -22,7 +22,7 @@ source:
       - patches/0005-be-more-lenient-with-abseil-version.patch
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - name: libprotobuf
@@ -30,10 +30,10 @@ outputs:
     script: build-lib.bat  # [win]
     build:
       run_exports:
-        # breaks backwards compatibility and new SONAME each minor release
-        # https://abi-laboratory.pro/tracker/timeline/protobuf/
-        # One exception was that 3.6.1 was incompatible with 3.6.0
-        - {{ pin_subpackage('libprotobuf', max_pin='x.x') }}
+        # protobuf now (intentionally) increments the SOVER with every patch release, which
+        # breaks tools like grpc_plugin_cpp if they get the wrong libprotoc at runtime, see
+        # https://github.com/conda-forge/conda-forge-pinning-feedstock/issues/4075
+        - {{ pin_subpackage('libprotobuf', max_pin='x.x.x') }}
       ignore_run_exports_from:
         - jsoncpp
     requirements:
