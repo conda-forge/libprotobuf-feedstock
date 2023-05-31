@@ -1,0 +1,23 @@
+From f2f930d2c30ac4020212ebcddbc4acb04eb0e3cf Mon Sep 17 00:00:00 2001
+From: "H. Vetinari" <h.vetinari@gmx.com>
+Date: Wed, 31 May 2023 08:31:06 +1100
+Subject: [PATCH 6/6] add PROTOBUF_EXPORT for
+ google::protobuf::io::SafeDoubleToFloat
+
+---
+ src/google/protobuf/io/strtod.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/google/protobuf/io/strtod.h b/src/google/protobuf/io/strtod.h
+index 851c8e621..648f1ff1c 100644
+--- a/src/google/protobuf/io/strtod.h
++++ b/src/google/protobuf/io/strtod.h
+@@ -65,7 +65,7 @@ double NoLocaleStrtod(const char* str, char** endptr);
+ // Casts a double value to a float value. If the value is outside of the
+ // representable range of float, it will be converted to positive or negative
+ // infinity.
+-float SafeDoubleToFloat(double value);
++PROTOBUF_EXPORT float SafeDoubleToFloat(double value);
+ 
+ }  // namespace io
+ }  // namespace protobuf

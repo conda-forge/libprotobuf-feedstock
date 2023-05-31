@@ -20,9 +20,10 @@ source:
       - patches/0003-Enable-the-selection-of-system-provided-jsoncpp-1257.patch
       - patches/0004-always-look-for-shared-abseil-builds.patch
       - patches/0005-be-more-lenient-with-abseil-version.patch
+      - patches/0006-add-PROTOBUF_EXPORT-for-google-protobuf-io-SafeDoubl.patch
 
 build:
-  number: 1
+  number: 2
 
 outputs:
   - name: libprotobuf
