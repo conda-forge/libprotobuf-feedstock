@@ -21,9 +21,11 @@ source:
       - patches/0004-always-look-for-shared-abseil-builds.patch
       - patches/0005-be-more-lenient-with-abseil-version.patch
       - patches/0006-add-PROTOBUF_EXPORT-for-google-protobuf-io-SafeDoubl.patch
+      # backport https://github.com/protocolbuffers/protobuf/pull/12978
+      - patches/0007-use-namespaced-abseil-dll-imported-target-backport-12978.patch
 
 build:
-  number: 2
+  number: 3
 
 outputs:
   - name: libprotobuf
