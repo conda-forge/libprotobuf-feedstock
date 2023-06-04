@@ -89,10 +89,11 @@ outputs:
         # binary
         - protoc --help
 
-        # more CMake integration (CMake uses its own FindProtobuf)
+        # more CMake integration
         - cd cmake_test
         - cmake -GNinja $CMAKE_ARGS .   # [unix]
         - cmake -GNinja %CMAKE_ARGS% .  # [win]
+        - cmake --build .
 
   - name: libprotobuf-static
     script: build-lib.sh   # [unix]
