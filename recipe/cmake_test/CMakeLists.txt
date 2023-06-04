@@ -1,8 +1,10 @@
 project(cf_dummy LANGUAGES C CXX)
 cmake_minimum_required(VERSION 3.12)
-# CMake seems to prefer its own FindProtobuf to the
-# protobuf-config.cmake being distributed by this
-# feedstock; make sure things work
+# We need to specify CONFIG to make sure that CMake
+# uses protobuf-config.cmake instead of relying on its
+# own FindProtobuf.cmake that does not know about
+# abseil transitive depedendency and about C++ version
+# required, see https://github.com/conda-forge/conda-forge-pinning-feedstock/issues/4075#issuecomment-1569242816
 find_package(Protobuf CONFIG REQUIRED)
 
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/struct_example.cc
