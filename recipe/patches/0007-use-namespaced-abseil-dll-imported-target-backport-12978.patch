@@ -1,0 +1,26 @@
+diff --git a/cmake/abseil-cpp.cmake b/cmake/abseil-cpp.cmake
+index e7bfb2b15f8..c668f4d9b01 100644
+--- a/cmake/abseil-cpp.cmake
++++ b/cmake/abseil-cpp.cmake
+@@ -39,8 +39,19 @@ set(_protobuf_FIND_ABSL "if(NOT TARGET absl::strings)\n  find_package(absl CONFI
+ 
+ if (BUILD_SHARED_LIBS AND MSVC)
+   # On MSVC Abseil is bundled into a single DLL.
+-  set(protobuf_ABSL_USED_TARGETS abseil_dll)
+-
++  # This condition is necessary as of abseil 20230125.3 when abseil is consumed via add_subdirectory,
++  # the abseil_dll target  is named abseil_dll, while if abseil is consumed via find_package, the target
++  # is called absl::abseil_dll
++  # Once https://github.com/abseil/abseil-cpp/pull/1466 is merged and released in the minimum version of 
++  # abseil required by protobuf, it is possible to always link absl::abseil_dll and absl::abseil_test_dll
++  # and remove the if
++  if(protobuf_ABSL_PROVIDER STREQUAL "package")
++    set(protobuf_ABSL_USED_TARGETS absl::abseil_dll)
++  else()
++    set(protobuf_ABSL_USED_TARGETS abseil_dll)
++  endif()
++  # Not all build of abseil found by find_package provide the absl::abseil_test_dll target, so for 
++  # it we stick to the non-namespaced definition
+   set(protobuf_ABSL_USED_TEST_TARGETS abseil_test_dll)
+ else()
+   set(protobuf_ABSL_USED_TARGETS
