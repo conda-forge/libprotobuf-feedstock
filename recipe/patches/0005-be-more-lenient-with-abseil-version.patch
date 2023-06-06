@@ -1,7 +1,7 @@
-From 3ed82472434815a3e5befcefd5e13e3bd0e07759 Mon Sep 17 00:00:00 2001
+From c649c3e227cb88ff5cc276d3876e2f8dfdb16c22 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Thu, 18 May 2023 09:02:21 +1100
-Subject: [PATCH 5/6] be more lenient with abseil version
+Subject: [PATCH 5/8] be more lenient with abseil version
 
 we carry the patch for the only pertinent difference
 between .2 & .3 anyway
@@ -10,7 +10,7 @@ between .2 & .3 anyway
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/google/protobuf/port_def.inc b/src/google/protobuf/port_def.inc
-index 1c6a24945..2ee003e15 100644
+index 18d7ccfe8..90f58f6ec 100644
 --- a/src/google/protobuf/port_def.inc
 +++ b/src/google/protobuf/port_def.inc
 @@ -216,7 +216,7 @@ static_assert(PROTOBUF_CPLUSPLUS_MIN(201402L), "Protobuf only supports C++14 and
