@@ -102,6 +102,10 @@ outputs:
     script: build-lib.sh   # [unix]
     script: build-lib.bat  # [win]
     build:
+      always_include_files:
+        # Must overwrite the CMake metadata from shared libprotobuf
+        - lib/cmake/protobuf/           # [unix]
+        - Library/lib/cmake/protobuf/   # [win]
       ignore_run_exports_from:
         - jsoncpp
     requirements:
