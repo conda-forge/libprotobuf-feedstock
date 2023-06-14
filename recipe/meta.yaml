@@ -130,6 +130,7 @@ outputs:
         - {{ compiler('cxx') }}
         - cmake
         - ninja
+        - zlib
       files:
         - cmake_test/
       commands:
