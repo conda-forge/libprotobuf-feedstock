@@ -1,7 +1,7 @@
-From db0beb910fcf2c5092e95e87c7f84deffb395602 Mon Sep 17 00:00:00 2001
+From ff5ccc100ef05ee0feaee122cccf65e525c05d9a Mon Sep 17 00:00:00 2001
 From: Protobuf Team Bot <protobuf-github-bot@google.com>
 Date: Thu, 1 Jun 2023 09:14:48 -0700
-Subject: [PATCH 7/8] fix: missing `PROTOBUF_EXPORT` for public symbols
+Subject: [PATCH 7/9] fix: missing `PROTOBUF_EXPORT` for public symbols
 
 PiperOrigin-RevId: 537042088
 ---
@@ -9,7 +9,7 @@ PiperOrigin-RevId: 537042088
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/src/google/protobuf/io/strtod.h b/src/google/protobuf/io/strtod.h
-index 851c8e621..b368e4d87 100644
+index 851c8e6..b368e4d 100644
 --- a/src/google/protobuf/io/strtod.h
 +++ b/src/google/protobuf/io/strtod.h
 @@ -60,12 +60,12 @@ PROTOBUF_EXPORT std::string SimpleFtoa(float value);
@@ -27,3 +27,6 @@ index 851c8e621..b368e4d87 100644
  
  }  // namespace io
  }  // namespace protobuf
+-- 
+2.39.2 (Apple Git-143)
+

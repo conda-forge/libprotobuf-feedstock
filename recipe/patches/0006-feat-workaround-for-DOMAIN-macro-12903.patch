@@ -1,7 +1,7 @@
-From 701113e0472269a966ae69f25e428140e34dc8fc Mon Sep 17 00:00:00 2001
+From 622565b7d67dcec1fd4c7da71f60d092ec320bd3 Mon Sep 17 00:00:00 2001
 From: Carlos O'Ryan <coryan@google.com>
 Date: Fri, 26 May 2023 10:10:47 -0700
-Subject: [PATCH 6/8] feat: workaround for `DOMAIN` macro (#12903)
+Subject: [PATCH 6/9] feat: workaround for `DOMAIN` macro (#12903)
 
 This is a macro on some (older) versions of GCC, and macOS, and Windows. Sigh. I moved the `#undef` block to a common section. I also took the opportunity to add a regression test for all these macros that need to be `#undef`'d.
 
@@ -20,7 +20,7 @@ PiperOrigin-RevId: 535649278
  create mode 100644 src/google/protobuf/unittest_proto3_bad_macros.proto
 
 diff --git a/src/file_lists.cmake b/src/file_lists.cmake
-index da030df3d..8b48f6b9c 100644
+index da030df..8b48f6b 100644
 --- a/src/file_lists.cmake
 +++ b/src/file_lists.cmake
 @@ -666,6 +666,7 @@ set(protobuf_test_protos_files
@@ -32,7 +32,7 @@ index da030df3d..8b48f6b9c 100644
    ${protobuf_SOURCE_DIR}/src/google/protobuf/unittest_proto3_optional.proto
    ${protobuf_SOURCE_DIR}/src/google/protobuf/unittest_retention.proto
 diff --git a/src/google/protobuf/BUILD.bazel b/src/google/protobuf/BUILD.bazel
-index 77ed2309f..91827d9cf 100644
+index 77ed230..91827d9 100644
 --- a/src/google/protobuf/BUILD.bazel
 +++ b/src/google/protobuf/BUILD.bazel
 @@ -645,6 +645,7 @@ filegroup(
@@ -52,7 +52,7 @@ index 77ed2309f..91827d9cf 100644
          "unittest_proto3_optional.proto",
          "unittest_retention.proto",
 diff --git a/src/google/protobuf/port_def.inc b/src/google/protobuf/port_def.inc
-index 90f58f6ec..24278aba7 100644
+index 90f58f6..24278ab 100644
 --- a/src/google/protobuf/port_def.inc
 +++ b/src/google/protobuf/port_def.inc
 @@ -888,11 +888,18 @@ static_assert(PROTOBUF_ABSL_MIN(20230125, 2),
@@ -99,7 +99,7 @@ index 90f58f6ec..24278aba7 100644
  #pragma push_macro("TRUE")
  #undef TRUE
 diff --git a/src/google/protobuf/port_undef.inc b/src/google/protobuf/port_undef.inc
-index e9eae069c..cee6f8b90 100644
+index e9eae06..cee6f8b 100644
 --- a/src/google/protobuf/port_undef.inc
 +++ b/src/google/protobuf/port_undef.inc
 @@ -128,6 +128,16 @@
@@ -137,7 +137,7 @@ index e9eae069c..cee6f8b90 100644
  #pragma pop_macro("UID_MAX")
 diff --git a/src/google/protobuf/unittest_proto3_bad_macros.proto b/src/google/protobuf/unittest_proto3_bad_macros.proto
 new file mode 100644
-index 000000000..7d245b5d4
+index 0000000..7d245b5
 --- /dev/null
 +++ b/src/google/protobuf/unittest_proto3_bad_macros.proto
 @@ -0,0 +1,98 @@
@@ -239,3 +239,6 @@ index 000000000..7d245b5d4
 +  // Defined in macOS, Windows, and Linux headers.
 +  DEBUG = 31;
 +}
+-- 
+2.39.2 (Apple Git-143)
+

@@ -1,7 +1,7 @@
-From 29f559969b65c9495a73681f5ad323fc522e6801 Mon Sep 17 00:00:00 2001
+From 49e7e77ff46e9811c989f32405b72dc83b020f32 Mon Sep 17 00:00:00 2001
 From: Silvio Traversaro <silvio@traversaro.it>
 Date: Mon, 5 Jun 2023 15:01:50 -0700
-Subject: [PATCH 8/8] CMake: Fix abseil_dll target name when using
+Subject: [PATCH 8/9] CMake: Fix abseil_dll target name when using
  find_package(absl) (#12978)
 
 This additional if  is necessary as of abseil 20230125.3 when abseil is consumed via add_subdirectory,
@@ -20,7 +20,7 @@ PiperOrigin-RevId: 537990391
  1 file changed, 13 insertions(+), 3 deletions(-)
 
 diff --git a/cmake/abseil-cpp.cmake b/cmake/abseil-cpp.cmake
-index 32310f5ac..b07e63f26 100644
+index 32310f5..b07e63f 100644
 --- a/cmake/abseil-cpp.cmake
 +++ b/cmake/abseil-cpp.cmake
 @@ -39,9 +39,19 @@ set(_protobuf_FIND_ABSL "if(NOT TARGET absl::strings)\n  find_package(absl CONFI
@@ -46,3 +46,6 @@ index 32310f5ac..b07e63f26 100644
  else()
    set(protobuf_ABSL_USED_TARGETS
      absl::absl_check
+-- 
+2.39.2 (Apple Git-143)
+
