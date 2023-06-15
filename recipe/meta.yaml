@@ -20,12 +20,8 @@ source:
       - patches/0003-Enable-the-selection-of-system-provided-jsoncpp-1257.patch
       - patches/0004-always-look-for-shared-abseil-builds.patch
       - patches/0005-be-more-lenient-with-abseil-version.patch
-      # backports from https://github.com/protocolbuffers/protobuf/pull/12987 (3 commits)
-      - patches/0006-feat-workaround-for-DOMAIN-macro-12903.patch
-      - patches/0007-fix-missing-PROTOBUF_EXPORT-for-public-symbols.patch
-      - patches/0008-CMake-Fix-abseil_dll-target-name-when-using-find_pac.patch
       # grpc_cpp_java_plugin links against otherwise internal symbols
-      - patches/0009-Export-functions-in-google-compiler-java-names.patch
+      - patches/0006-Export-functions-in-google-compiler-java-names.patch
 
 build:
   number: 0
