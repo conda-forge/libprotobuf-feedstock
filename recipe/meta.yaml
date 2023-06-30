@@ -1,5 +1,5 @@
 # keep this without major version to let the bot pick it up
-{% set version = "23.2" %}
+{% set version = "23.3" %}
 # protobuf doesn't add the major version in the tag, it's defined per language in
 # https://github.com/protocolbuffers/protobuf/blob/main/version.json
 {% set major = "4" %}
@@ -12,7 +12,7 @@ package:
 
 source:
   - url: https://github.com/protocolbuffers/protobuf/archive/refs/tags/v{{ version.replace(".rc", "-rc") }}.tar.gz
-    sha256: 0b0395d34e000f1229679e10d984ed7913078f3dd7f26cf0476467f5e65716f4
+    sha256: 4e176116949be52b0408dfd24f8925d1eb674a781ae242a75296b17a1c721395
     patches:
       - patches/0001-use-consistent-cmake-location.patch
       - patches/0002-set-static-lib-extension-on-windows.patch
@@ -20,15 +20,11 @@ source:
       - patches/0003-Enable-the-selection-of-system-provided-jsoncpp-1257.patch
       - patches/0004-always-look-for-shared-abseil-builds.patch
       - patches/0005-be-more-lenient-with-abseil-version.patch
-      # backports from https://github.com/protocolbuffers/protobuf/pull/12987 (3 commits)
-      - patches/0006-feat-workaround-for-DOMAIN-macro-12903.patch
-      - patches/0007-fix-missing-PROTOBUF_EXPORT-for-public-symbols.patch
-      - patches/0008-CMake-Fix-abseil_dll-target-name-when-using-find_pac.patch
       # grpc_cpp_java_plugin links against otherwise internal symbols
-      - patches/0009-Export-functions-in-google-compiler-java-names.patch
+      - patches/0006-Export-functions-in-google-compiler-java-names.patch
 
 build:
-  number: 5
+  number: 0
 
 outputs:
   - name: libprotobuf

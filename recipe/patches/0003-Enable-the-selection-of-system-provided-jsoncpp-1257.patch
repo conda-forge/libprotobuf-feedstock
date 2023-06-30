@@ -1,7 +1,7 @@
-From b016914542095d63cf9e52378390540273c42407 Mon Sep 17 00:00:00 2001
+From e29e3dc895a1dcd60d0a955dbc63f848a0c14e66 Mon Sep 17 00:00:00 2001
 From: Mike Rochefort <mroche@omenos.dev>
 Date: Mon, 1 May 2023 09:34:17 -0700
-Subject: [PATCH 3/9] Enable the selection of system provided jsoncpp (#12577)
+Subject: [PATCH 3/6] Enable the selection of system provided jsoncpp (#12577)
 
 Allows the use of an external `jsoncpp` library to be used. Replicates the model used by `abseil-cpp` as a "package" or "module" to the `protobuf_JSONCPP_PROVIDER` option.
 
@@ -17,7 +17,7 @@ PiperOrigin-RevId: 528492610
  2 files changed, 22 insertions(+), 12 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 61e9ac3..3db1d0e 100644
+index d0015b799..ae0fd1c64 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -332,6 +332,9 @@ endif (protobuf_UNICODE)
@@ -31,7 +31,7 @@ index 61e9ac3..3db1d0e 100644
    include(${protobuf_SOURCE_DIR}/cmake/gtest.cmake)
  endif (protobuf_BUILD_TESTS)
 diff --git a/cmake/conformance.cmake b/cmake/conformance.cmake
-index 61ac25a..6ba9050 100644
+index 61ac25a0d..6ba9050af 100644
 --- a/cmake/conformance.cmake
 +++ b/cmake/conformance.cmake
 @@ -1,12 +1,15 @@
@@ -73,6 +73,3 @@ index 61ac25a..6ba9050 100644
 +else()
 +  target_link_libraries(conformance_test_runner jsoncpp)
 +endif()
--- 
-2.39.2 (Apple Git-143)
-
