@@ -20,6 +20,10 @@ fi
 export CPPFLAGS="${CPPFLAGS} -I${PREFIX}/include"
 export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib"
 
+# delete vendored gtest to force protobuf_USE_EXTERNAL_GTEST to work;
+# this gets run twice (second time for libprotobuf-static), so don't fail
+rm -rf ./third_party/googletest | true
+
 if [[ "$PKG_NAME" == "libprotobuf-static" ]]; then
     export CF_SHARED=OFF
     mkdir build-static
