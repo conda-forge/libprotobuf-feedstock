@@ -19,12 +19,12 @@ source:
       # backport https://github.com/protocolbuffers/protobuf/pull/12577
       - patches/0003-Enable-the-selection-of-system-provided-jsoncpp-1257.patch
       - patches/0004-always-look-for-shared-abseil-builds.patch
-      - patches/0005-be-more-lenient-with-abseil-version.patch
       # grpc_cpp_java_plugin links against otherwise internal symbols
-      - patches/0006-Export-functions-in-google-compiler-java-names.patch
+      - patches/0005-Export-functions-in-google-compiler-java-names.patch
+      - patches/0006-do-not-install-vendored-gmock.patch
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - name: libprotobuf
