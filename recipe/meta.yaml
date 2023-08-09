@@ -1,5 +1,5 @@
 # keep this without major version to let the bot pick it up
-{% set version = "23.3" %}
+{% set version = "23.4" %}
 # protobuf doesn't add the major version in the tag, it's defined per language in
 # https://github.com/protocolbuffers/protobuf/blob/main/version.json
 {% set major = "4" %}
@@ -12,7 +12,7 @@ package:
 
 source:
   - url: https://github.com/protocolbuffers/protobuf/archive/refs/tags/v{{ version.replace(".rc", "-rc") }}.tar.gz
-    sha256: 4e176116949be52b0408dfd24f8925d1eb674a781ae242a75296b17a1c721395
+    sha256: a700a49470d301f1190a487a923b5095bf60f08f4ae4cac9f5f7c36883d17971
     patches:
       - patches/0001-use-consistent-cmake-location.patch
       - patches/0002-set-static-lib-extension-on-windows.patch
@@ -28,7 +28,7 @@ build:
 
 outputs:
   - name: libprotobuf
-    script: build-lib.sh   # [unix]
+    script: build-lib.sh  # [unix]
     script: build-lib.bat  # [win]
     build:
       run_exports:
@@ -95,7 +95,7 @@ outputs:
         - cmake --build .
 
   - name: libprotobuf-static
-    script: build-lib.sh   # [unix]
+    script: build-lib.sh  # [unix]
     script: build-lib.bat  # [win]
     build:
       always_include_files:
