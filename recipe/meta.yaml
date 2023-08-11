@@ -53,6 +53,7 @@ outputs:
         - zlib
       run:
         - ucrt  # [win]
+        - __osx >={{ MACOSX_DEPLOYMENT_TARGET }}  # [osx and x86_64]
     test:
       requires:
         # cmake needs compiler to be able to run package detection, see
