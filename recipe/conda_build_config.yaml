@@ -1,0 +1,9 @@
+# abseil 20230802 now only support MacOS >=10.13, reflect this here
+MACOSX_SDK_VERSION:        # [osx and x86_64]
+  - "10.13"                # [osx and x86_64]
+MACOSX_DEPLOYMENT_TARGET:  # [osx and x86_64]
+  - "10.13"                # [osx and x86_64]
+
+# manual pin because we're linking migrations
+libabseil:
+  - 20230802
