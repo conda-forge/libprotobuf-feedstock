@@ -15,7 +15,7 @@ cxx_compiler_version:
 jsoncpp:
 - 1.9.5
 libabseil:
-- '20230125'
+- '20230802'
 macos_machine:
 - arm64-apple-darwin20.0.0
 target_platform:
