@@ -1,0 +1,3 @@
+# manual pin because we're linking migrations
+libabseil:
+  - 20230802
