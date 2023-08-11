@@ -1,4 +1,4 @@
-From 1a0df0ca9e8d5320556ca15ed1685d578a98500c Mon Sep 17 00:00:00 2001
+From c15a3b5551d4ad414ef6840d63153fd5babd71a5 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Sat, 3 Sep 2022 19:48:04 +0200
 Subject: [PATCH 1/6] use consistent cmake location

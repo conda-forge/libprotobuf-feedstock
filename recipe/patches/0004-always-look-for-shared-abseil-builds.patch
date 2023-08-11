@@ -1,4 +1,4 @@
-From 137cfa12dbc793c2358e8048dde9b35d4e77292d Mon Sep 17 00:00:00 2001
+From 52ee899847501a833926b2232dc0e19bad256003 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Sat, 13 May 2023 22:43:45 +1100
 Subject: [PATCH 4/6] always look for shared abseil builds
