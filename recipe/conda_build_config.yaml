@@ -1,4 +1,6 @@
-# abseil 20230802 now only support MacOS >=10.13, reflect this here
+# following google's C++ support policy, protobuf only support MacOS >=10.13, see:
+# https://github.com/google/oss-policies-info/blob/main/foundational-cxx-support-matrix.md
+# https://github.com/protocolbuffers/protobuf/blob/v24.0/Protobuf-C%2B%2B.podspec#L29
 MACOSX_SDK_VERSION:        # [osx and x86_64]
   - "10.13"                # [osx and x86_64]
 MACOSX_DEPLOYMENT_TARGET:  # [osx and x86_64]
