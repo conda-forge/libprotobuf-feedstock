@@ -1,4 +1,16 @@
-c_compiler_version:         # [linux and ppc64le]
-  - 8                       # [linux and ppc64le]
-cxx_compiler_version:       # [linux and ppc64le]
-  - 8                       # [linux and ppc64le]
+# abseil 20230802 now only support MacOS >=10.13, reflect this here
+MACOSX_SDK_VERSION:        # [osx and x86_64]
+  - "10.13"                # [osx and x86_64]
+MACOSX_DEPLOYMENT_TARGET:  # [osx and x86_64]
+  - "10.13"                # [osx and x86_64]
+
+c_compiler:  # [win]
+  - vs2019   # [win]
+cxx_compiler:  # [win]
+  - vs2019     # [win]
+vc:                          # [win]
+  - 16                       # [win]
+
+# manual pin because we're linking migrations
+abseil_cpp:
+  - 20230802

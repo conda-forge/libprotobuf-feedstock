@@ -1,0 +1,32 @@
+From c15a3b5551d4ad414ef6840d63153fd5babd71a5 Mon Sep 17 00:00:00 2001
+From: "H. Vetinari" <h.vetinari@gmx.com>
+Date: Sat, 3 Sep 2022 19:48:04 +0200
+Subject: [PATCH 1/6] use consistent cmake location
+
+---
+ cmake/install.cmake | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
+
+diff --git a/cmake/install.cmake b/cmake/install.cmake
+index e7eb2103b..24d7a3ec9 100644
+--- a/cmake/install.cmake
++++ b/cmake/install.cmake
+@@ -84,15 +84,9 @@ set(_install_cmakedir_desc "Directory relative to CMAKE_INSTALL to install the c
+ set(_build_cmakedir_desc "Directory relative to CMAKE_CURRENT_BINARY_DIR for cmake configuration files")
+ set(_exampledir_desc "Directory relative to CMAKE_INSTALL_DATA to install examples")
+ set(_protobuf_subdir_desc "Subdirectory in which to install cmake configuration files")
+-if(NOT MSVC)
+-  set(protobuf_CMAKE_SUBDIR "cmake/protobuf" CACHE STRING "${_protobuf_subdir_desc}")
+-  set(CMAKE_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/${protobuf_CMAKE_SUBDIR}" CACHE STRING "${_install_cmakedir_desc}")
+-  set(CMAKE_INSTALL_EXAMPLEDIR "${CMAKE_INSTALL_DATADIR}/protobuf/examples" CACHE STRING "${_exampledir_desc}")
+-else()
+-  set(protobuf_CMAKE_SUBDIR "cmake" CACHE STRING "${_protobuf_subdir_desc}")
+-  set(CMAKE_INSTALL_CMAKEDIR "cmake" CACHE STRING "${_cmakedir_desc}")
+-  set(CMAKE_INSTALL_EXAMPLEDIR "examples" CACHE STRING "${_exampledir_desc}")
+-endif()
++set(protobuf_CMAKE_SUBDIR "cmake/protobuf" CACHE STRING "${_protobuf_subdir_desc}")
++set(CMAKE_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/${protobuf_CMAKE_SUBDIR}" CACHE STRING "${_install_cmakedir_desc}")
++set(CMAKE_INSTALL_EXAMPLEDIR "${CMAKE_INSTALL_DATADIR}/protobuf/examples" CACHE STRING "${_exampledir_desc}")
+ set(CMAKE_BUILD_CMAKEDIR "${CMAKE_CURRENT_BINARY_DIR}/${protobuf_CMAKE_SUBDIR}" CACHE STRING "${_build_cmakedir_desc}")
+ mark_as_advanced(protobuf_CMAKE_SUBDIR)
+ mark_as_advanced(CMAKE_BUILD_CMAKEDIR)

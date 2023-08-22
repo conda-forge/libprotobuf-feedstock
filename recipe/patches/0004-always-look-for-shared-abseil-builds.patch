@@ -1,0 +1,22 @@
+From 52ee899847501a833926b2232dc0e19bad256003 Mon Sep 17 00:00:00 2001
+From: "H. Vetinari" <h.vetinari@gmx.com>
+Date: Sat, 13 May 2023 22:43:45 +1100
+Subject: [PATCH 4/6] always look for shared abseil builds
+
+---
+ cmake/abseil-cpp.cmake | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/cmake/abseil-cpp.cmake b/cmake/abseil-cpp.cmake
+index b50fb89e6..b07e63f26 100644
+--- a/cmake/abseil-cpp.cmake
++++ b/cmake/abseil-cpp.cmake
+@@ -37,7 +37,7 @@ elseif(protobuf_ABSL_PROVIDER STREQUAL "package")
+ endif()
+ set(_protobuf_FIND_ABSL "if(NOT TARGET absl::strings)\n  find_package(absl CONFIG)\nendif()")
+ 
+-if (BUILD_SHARED_LIBS AND MSVC)
++if (MSVC)
+   # On MSVC Abseil is bundled into a single DLL.
+   # This condition is necessary as of abseil 20230125.3 when abseil is consumed via add_subdirectory,
+   # the abseil_dll target  is named abseil_dll, while if abseil is consumed via find_package, the target
