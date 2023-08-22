@@ -91,6 +91,7 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libprotobuf-green.svg)](https://anaconda.org/conda-forge/libprotobuf) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libprotobuf.svg)](https://anaconda.org/conda-forge/libprotobuf) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libprotobuf.svg)](https://anaconda.org/conda-forge/libprotobuf) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libprotobuf.svg)](https://anaconda.org/conda-forge/libprotobuf) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-libprotobuf--python--headers-green.svg)](https://anaconda.org/conda-forge/libprotobuf-python-headers) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libprotobuf-python-headers.svg)](https://anaconda.org/conda-forge/libprotobuf-python-headers) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libprotobuf-python-headers.svg)](https://anaconda.org/conda-forge/libprotobuf-python-headers) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libprotobuf-python-headers.svg)](https://anaconda.org/conda-forge/libprotobuf-python-headers) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libprotobuf--static-green.svg)](https://anaconda.org/conda-forge/libprotobuf-static) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libprotobuf-static.svg)](https://anaconda.org/conda-forge/libprotobuf-static) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libprotobuf-static.svg)](https://anaconda.org/conda-forge/libprotobuf-static) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libprotobuf-static.svg)](https://anaconda.org/conda-forge/libprotobuf-static) |
 
 Installing libprotobuf
@@ -103,16 +104,16 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `libprotobuf, libprotobuf-static` can be installed with `conda`:
+Once the `conda-forge` channel has been enabled, `libprotobuf, libprotobuf-python-headers, libprotobuf-static` can be installed with `conda`:
 
 ```
-conda install libprotobuf libprotobuf-static
+conda install libprotobuf libprotobuf-python-headers libprotobuf-static
 ```
 
 or with `mamba`:
 
 ```
-mamba install libprotobuf libprotobuf-static
+mamba install libprotobuf libprotobuf-python-headers libprotobuf-static
 ```
 
 It is possible to list all of the versions of `libprotobuf` available on your platform with `conda`:
