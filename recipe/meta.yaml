@@ -24,7 +24,7 @@ source:
       - patches/0006-do-not-install-vendored-gmock.patch
 
 build:
-  number: 2
+  number: 3
 
 outputs:
   - name: libprotobuf
@@ -142,6 +142,21 @@ outputs:
         - cmake -GNinja $CMAKE_ARGS .   # [unix]
         - cmake -GNinja %CMAKE_ARGS% .  # [win]
         - cmake --build .
+
+  - name: libprotobuf-python-headers
+    script: build-pyheaders.sh  # [unix]
+    script: build-pyheaders.bat  # [win]
+    requirements:
+      build:
+        - rsync
+      host:
+        - {{ pin_subpackage('libprotobuf', exact=True) }}
+    test:
+      commands:
+        - test -f $PREFIX/include/google/protobuf/proto_api.h      # [unix]
+        - test -f $PREFIX/include/google/protobuf/pyext/message.h  # [unix]
+        - if not exist %LIBRARY_PREFIX\include\google\protobuf\proto_api.h      # [win]
+        - if not exist %LIBRARY_PREFIX\include\google\protobuf\pyext\message.h  # [win]
 
 about:
   home: https://developers.google.com/protocol-buffers/
