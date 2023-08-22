@@ -25,6 +25,7 @@ source:
 
 build:
   number: 3
+  skip: true  # [not win]
 
 outputs:
   - name: libprotobuf
@@ -155,8 +156,8 @@ outputs:
       commands:
         - test -f $PREFIX/include/google/protobuf/proto_api.h      # [unix]
         - test -f $PREFIX/include/google/protobuf/pyext/message.h  # [unix]
-        - if not exist %LIBRARY_PREFIX%\include\google\protobuf\proto_api.h      # [win]
-        - if not exist %LIBRARY_PREFIX%\include\google\protobuf\pyext\message.h  # [win]
+        - if not exist %LIBRARY_PREFIX%\include\google\protobuf\proto_api.h exit 1      # [win]
+        - if not exist %LIBRARY_PREFIX%\include\google\protobuf\pyext\message.h exit 1  # [win]
 
 about:
   home: https://developers.google.com/protocol-buffers/

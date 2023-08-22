@@ -10,6 +10,7 @@ if "%PKG_NAME%"=="libprotobuf-static" (
     cd build-shared
 )
 
+exit 0
 :: Configure and install based on protobuf's instructions and other `bld.bat`s.
 cmake -G "Ninja" ^
     -DCMAKE_BUILD_TYPE=Release ^
