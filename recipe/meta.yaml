@@ -148,7 +148,7 @@ outputs:
     script: build-pyheaders.bat  # [win]
     requirements:
       build:
-        - rsync
+        - rsync  # [unix]
       host:
         - {{ pin_subpackage('libprotobuf', exact=True) }}
     test:
