@@ -25,7 +25,6 @@ source:
 
 build:
   number: 3
-  skip: true  # [not win]
 
 outputs:
   - name: libprotobuf
