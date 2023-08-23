@@ -29,7 +29,7 @@ source:
     folder: third_party/googletest
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - name: libprotobuf
@@ -134,6 +134,22 @@ outputs:
         - cd cmake_test         # [win]
         - cmake %CMAKE_ARGS% .  # [win]
 
+  - name: libprotobuf-python-headers
+    script: build-pyheaders.sh  # [unix]
+    script: build-pyheaders.bat  # [win]
+    requirements:
+      build:
+        - rsync  # [unix]
+      host:
+        - {{ pin_subpackage('libprotobuf', exact=True) }}
+      run_constrained:
+        - libprotobuf {{ version }}
+    test:
+      commands:
+        - test -f $PREFIX/include/google/protobuf/proto_api.h      # [unix]
+        - test -f $PREFIX/include/google/protobuf/pyext/message.h  # [unix]
+        - if not exist %LIBRARY_PREFIX%\include\google\protobuf\proto_api.h exit 1      # [win]
+        - if not exist %LIBRARY_PREFIX%\include\google\protobuf\pyext\message.h exit 1  # [win]
 about:
   home: https://developers.google.com/protocol-buffers/
   license: BSD-3-Clause
