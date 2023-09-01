@@ -24,7 +24,7 @@ source:
       - patches/0006-Export-functions-in-google-compiler-java-names.patch
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - name: libprotobuf
@@ -141,6 +141,23 @@ outputs:
         - cmake -GNinja $CMAKE_ARGS .   # [unix]
         - cmake -GNinja %CMAKE_ARGS% .  # [win]
         - cmake --build .
+
+  - name: libprotobuf-python-headers
+    script: build-pyheaders.sh  # [unix]
+    script: build-pyheaders.bat  # [win]
+    requirements:
+      build:
+        - rsync  # [unix]
+      host:
+        - {{ pin_subpackage('libprotobuf', exact=True) }}
+      run_constrained:
+        - libprotobuf {{ major ~ "." ~ version }}
+    test:
+      commands:
+        - test -f $PREFIX/include/google/protobuf/proto_api.h      # [unix]
+        - test -f $PREFIX/include/google/protobuf/pyext/message.h  # [unix]
+        - if not exist %LIBRARY_PREFIX%\include\google\protobuf\proto_api.h exit 1      # [win]
+        - if not exist %LIBRARY_PREFIX%\include\google\protobuf\pyext\message.h exit 1  # [win]
 
 about:
   home: https://developers.google.com/protocol-buffers/
