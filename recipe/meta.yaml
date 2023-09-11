@@ -37,6 +37,7 @@ outputs:
         # https://github.com/conda-forge/conda-forge-pinning-feedstock/issues/4075
         - {{ pin_subpackage('libprotobuf', max_pin='x.x.x') }}
       ignore_run_exports_from:
+        - gtest
         - jsoncpp
     requirements:
       build:
