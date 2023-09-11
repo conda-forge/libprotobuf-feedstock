@@ -24,7 +24,7 @@ source:
       - patches/0006-do-not-install-vendored-gmock.patch
 
 build:
-  number: 5
+  number: 6
 
 outputs:
   - name: libprotobuf
@@ -37,6 +37,7 @@ outputs:
         # https://github.com/conda-forge/conda-forge-pinning-feedstock/issues/4075
         - {{ pin_subpackage('libprotobuf', max_pin='x.x.x') }}
       ignore_run_exports_from:
+        - gtest
         - jsoncpp
     requirements:
       build:
