@@ -1,5 +1,5 @@
 # keep this without major version to let the bot pick it up
-{% set version = "23.4" %}
+{% set version = "24.3" %}
 # protobuf doesn't add the major version in the tag, it's defined per language in
 # https://github.com/protocolbuffers/protobuf/blob/main/version.json
 {% set major = "4" %}
@@ -12,19 +12,17 @@ package:
 
 source:
   - url: https://github.com/protocolbuffers/protobuf/archive/refs/tags/v{{ version.replace(".rc", "-rc") }}.tar.gz
-    sha256: a700a49470d301f1190a487a923b5095bf60f08f4ae4cac9f5f7c36883d17971
+    sha256: 07d69502e58248927b58c7d7e7424135272ba5b2852a753ab6b67e62d2d29355
     patches:
       - patches/0001-use-consistent-cmake-location.patch
       - patches/0002-set-static-lib-extension-on-windows.patch
-      # backport https://github.com/protocolbuffers/protobuf/pull/12577
-      - patches/0003-Enable-the-selection-of-system-provided-jsoncpp-1257.patch
-      - patches/0004-always-look-for-shared-abseil-builds.patch
+      - patches/0003-always-look-for-shared-abseil-builds.patch
       # grpc_cpp_java_plugin links against otherwise internal symbols
-      - patches/0005-Export-functions-in-google-compiler-java-names.patch
-      - patches/0006-do-not-install-vendored-gmock.patch
+      - patches/0004-Export-functions-in-google-compiler-java-names.patch
+      - patches/0005-do-not-install-vendored-gmock.patch
 
 build:
-  number: 6
+  number: 0
 
 outputs:
   - name: libprotobuf
@@ -36,6 +34,7 @@ outputs:
         # breaks tools like grpc_plugin_cpp if they get the wrong libprotoc at runtime, see
         # https://github.com/conda-forge/conda-forge-pinning-feedstock/issues/4075
         - {{ pin_subpackage('libprotobuf', max_pin='x.x.x') }}
+        - __osx >={{ MACOSX_DEPLOYMENT_TARGET }}  # [osx and x86_64]
       ignore_run_exports_from:
         - gtest
         - jsoncpp
@@ -54,6 +53,9 @@ outputs:
         - zlib
       run:
         - ucrt  # [win]
+        # following google's C++ support policy, protobuf only support MacOS >=10.13, see:
+        # https://github.com/google/oss-policies-info/blob/main/foundational-cxx-support-matrix.md
+        # https://github.com/protocolbuffers/protobuf/blob/v24.0/Protobuf-C%2B%2B.podspec#L29
         - __osx >={{ MACOSX_DEPLOYMENT_TARGET }}  # [osx and x86_64]
     test:
       requires:
