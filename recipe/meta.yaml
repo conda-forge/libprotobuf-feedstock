@@ -22,7 +22,7 @@ source:
       - patches/0005-do-not-install-vendored-gmock.patch
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - name: libprotobuf
