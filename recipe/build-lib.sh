@@ -13,7 +13,9 @@ elif [[ "$(uname)" == "Darwin" ]]; then
     # See https://conda-forge.org/docs/maintainer/knowledge_base.html#newer-c-features-with-old-sdk
     CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
     # remove pie from LDFLAGS
-    LDFLAGS="${LDFLAGS//-pie/} -framework CoreFoundation"
+    LDFLAGS="${LDFLAGS//-pie/}"
+    # CoreFoundation is needed as least as of libprotobuf>=4.23.X
+    LDFLAGS="${LDFLAGS} -framework CoreFoundation"
 fi
 
 # required to pick up conda installed zlib
