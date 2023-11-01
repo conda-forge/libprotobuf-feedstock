@@ -208,10 +208,12 @@ In order to produce a uniquely identifiable distribution:
 Feedstock Maintainers
 =====================
 
+* [@JohanMabille](https://github.com/JohanMabille/)
 * [@dopplershift](https://github.com/dopplershift/)
 * [@h-vetinari](https://github.com/h-vetinari/)
 * [@hajapy](https://github.com/hajapy/)
 * [@jakirkham](https://github.com/jakirkham/)
+* [@jjerphan](https://github.com/jjerphan/)
 * [@ocefpaf](https://github.com/ocefpaf/)
 * [@wesm](https://github.com/wesm/)
 * [@xhochy](https://github.com/xhochy/)
