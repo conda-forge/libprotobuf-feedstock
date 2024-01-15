@@ -29,6 +29,8 @@ outputs:
     script: build-lib.sh  # [unix]
     script: build-lib.bat  # [win]
     build:
+      # debug
+      skip: true  # [win]
       run_exports:
         # protobuf now (intentionally) increments the SOVER with every patch release, which
         # breaks tools like grpc_plugin_cpp if they get the wrong libprotoc at runtime, see
@@ -120,9 +122,9 @@ outputs:
         - libabseil
         - libabseil-tests
         - zlib
-        - {{ pin_subpackage('libprotobuf', exact=True) }}
+        - {{ pin_subpackage('libprotobuf', exact=True) }}  # [not win]
       run:
-        - {{ pin_subpackage('libprotobuf', exact=True) }}
+        - {{ pin_subpackage('libprotobuf', exact=True) }}  # [not win]
     test:
       requires:
         # cmake needs compiler to be able to run package detection, see
