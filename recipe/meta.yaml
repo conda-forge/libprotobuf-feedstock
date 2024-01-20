@@ -20,6 +20,7 @@ source:
       # grpc_cpp_java_plugin links against otherwise internal symbols
       - patches/0004-Export-functions-in-google-compiler-java-names.patch
       - patches/0005-do-not-install-vendored-gmock.patch
+      - patches/0006-Fix-getting-env-variables-on-windows.patch
 
 build:
   number: 0
