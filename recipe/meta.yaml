@@ -20,12 +20,10 @@ source:
       # grpc_cpp_java_plugin links against otherwise internal symbols
       - patches/0004-Export-functions-in-google-compiler-java-names.patch
       - patches/0005-do-not-install-vendored-gmock.patch
+      # backport https://github.com/protocolbuffers/protobuf/pull/15518
       - patches/0006-Fix-getting-env-variables-on-windows.patch
-      # Backport from 4.26.0rc1 for
-      # https://github.com/conda-forge/libprotobuf-feedstock/issues/206
-      # taken from
-      # https://github.com/protocolbuffers/protobuf/commit/f78f9c51fa2470070e5d4b49649800971c789224
-      - patches/fix_constexpr_vtble.patch
+      # backport https://github.com/protocolbuffers/protobuf/commit/f78f9c51fa2470070e5d4b49649800971c789224
+      - patches/0007-Workaround-false-positive-warning-in-MSVC.-Fixes-htt.patch
 
 build:
   number: 1
