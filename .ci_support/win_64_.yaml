@@ -9,7 +9,7 @@ cxx_compiler:
 jsoncpp:
 - 1.9.5
 libabseil:
-- '20230802'
+- '20240116'
 target_platform:
 - win-64
 zlib:
