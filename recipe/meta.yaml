@@ -1,5 +1,5 @@
 # keep this without major version to let the bot pick it up
-{% set version = "25.1" %}
+{% set version = "25.2" %}
 # protobuf doesn't add the major version in the tag, it's defined per language in
 # https://github.com/protocolbuffers/protobuf/blob/main/version.json
 {% set major = "4" %}
@@ -12,7 +12,7 @@ package:
 
 source:
   - url: https://github.com/protocolbuffers/protobuf/archive/refs/tags/v{{ version.replace(".rc", "-rc") }}.tar.gz
-    sha256: 9bd87b8280ef720d3240514f884e56a712f2218f0d693b48050c836028940a42
+    sha256: 8ff511a64fc46ee792d3fe49a5a1bcad6f7dc50dfbba5a28b0e5b979c17f9871
     patches:
       - patches/0001-use-consistent-cmake-location.patch
       - patches/0002-set-static-lib-extension-on-windows.patch
@@ -20,15 +20,13 @@ source:
       # grpc_cpp_java_plugin links against otherwise internal symbols
       - patches/0004-Export-functions-in-google-compiler-java-names.patch
       - patches/0005-do-not-install-vendored-gmock.patch
+      # backport https://github.com/protocolbuffers/protobuf/pull/15518
       - patches/0006-Fix-getting-env-variables-on-windows.patch
-      # Backport from 4.26.0rc1 for
-      # https://github.com/conda-forge/libprotobuf-feedstock/issues/206
-      # taken from
-      # https://github.com/protocolbuffers/protobuf/commit/f78f9c51fa2470070e5d4b49649800971c789224
-      - patches/fix_constexpr_vtble.patch
+      # backport https://github.com/protocolbuffers/protobuf/commit/f78f9c51fa2470070e5d4b49649800971c789224
+      - patches/0007-Workaround-false-positive-warning-in-MSVC.-Fixes-htt.patch
 
 build:
-  number: 1
+  number: 0
 
 outputs:
   - name: libprotobuf
