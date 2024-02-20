@@ -26,6 +26,9 @@ source:
       - patches/0007-Workaround-false-positive-warning-in-MSVC.-Fixes-htt.patch
       # fix for https://github.com/protocolbuffers/protobuf/issues/15883
       - patches/0008-fix-pkg-config-metadata-for-shared-abseil-on-windows.patch
+      # skip annoyingly flaky test on windows, see
+      # https://github.com/protocolbuffers/protobuf/issues/8645
+      - patches/0009-disable-MapImplTest.RandomOrdering-due-to-flakiness.patch      # [win]
 
 build:
   number: 1

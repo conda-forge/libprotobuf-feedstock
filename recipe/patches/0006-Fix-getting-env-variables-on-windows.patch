@@ -1,7 +1,7 @@
 From ceff6146f5e57b38dd4bd3e66b4798721f57179c Mon Sep 17 00:00:00 2001
 From: Isuru Fernando <isuruf@gmail.com>
 Date: Fri, 19 Jan 2024 19:14:50 -0600
-Subject: [PATCH 6/8] Fix getting env variables on windows
+Subject: [PATCH 6/9] Fix getting env variables on windows
 
 ---
  src/google/protobuf/compiler/mock_code_generator.cc | 8 +++++++-
