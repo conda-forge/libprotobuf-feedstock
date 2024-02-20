@@ -68,6 +68,7 @@ outputs:
         - {{ compiler('cxx') }}
         - cmake
         - ninja
+        - pkg-config
       files:
         - cmake_test/
       commands:
@@ -87,11 +88,9 @@ outputs:
         - test -f ${PREFIX}/lib/cmake/protobuf/protobuf-config.cmake              # [unix]
         - if not exist %LIBRARY_LIB%\cmake\protobuf\protobuf-config.cmake exit 1  # [win]
 
-        # pkgconfig
-        - test -f ${PREFIX}/lib/pkgconfig/protobuf.pc                   # [unix]
-        - test -f ${PREFIX}/lib/pkgconfig/protobuf-lite.pc              # [unix]
-        - if not exist %LIBRARY_LIB%\pkgconfig\protobuf.pc exit 1       # [win]
-        - if not exist %LIBRARY_LIB%\pkgconfig\protobuf-lite.pc exit 1  # [win]
+        # pkg-config
+        - pkg-config --print-errors --exact-version "{{ version }}.0" protobuf
+        - pkg-config --print-errors --exact-version "{{ version }}.0" protobuf-lite
 
         # binary
         - protoc --help
