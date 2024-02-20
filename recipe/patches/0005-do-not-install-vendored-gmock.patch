@@ -1,17 +1,17 @@
-From 8e04212bac883743aea9e19e77976f44ffdb5ad6 Mon Sep 17 00:00:00 2001
+From aa476a3bb22988fdb60df0330f2ab8cea0a39d25 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Wed, 9 Aug 2023 14:06:35 +1100
-Subject: [PATCH 5/8] do not install vendored gmock
+Subject: [PATCH 5/9] do not install vendored gmock
 
 ---
  cmake/install.cmake | 7 -------
  1 file changed, 7 deletions(-)
 
 diff --git a/cmake/install.cmake b/cmake/install.cmake
-index c4757f06c..f68ec217b 100644
+index d80074a85..ba7918416 100644
 --- a/cmake/install.cmake
 +++ b/cmake/install.cmake
-@@ -136,10 +136,3 @@ if(protobuf_INSTALL_EXAMPLES)
+@@ -133,10 +133,3 @@ if(protobuf_INSTALL_EXAMPLES)
      DESTINATION "${CMAKE_INSTALL_EXAMPLEDIR}"
      COMPONENT protobuf-examples)
  endif()
