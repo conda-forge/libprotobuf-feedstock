@@ -24,9 +24,11 @@ source:
       - patches/0006-Fix-getting-env-variables-on-windows.patch
       # backport https://github.com/protocolbuffers/protobuf/commit/f78f9c51fa2470070e5d4b49649800971c789224
       - patches/0007-Workaround-false-positive-warning-in-MSVC.-Fixes-htt.patch
+      # fix for https://github.com/protocolbuffers/protobuf/issues/15883
+      - patches/0008-fix-pkg-config-metadata-for-shared-abseil-on-windows.patch
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - name: libprotobuf
