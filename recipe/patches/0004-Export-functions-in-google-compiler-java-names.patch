@@ -1,7 +1,7 @@
 From b4ad926042037d3f40604bf7fa617f49cb426399 Mon Sep 17 00:00:00 2001
 From: "Uwe L. Korn" <uwe.korn@quantco.com>
 Date: Wed, 14 Jun 2023 11:36:55 +0200
-Subject: [PATCH 4/7] Export functions in google::compiler::java::names
+Subject: [PATCH 4/9] Export functions in google::compiler::java::names
 
 ---
  src/google/protobuf/compiler/java/names.h | 20 ++++++++++----------
