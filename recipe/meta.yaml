@@ -20,15 +20,18 @@ source:
       # grpc_cpp_java_plugin links against otherwise internal symbols
       - patches/0004-Export-functions-in-google-compiler-java-names.patch
       - patches/0005-do-not-install-vendored-gmock.patch
+      # backport https://github.com/protocolbuffers/protobuf/pull/15518
       - patches/0006-Fix-getting-env-variables-on-windows.patch
-      # Backport from 4.26.0rc1 for
-      # https://github.com/conda-forge/libprotobuf-feedstock/issues/206
-      # taken from
-      # https://github.com/protocolbuffers/protobuf/commit/f78f9c51fa2470070e5d4b49649800971c789224
-      - patches/fix_constexpr_vtble.patch
+      # backport https://github.com/protocolbuffers/protobuf/commit/f78f9c51fa2470070e5d4b49649800971c789224
+      - patches/0007-Workaround-false-positive-warning-in-MSVC.-Fixes-htt.patch
+      # fix for https://github.com/protocolbuffers/protobuf/issues/15883
+      - patches/0008-fix-pkg-config-metadata-for-shared-abseil-on-windows.patch
+      # skip annoyingly flaky test on windows, see
+      # https://github.com/protocolbuffers/protobuf/issues/8645
+      - patches/0009-disable-MapImplTest.RandomOrdering-due-to-flakiness.patch      # [win]
 
 build:
-  number: 1
+  number: 2
 
 outputs:
   - name: libprotobuf
@@ -70,6 +73,7 @@ outputs:
         - {{ compiler('cxx') }}
         - cmake
         - ninja
+        - pkg-config
       files:
         - cmake_test/
       commands:
@@ -89,11 +93,9 @@ outputs:
         - test -f ${PREFIX}/lib/cmake/protobuf/protobuf-config.cmake              # [unix]
         - if not exist %LIBRARY_LIB%\cmake\protobuf\protobuf-config.cmake exit 1  # [win]
 
-        # pkgconfig
-        - test -f ${PREFIX}/lib/pkgconfig/protobuf.pc                   # [unix]
-        - test -f ${PREFIX}/lib/pkgconfig/protobuf-lite.pc              # [unix]
-        - if not exist %LIBRARY_LIB%\pkgconfig\protobuf.pc exit 1       # [win]
-        - if not exist %LIBRARY_LIB%\pkgconfig\protobuf-lite.pc exit 1  # [win]
+        # pkg-config
+        - pkg-config --print-errors --exact-version "{{ version }}.0" protobuf
+        - pkg-config --print-errors --exact-version "{{ version }}.0" protobuf-lite
 
         # binary
         - protoc --help
