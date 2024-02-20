@@ -1,7 +1,7 @@
 From 96948fa966e91df3fe6b4a788152b0b83c2ca9b6 Mon Sep 17 00:00:00 2001
 From: Protobuf Team Bot <protobuf-github-bot@google.com>
 Date: Thu, 2 Nov 2023 09:13:31 -0700
-Subject: [PATCH 7/7] Workaround false positive warning in MSVC. Fixes
+Subject: [PATCH 7/8] Workaround false positive warning in MSVC. Fixes
  https://github.com/protocolbuffers/protobuf/issues/14602
 
 PiperOrigin-RevId: 578875053
