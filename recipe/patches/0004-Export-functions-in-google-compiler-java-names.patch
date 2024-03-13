@@ -1,14 +1,14 @@
-From b4ad926042037d3f40604bf7fa617f49cb426399 Mon Sep 17 00:00:00 2001
+From 74257f5d7f2ba570b91b7c773515f0269a4d2e4a Mon Sep 17 00:00:00 2001
 From: "Uwe L. Korn" <uwe.korn@quantco.com>
 Date: Wed, 14 Jun 2023 11:36:55 +0200
-Subject: [PATCH 4/9] Export functions in google::compiler::java::names
+Subject: [PATCH 4/7] Export functions in google::compiler::java::names
 
 ---
  src/google/protobuf/compiler/java/names.h | 20 ++++++++++----------
  1 file changed, 10 insertions(+), 10 deletions(-)
 
 diff --git a/src/google/protobuf/compiler/java/names.h b/src/google/protobuf/compiler/java/names.h
-index 5e8b40287..c67668bb6 100644
+index 5e8b402..c67668b 100644
 --- a/src/google/protobuf/compiler/java/names.h
 +++ b/src/google/protobuf/compiler/java/names.h
 @@ -40,67 +40,67 @@ namespace java {
