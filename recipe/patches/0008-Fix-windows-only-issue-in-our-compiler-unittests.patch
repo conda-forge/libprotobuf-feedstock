@@ -1,0 +1,58 @@
+From a4ad52b7abda09ec071145cb7253cc1993899295 Mon Sep 17 00:00:00 2001
+From: Mike Kruskal <mkruskal@google.com>
+Date: Tue, 19 Mar 2024 14:47:35 -0700
+Subject: [PATCH 8/8] Fix windows-only issue in our compiler unittests.
+
+Closes https://github.com/protocolbuffers/protobuf/issues/16026
+
+PiperOrigin-RevId: 617301270
+---
+ .../protobuf/compiler/mock_code_generator.cc    | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
+
+diff --git a/src/google/protobuf/compiler/mock_code_generator.cc b/src/google/protobuf/compiler/mock_code_generator.cc
+index 665262d71..7c8912631 100644
+--- a/src/google/protobuf/compiler/mock_code_generator.cc
++++ b/src/google/protobuf/compiler/mock_code_generator.cc
+@@ -50,6 +50,7 @@
+ namespace google {
+ namespace protobuf {
+ namespace compiler {
++namespace {
+ 
+ // Returns the list of the names of files in all_files in the form of a
+ // comma-separated string.
+@@ -71,14 +72,20 @@ static constexpr absl::string_view kFirstInsertionPoint =
+ static constexpr absl::string_view kSecondInsertionPoint =
+     "  # @@protoc_insertion_point(second_mock_insertion_point) is here\n";
+ 
+-MockCodeGenerator::MockCodeGenerator(absl::string_view name) : name_(name) {
++absl::string_view GetTestCase() {
+   const char* c_key = getenv("TEST_CASE");
+   if (c_key == NULL) {
+     // In Windows, setting 'TEST_CASE=' is equivalent to unsetting
+-    // and therefore c_key can be NULL
+-    c_key = "";
++    // and therefore c_key can be nullptr
++    return "";
+   }
+-  absl::string_view key(c_key);
++  return c_key;
++}
++
++}  // namespace
++
++MockCodeGenerator::MockCodeGenerator(absl::string_view name) : name_(name) {
++  absl::string_view key = GetTestCase();
+   if (key == "no_editions") {
+     suppressed_features_ |= CodeGenerator::FEATURE_SUPPORTS_EDITIONS;
+   } else if (key == "invalid_features") {
+@@ -214,7 +221,7 @@ bool MockCodeGenerator::Generate(const FileDescriptor* file,
+                                  std::string* error) const {
+   // Override minimum/maximum after generating the pool to simulate a plugin
+   // that "works" but doesn't advertise support of the current edition.
+-  absl::string_view test_case = getenv("TEST_CASE");
++  absl::string_view test_case = GetTestCase();
+   if (test_case == "high_minimum") {
+     minimum_edition_ = Edition::EDITION_99997_TEST_ONLY;
+   } else if (test_case == "low_maximum") {

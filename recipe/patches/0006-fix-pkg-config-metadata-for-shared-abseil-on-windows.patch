@@ -1,7 +1,7 @@
-From e433bf1e12f6b7049669cbe855ce95da8eb30dbf Mon Sep 17 00:00:00 2001
+From 569c7cc8c2def75473921b883682da1f33269d8d Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Tue, 20 Feb 2024 20:27:36 +1100
-Subject: [PATCH 6/7] fix pkg-config metadata for shared abseil on windows
+Subject: [PATCH 6/8] fix pkg-config metadata for shared abseil on windows
 
 ---
  cmake/install.cmake | 5 ++++-
