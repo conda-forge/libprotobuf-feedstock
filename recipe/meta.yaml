@@ -1,8 +1,16 @@
 # keep this without major version to let the bot pick it up
-{% set version = "25.3" %}
+{% set version = "26.0" %}
 # protobuf doesn't add the major version in the tag, it's defined per language in
 # https://github.com/protocolbuffers/protobuf/blob/main/version.json
-{% set major = "4" %}
+{% set major = "5" %}
+# pkg-config metadata sets yet another version format, not using the major version
+# but adding the rc number as a patch version, or 0 for regular releases
+{% set pkgconfig_ver = version.split(".")[0] ~ "." ~ version.split(".")[1] %}
+{% if version.split(".")[-1].startswith("rc") %}
+  {% set pkgconfig_ver = pkgconfig_ver ~ "." ~ version.split(".")[-1].replace("rc", "") %}
+{% else %}
+  {% set pkgconfig_ver = pkgconfig_ver ~ "." ~ "0" %}
+{% endif %}
 
 {% set libraries = ["libprotoc", "libprotobuf", "libprotobuf-lite"] %}
 
@@ -12,7 +20,7 @@ package:
 
 source:
   - url: https://github.com/protocolbuffers/protobuf/archive/refs/tags/v{{ version.replace(".rc", "-rc") }}.tar.gz
-    sha256: d19643d265b978383352b3143f04c0641eea75a75235c111cc01a1350173180e
+    sha256: e32100a8013870d24ffc37dad6781a61e5d0c99501bcb04d39c340a1c44a8e63
     patches:
       - patches/0001-use-consistent-cmake-location.patch
       - patches/0002-set-static-lib-extension-on-windows.patch
@@ -20,15 +28,13 @@ source:
       # grpc_cpp_java_plugin links against otherwise internal symbols
       - patches/0004-Export-functions-in-google-compiler-java-names.patch
       - patches/0005-do-not-install-vendored-gmock.patch
-      # backport https://github.com/protocolbuffers/protobuf/pull/15518
-      - patches/0006-Fix-getting-env-variables-on-windows.patch
-      # backport https://github.com/protocolbuffers/protobuf/commit/f78f9c51fa2470070e5d4b49649800971c789224
-      - patches/0007-Workaround-false-positive-warning-in-MSVC.-Fixes-htt.patch
       # backport https://github.com/protocolbuffers/protobuf/pull/15888
-      - patches/0008-fix-pkg-config-metadata-for-shared-abseil-on-windows.patch
+      - patches/0006-fix-pkg-config-metadata-for-shared-abseil-on-windows.patch
       # skip annoyingly flaky test on windows, see
       # https://github.com/protocolbuffers/protobuf/issues/8645
-      - patches/0009-disable-MapImplTest.RandomOrdering-due-to-flakiness.patch      # [win]
+      - patches/0007-disable-MapImplTest.RandomOrdering-due-to-flakiness.patch      # [win]
+      # backport https://github.com/protocolbuffers/protobuf/pull/16231
+      - patches/0008-Fix-windows-only-issue-in-our-compiler-unittests.patch
 
 build:
   number: 0
@@ -94,8 +100,8 @@ outputs:
         - if not exist %LIBRARY_LIB%\cmake\protobuf\protobuf-config.cmake exit 1  # [win]
 
         # pkg-config
-        - pkg-config --print-errors --exact-version "{{ version }}.0" protobuf
-        - pkg-config --print-errors --exact-version "{{ version }}.0" protobuf-lite
+        - pkg-config --print-errors --exact-version "{{ pkgconfig_ver }}" protobuf
+        - pkg-config --print-errors --exact-version "{{ pkgconfig_ver }}" protobuf-lite
 
         # binary
         - protoc --help

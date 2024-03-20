@@ -1,17 +1,17 @@
-From df4354948bbcf18e6a41fc5743724fe85b166bc2 Mon Sep 17 00:00:00 2001
+From d8881312b1307f5b4c4c2576e3512e68290af874 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Sat, 3 Sep 2022 19:48:04 +0200
-Subject: [PATCH 1/9] use consistent cmake location
+Subject: [PATCH 1/8] use consistent cmake location
 
 ---
  cmake/install.cmake | 12 +++---------
  1 file changed, 3 insertions(+), 9 deletions(-)
 
 diff --git a/cmake/install.cmake b/cmake/install.cmake
-index 9679d5b26..c4757f06c 100644
+index 52914a8ea..5d89a5f5f 100644
 --- a/cmake/install.cmake
 +++ b/cmake/install.cmake
-@@ -96,15 +96,9 @@ set(_install_cmakedir_desc "Directory relative to CMAKE_INSTALL to install the c
+@@ -98,15 +98,9 @@ set(_install_cmakedir_desc "Directory relative to CMAKE_INSTALL to install the c
  set(_build_cmakedir_desc "Directory relative to CMAKE_CURRENT_BINARY_DIR for cmake configuration files")
  set(_exampledir_desc "Directory relative to CMAKE_INSTALL_DATA to install examples")
  set(_protobuf_subdir_desc "Subdirectory in which to install cmake configuration files")
