@@ -35,7 +35,7 @@ source:
       - patches/0007-disable-MapImplTest.RandomOrdering-due-to-flakiness.patch      # [win]
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - name: libprotobuf
