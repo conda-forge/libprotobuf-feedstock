@@ -63,9 +63,6 @@ outputs:
         - zlib
       run:
         - ucrt  # [win]
-        # following google's C++ support policy, protobuf only support MacOS >=10.13, see:
-        # https://github.com/google/oss-policies-info/blob/main/foundational-cxx-support-matrix.md
-        # https://github.com/protocolbuffers/protobuf/blob/v24.0/Protobuf-C%2B%2B.podspec#L29
     test:
       requires:
         # cmake needs compiler to be able to run package detection, see
