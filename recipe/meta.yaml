@@ -1,5 +1,5 @@
 # keep this without major version to let the bot pick it up
-{% set version = "26.1" %}
+{% set version = "27.0" %}
 # protobuf doesn't add the major version in the tag, it's defined per language in
 # https://github.com/protocolbuffers/protobuf/blob/main/version.json
 {% set major = "5" %}
@@ -20,7 +20,7 @@ package:
 
 source:
   - url: https://github.com/protocolbuffers/protobuf/archive/refs/tags/v{{ version.replace(".rc", "-rc") }}.tar.gz
-    sha256: 4fc5ff1b2c339fb86cd3a25f0b5311478ab081e65ad258c6789359cd84d421f8
+    sha256: da288bf1daa6c04d03a9051781caa52aceb9163586bff9aa6cfb12f69b9395aa
     patches:
       - patches/0001-use-consistent-cmake-location.patch
       - patches/0002-set-static-lib-extension-on-windows.patch
@@ -47,13 +47,13 @@ outputs:
         # breaks tools like grpc_plugin_cpp if they get the wrong libprotoc at runtime, see
         # https://github.com/conda-forge/conda-forge-pinning-feedstock/issues/4075
         - {{ pin_subpackage('libprotobuf', max_pin='x.x.x') }}
-        - __osx >={{ MACOSX_DEPLOYMENT_TARGET }}  # [osx and x86_64]
       ignore_run_exports_from:
         - gtest
         - jsoncpp
     requirements:
       build:
         - {{ compiler('c') }}
+        - {{ stdlib("c") }}
         - {{ compiler('cxx') }}
         - cmake
         - ninja
@@ -69,7 +69,6 @@ outputs:
         # following google's C++ support policy, protobuf only support MacOS >=10.13, see:
         # https://github.com/google/oss-policies-info/blob/main/foundational-cxx-support-matrix.md
         # https://github.com/protocolbuffers/protobuf/blob/v24.0/Protobuf-C%2B%2B.podspec#L29
-        - __osx >={{ MACOSX_DEPLOYMENT_TARGET }}  # [osx and x86_64]
     test:
       requires:
         # cmake needs compiler to be able to run package detection, see
@@ -123,6 +122,7 @@ outputs:
     requirements:
       build:
         - {{ compiler('c') }}
+        - {{ stdlib("c") }}
         - {{ compiler('cxx') }}
         - cmake
         - ninja
