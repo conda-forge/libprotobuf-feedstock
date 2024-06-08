@@ -1,5 +1,5 @@
 # keep this without major version to let the bot pick it up
-{% set version = "27.0" %}
+{% set version = "27.1" %}
 # protobuf doesn't add the major version in the tag, it's defined per language in
 # https://github.com/protocolbuffers/protobuf/blob/main/version.json
 {% set major = "5" %}
@@ -20,7 +20,7 @@ package:
 
 source:
   - url: https://github.com/protocolbuffers/protobuf/archive/refs/tags/v{{ version.replace(".rc", "-rc") }}.tar.gz
-    sha256: da288bf1daa6c04d03a9051781caa52aceb9163586bff9aa6cfb12f69b9395aa
+    sha256: 6fbe2e6f703bcd3a246529c2cab586ca12a98c4e641f5f71d51fde09eb48e9e7
     patches:
       - patches/0001-use-consistent-cmake-location.patch
       - patches/0002-set-static-lib-extension-on-windows.patch
