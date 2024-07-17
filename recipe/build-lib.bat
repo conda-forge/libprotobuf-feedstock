@@ -17,6 +17,7 @@ cmake -G "Ninja" ^
     -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
     -DCMAKE_PREFIX_PATH=%LIBRARY_PREFIX% ^
     -Dprotobuf_ABSL_PROVIDER="package" ^
+    -Dprotobuf_BUILD_LIBUPB=OFF ^
     -Dprotobuf_BUILD_SHARED_LIBS=%CF_SHARED% ^
     -Dprotobuf_JSONCPP_PROVIDER="package" ^
     -Dprotobuf_MSVC_STATIC_RUNTIME=OFF ^

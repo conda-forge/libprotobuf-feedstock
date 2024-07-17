@@ -32,7 +32,7 @@ source:
       - patches/0005-disable-MapImplTest.RandomOrdering-due-to-flakiness.patch      # [win]
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - name: libprotobuf
@@ -85,6 +85,16 @@ outputs:
         - test ! -f ${PREFIX}/lib/{{ each_lib }}.a                     # [unix]
         - if exist %LIBRARY_LIB%\{{ each_lib }}-static.lib exit 1      # [win]
         {% endfor %}
+
+        # absence of upb-related includes & libraries, see
+        # https://github.com/protocolbuffers/protobuf/issues/12927
+        - test ! -d ${PREFIX}/include/upb           # [unix]
+        - test ! -f ${PREFIX}/lib/libupb.a          # [unix]
+        - test ! -f ${PREFIX}/lib/libupb.so         # [linux]
+        - test ! -f ${PREFIX}/lib/libupb.dylib      # [osx]
+        - if exist %LIBRARY_INC%\upb exit 1         # [win]
+        - if exist %LIBRARY_LIB%\libupb.lib exit 1  # [win]
+        - if exist %LIBRARY_BIN%\libupb.dll exit 1  # [win]
 
         # cmake
         - test -f ${PREFIX}/lib/cmake/protobuf/protobuf-config.cmake              # [unix]
