@@ -21,7 +21,7 @@ docker_image:
 jsoncpp:
 - 1.9.5
 libabseil:
-- '20240116'
+- '20240722'
 target_platform:
 - linux-ppc64le
 zip_keys:
