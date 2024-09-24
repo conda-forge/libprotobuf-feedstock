@@ -1,5 +1,7 @@
 c_compiler:
 - vs2019
+c_stdlib:
+- vs
 channel_sources:
 - conda-forge
 channel_targets:
@@ -7,10 +9,10 @@ channel_targets:
 cxx_compiler:
 - vs2019
 jsoncpp:
-- 1.9.5
+- 1.9.6
 libabseil:
 - '20240116'
 target_platform:
 - win-64
 zlib:
-- '1.2'
+- '1'
