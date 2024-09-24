@@ -43,12 +43,12 @@ outputs:
         # breaks tools like grpc_plugin_cpp if they get the wrong libprotoc at runtime, see
         # https://github.com/conda-forge/conda-forge-pinning-feedstock/issues/4075
         - {{ pin_subpackage('libprotobuf', max_pin='x.x.x') }}
-        - __osx >={{ MACOSX_DEPLOYMENT_TARGET }}  # [osx and x86_64]
       ignore_run_exports_from:
         - gtest
         - jsoncpp
     requirements:
       build:
+        - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - cmake
@@ -62,10 +62,6 @@ outputs:
         - zlib
       run:
         - ucrt  # [win]
-        # following google's C++ support policy, protobuf only support MacOS >=10.13, see:
-        # https://github.com/google/oss-policies-info/blob/main/foundational-cxx-support-matrix.md
-        # https://github.com/protocolbuffers/protobuf/blob/v24.0/Protobuf-C%2B%2B.podspec#L29
-        - __osx >={{ MACOSX_DEPLOYMENT_TARGET }}  # [osx and x86_64]
     test:
       requires:
         # cmake needs compiler to be able to run package detection, see
@@ -118,6 +114,7 @@ outputs:
         - jsoncpp
     requirements:
       build:
+        - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - cmake
