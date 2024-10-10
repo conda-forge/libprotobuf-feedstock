@@ -1,5 +1,7 @@
 BUILD:
 - aarch64-conda_cos7-linux-gnu
+ace:
+- 8.0.1
 c_compiler:
 - gcc
 c_compiler_version:
@@ -26,6 +28,8 @@ jsoncpp:
 - 1.9.6
 libabseil:
 - '20240722'
+libprotobuf:
+- 5.27.5
 target_platform:
 - linux-aarch64
 zip_keys:
