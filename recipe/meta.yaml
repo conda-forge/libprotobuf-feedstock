@@ -22,14 +22,13 @@ source:
   - url: https://github.com/protocolbuffers/protobuf/archive/refs/tags/v{{ version.replace(".rc", "-rc") }}.tar.gz
     sha256: b2340aa47faf7ef10a0328190319d3f3bee1b24f426d4ce8f4253b6f27ce16db
     patches:
-      - patches/0001-use-consistent-cmake-location.patch
-      - patches/0002-set-static-lib-extension-on-windows.patch
-      - patches/0003-always-look-for-shared-abseil-builds.patch
+      - patches/0001-set-static-lib-extension-on-windows.patch
+      - patches/0002-always-look-for-shared-abseil-builds.patch
       # grpc_cpp_java_plugin links against otherwise internal symbols
-      - patches/0004-do-not-install-vendored-gmock.patch
+      - patches/0003-do-not-install-vendored-gmock.patch
       # skip annoyingly flaky test on windows, see
       # https://github.com/protocolbuffers/protobuf/issues/8645
-      - patches/0005-disable-MapImplTest.RandomOrdering-due-to-flakiness.patch      # [win]
+      - patches/0004-disable-MapImplTest.RandomOrdering-due-to-flakiness.patch      # [win]
 
 build:
   number: 0
