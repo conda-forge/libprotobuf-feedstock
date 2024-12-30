@@ -1,5 +1,5 @@
 ace:
-- 8.0.1
+- 8.0.2
 c_compiler:
 - vs2019
 c_stdlib:
@@ -15,7 +15,7 @@ jsoncpp:
 libabseil:
 - '20240722'
 libprotobuf:
-- 5.27.5
+- 5.28.2
 target_platform:
 - win-64
 zlib:
