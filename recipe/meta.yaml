@@ -1,5 +1,5 @@
 # keep this without major version to let the bot pick it up
-{% set version = "28.3" %}
+{% set version = "29.0" %}
 # protobuf doesn't add the major version in the tag, it's defined per language in
 # https://github.com/protocolbuffers/protobuf/blob/main/version.json
 {% set major = "5" %}
@@ -20,7 +20,7 @@ package:
 
 source:
   - url: https://github.com/protocolbuffers/protobuf/archive/refs/tags/v{{ version.replace(".rc", "-rc") }}.tar.gz
-    sha256: 7c3ebd7aaedd86fa5dc479a0fda803f602caaf78d8aff7ce83b89e1b8ae7442a
+    sha256: 10a0d58f39a1a909e95e00e8ba0b5b1dc64d02997f741151953a2b3659f6e78c
     patches:
       - patches/0001-set-static-lib-extension-on-windows.patch
       - patches/0002-always-look-for-shared-abseil-builds.patch
@@ -86,15 +86,12 @@ outputs:
         - if exist %LIBRARY_LIB%\{{ each_lib }}-static.lib exit 1      # [win]
         {% endfor %}
 
-        # absence of upb-related includes & libraries, see
+        # presence of upb-related includes & libraries (moved here from grpc), see
         # https://github.com/protocolbuffers/protobuf/issues/12927
-        - test ! -d ${PREFIX}/include/upb           # [unix]
-        - test ! -f ${PREFIX}/lib/libupb.a          # [unix]
-        - test ! -f ${PREFIX}/lib/libupb.so         # [linux]
-        - test ! -f ${PREFIX}/lib/libupb.dylib      # [osx]
-        - if exist %LIBRARY_INC%\upb exit 1         # [win]
-        - if exist %LIBRARY_LIB%\libupb.lib exit 1  # [win]
-        - if exist %LIBRARY_BIN%\libupb.dll exit 1  # [win]
+        - test -d ${PREFIX}/include/upb                 # [unix]
+        - test -f ${PREFIX}/lib/libupb.a                # [unix]
+        - if not exist %LIBRARY_INC%\upb exit 1         # [win]
+        - if not exist %LIBRARY_LIB%\libupb.lib exit 1  # [win]
 
         # cmake
         - test -f ${PREFIX}/lib/cmake/protobuf/protobuf-config.cmake              # [unix]
