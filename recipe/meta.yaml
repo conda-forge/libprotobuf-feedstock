@@ -43,7 +43,7 @@ source:
       - patches/0007-install-a-missing-upb-header.patch
 
 build:
-  number: 1
+  number: 2
 
 outputs:
   - name: libprotobuf
@@ -103,6 +103,11 @@ outputs:
         - test -f ${PREFIX}/lib/libupb.a                # [unix]
         - if not exist %LIBRARY_INC%\upb exit 1         # [win]
         - if not exist %LIBRARY_LIB%\libupb.lib exit 1  # [win]
+
+        # upb headers needed by protobuf, see
+        # https://github.com/protocolbuffers/protobuf/issues/20522
+        - test -f ${PREFIX}/include/upb/wire/internal/reader.h          # [unix]
+        - if not exist %LIBRARY_INC%\upb\wire\internal\reader.h exit 1  # [win]
 
         # cmake
         - test -f ${PREFIX}/lib/cmake/protobuf/protobuf-config.cmake              # [unix]
