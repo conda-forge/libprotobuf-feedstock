@@ -1,14 +1,14 @@
-From 7e42d50fd7d3acf137ac7ff7be709c05d06c7f8e Mon Sep 17 00:00:00 2001
+From ae477048f455f28c8ff43f87701951b75a670526 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Sun, 4 Sep 2022 10:57:08 +0200
-Subject: [PATCH 1/5] set static lib extension on windows
+Subject: [PATCH 1/6] set static lib extension on windows
 
 ---
  CMakeLists.txt | 6 ++++++
  1 file changed, 6 insertions(+)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index b269fff..615fba8 100644
+index a3aaa49b8..d3ae84c8a 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -342,6 +342,12 @@ else ()

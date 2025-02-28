@@ -30,6 +30,14 @@ source:
       # skip annoyingly flaky test on windows, see
       # https://github.com/protocolbuffers/protobuf/issues/8645
       - patches/0005-disable-MapImplTest.RandomOrdering-due-to-flakiness.patch      # [win]
+      # windows has a non-default prefix for the library names (e.g. libprotobuf.lib
+      # instead of protobuf.lib); this is fixed in the CMake metadata, but wrong in
+      # in the metadata for pkgconfig. While this should ideally be solved more
+      # comprehensively (c.f. https://github.com/protocolbuffers/protobuf/issues/20515),
+      # at least fix it for upb for now, which doesn't have its own `.cmake` files
+      # (though there's a `protobuf::libupb` target, it's not that obvious), see
+      # https://github.com/protocolbuffers/protobuf/blob/v29.1/cmake/libupb.cmake
+      - patches/0006-fix-naming-divergence-on-windows-in-pkgconfig-metada.patch     # [win]
 
 build:
   number: 0

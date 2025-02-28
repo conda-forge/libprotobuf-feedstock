@@ -1,7 +1,7 @@
-From 5e664bba6f15971b559219876e68b731c895ce53 Mon Sep 17 00:00:00 2001
+From f9190719dc421844b8cf3c2e266091454db8ad26 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Tue, 20 Feb 2024 22:21:55 +1100
-Subject: [PATCH 5/5] disable MapImplTest.RandomOrdering due to flakiness
+Subject: [PATCH 5/6] disable MapImplTest.RandomOrdering due to flakiness
 
 see https://google.github.io/googletest/advanced.html#temporarily-disabling-tests
 ---
@@ -9,10 +9,10 @@ see https://google.github.io/googletest/advanced.html#temporarily-disabling-test
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/google/protobuf/map_test.inc b/src/google/protobuf/map_test.inc
-index 4b75234..0a6a356 100644
+index 6e4d261c1..4e7414a68 100644
 --- a/src/google/protobuf/map_test.inc
 +++ b/src/google/protobuf/map_test.inc
-@@ -1350,7 +1350,7 @@ bool MapOrderingIsRandom(int a, int b) {
+@@ -1358,7 +1358,7 @@ bool MapOrderingIsRandom(int a, int b) {
  
  // This test verifies that the iteration order is reasonably random even for
  // small maps.
