@@ -38,9 +38,12 @@ source:
       # (though there's a `protobuf::libupb` target, it's not that obvious), see
       # https://github.com/protocolbuffers/protobuf/blob/v29.1/cmake/libupb.cmake
       - patches/0006-fix-naming-divergence-on-windows-in-pkgconfig-metada.patch     # [win]
+      # missing header if we want to use upb for protobuf, see
+      # https://github.com/protocolbuffers/protobuf/issues/20522
+      - patches/0007-install-a-missing-upb-header.patch
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - name: libprotobuf

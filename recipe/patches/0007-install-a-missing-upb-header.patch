@@ -1,0 +1,26 @@
+From 2b38aea6c706a3a8bcc403bf04d27a44eb48bf9d Mon Sep 17 00:00:00 2001
+From: "H. Vetinari" <h.vetinari@gmx.com>
+Date: Fri, 28 Feb 2025 21:31:52 +1100
+Subject: [PATCH 7/7] install a missing upb header
+
+see https://github.com/protocolbuffers/protobuf/issues/20522
+---
+ upb/wire/BUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/upb/wire/BUILD b/upb/wire/BUILD
+index 23a5239d6..44eb1b986 100644
+--- a/upb/wire/BUILD
++++ b/upb/wire/BUILD
+@@ -46,10 +46,10 @@ cc_library(
+ cc_library(
+     name = "reader",
+     srcs = [
+-        "internal/reader.h",
+         "reader.c",
+     ],
+     hdrs = [
++        "internal/reader.h",
+         "reader.h",
+         "types.h",
+     ],
