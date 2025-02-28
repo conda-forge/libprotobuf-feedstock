@@ -1,0 +1,20 @@
+From 013f10dbac58087de348f14dc7f374260ec33d6e Mon Sep 17 00:00:00 2001
+From: "H. Vetinari" <h.vetinari@gmx.com>
+Date: Fri, 28 Feb 2025 18:50:17 +1100
+Subject: [PATCH 6/6] fix naming divergence on windows in pkgconfig metadata
+
+---
+ cmake/upb.pc.cmake | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/cmake/upb.pc.cmake b/cmake/upb.pc.cmake
+index b1d9900de..b54522f2c 100644
+--- a/cmake/upb.pc.cmake
++++ b/cmake/upb.pc.cmake
+@@ -6,5 +6,5 @@ includedir=@CMAKE_INSTALL_FULL_INCLUDEDIR@
+ Name: Protocol Buffers
+ Description: Google's Data Interchange Format
+ Version: @protobuf_VERSION@
+-Libs: -L${libdir} -lupb @CMAKE_THREAD_LIBS_INIT@
++Libs: -L${libdir} -llibupb @CMAKE_THREAD_LIBS_INIT@
+ Cflags: -I${includedir}
