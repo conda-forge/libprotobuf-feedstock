@@ -18,8 +18,9 @@ elif [[ "$(uname)" == "Darwin" ]]; then
     LDFLAGS="${LDFLAGS} -framework CoreFoundation"
 fi
 
-# required to pick up conda installed zlib
-export CPPFLAGS="${CPPFLAGS} -I${PREFIX}/include"
+# required to pick up conda installed zlib; ensure UPB symbols are visible, see
+# https://github.com/protocolbuffers/protobuf/blob/v29.1/upb/port/def.inc#L69-L91
+export CPPFLAGS="${CPPFLAGS} -I${PREFIX}/include -DUPB_BUILD_API"
 export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib"
 
 # delete vendored gtest to force protobuf_USE_EXTERNAL_GTEST to work;
@@ -28,16 +29,18 @@ rm -rf ./third_party/googletest | true
 
 if [[ "$PKG_NAME" == "libprotobuf-static" ]]; then
     export CF_SHARED=OFF
+    export CF_TESTS=OFF
     mkdir build-static
     cd build-static
 else
     export CF_SHARED=ON
+    export CF_TESTS=ON
     mkdir build-shared
     cd build-shared
-fi
 
-if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
-    export CMAKE_ARGS="${CMAKE_ARGS} -Dprotobuf_BUILD_TESTS=OFF"
+    if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
+        export CF_TESTS=OFF
+    fi
 fi
 
 cmake -G "Ninja" \
@@ -47,6 +50,7 @@ cmake -G "Ninja" \
     -Dprotobuf_ABSL_PROVIDER="package" \
     -Dprotobuf_BUILD_LIBUPB=ON \
     -Dprotobuf_BUILD_SHARED_LIBS=$CF_SHARED \
+    -Dprotobuf_BUILD_TESTS=$CF_TESTS \
     -Dprotobuf_JSONCPP_PROVIDER="package" \
     -Dprotobuf_USE_EXTERNAL_GTEST=ON \
     -Dprotobuf_WITH_ZLIB=ON \
@@ -54,7 +58,7 @@ cmake -G "Ninja" \
 
 cmake --build .
 
-if [[ "$CONDA_BUILD_CROSS_COMPILATION" != 1 ]]; then
+if [[ "$CF_TESTS" == "ON" ]]; then
     ctest --progress --output-on-failure
 fi
 
