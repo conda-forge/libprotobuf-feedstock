@@ -18,8 +18,9 @@ elif [[ "$(uname)" == "Darwin" ]]; then
     LDFLAGS="${LDFLAGS} -framework CoreFoundation"
 fi
 
-# required to pick up conda installed zlib
-export CPPFLAGS="${CPPFLAGS} -I${PREFIX}/include"
+# required to pick up conda installed zlib; ensure UPB symbols are visible, see
+# https://github.com/protocolbuffers/protobuf/blob/v29.1/upb/port/def.inc#L69-L91
+export CPPFLAGS="${CPPFLAGS} -I${PREFIX}/include -DUPB_BUILD_API"
 export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib"
 
 # delete vendored gtest to force protobuf_USE_EXTERNAL_GTEST to work;
