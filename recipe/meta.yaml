@@ -118,8 +118,8 @@ outputs:
             "upb_Arena_Free", "upb_Arena_Init", "upb_Decode", "upb_Encode", "upb_alloc_global",
             "_upb_Arena_SlowMalloc_dont_copy_me__upb_internal_use_only"
         ] %}
-        - nm -g $PREFIX/lib/libupb.a | grep "T {{ symb }}"                                  # [linux]
-        - nm -g $PREFIX/lib/libupb.a | grep "T _{{ symb }}"                                 # [osx]
+        - nm -g $PREFIX/lib/libupb.a | grep -E "[TD] {{ symb }}"                            # [linux]
+        - nm -g $PREFIX/lib/libupb.a | grep -E "[TD] _{{ symb }}"                           # [osx]
         - dumpbin -symbols %LIBRARY_LIB%\libupb.lib | grep -E "SECT.*External.*{{ symb }}"  # [win]
         {% endfor %}
 
