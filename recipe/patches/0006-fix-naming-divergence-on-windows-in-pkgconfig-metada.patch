@@ -1,7 +1,7 @@
 From 013f10dbac58087de348f14dc7f374260ec33d6e Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Fri, 28 Feb 2025 18:50:17 +1100
-Subject: [PATCH 6/7] fix naming divergence on windows in pkgconfig metadata
+Subject: [PATCH 6/8] fix naming divergence on windows in pkgconfig metadata
 
 ---
  cmake/upb.pc.cmake | 2 +-

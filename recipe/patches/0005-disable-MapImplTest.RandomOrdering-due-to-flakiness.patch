@@ -1,7 +1,7 @@
 From f9190719dc421844b8cf3c2e266091454db8ad26 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Tue, 20 Feb 2024 22:21:55 +1100
-Subject: [PATCH 5/7] disable MapImplTest.RandomOrdering due to flakiness
+Subject: [PATCH 5/8] disable MapImplTest.RandomOrdering due to flakiness
 
 see https://google.github.io/googletest/advanced.html#temporarily-disabling-tests
 ---

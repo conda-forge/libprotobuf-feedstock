@@ -41,9 +41,11 @@ source:
       # missing header if we want to use upb for protobuf, see
       # https://github.com/protocolbuffers/protobuf/issues/20522
       - patches/0007-install-a-missing-upb-header.patch
+      # necessary for building grpc
+      - patches/0008-export-two-symbols-needed-by-grpc.patch
 
 build:
-  number: 3
+  number: 4
 
 outputs:
   - name: libprotobuf
@@ -79,6 +81,9 @@ outputs:
         # cmake needs compiler to be able to run package detection, see
         # https://discourse.cmake.org/t/questions-about-find-package-cli-msvc/6194
         - {{ compiler('cxx') }}
+        - binutils  # [unix]
+        - grep      # [unix]
+        - m2-grep   # [win]
         - cmake
         - ninja
         - pkg-config
@@ -108,6 +113,15 @@ outputs:
         # https://github.com/protocolbuffers/protobuf/issues/20522
         - test -f ${PREFIX}/include/upb/wire/internal/reader.h          # [unix]
         - if not exist %LIBRARY_INC%\upb\wire\internal\reader.h exit 1  # [win]
+        # check if required symbols are in libupb
+        {% for symb in [
+            "upb_Arena_Free", "upb_Arena_Init", "upb_Decode", "upb_Encode", "upb_alloc_global",
+            "_upb_Arena_SlowMalloc_dont_copy_me__upb_internal_use_only"
+        ] %}
+        - nm -g $PREFIX/lib/libupb.a | grep -E "[TD] {{ symb }}"                            # [linux]
+        - nm -g $PREFIX/lib/libupb.a | grep -E "[TD] _{{ symb }}"                           # [osx]
+        - dumpbin -symbols %LIBRARY_LIB%\libupb.lib | grep -E "SECT.*External.*{{ symb }}"  # [win]
+        {% endfor %}
 
         # cmake
         - test -f ${PREFIX}/lib/cmake/protobuf/protobuf-config.cmake              # [unix]
