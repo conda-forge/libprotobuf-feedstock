@@ -114,8 +114,6 @@ outputs:
         - nm -g $PREFIX/lib/libupb.a | grep -E "[TD] _{{ symb }}"                           # [osx]
         - dumpbin -symbols %LIBRARY_LIB%\libupb.lib | grep -E "SECT.*External.*{{ symb }}"  # [win]
         {% endfor %}
-        # and another one in libprotobuf
-        - dumpbin -symbols %LIBRARY_LIB%\libprotobuf.lib | grep -E "SECT.*External.*default_serialization_deterministic_"  # [win]
 
         # cmake
         - test -f ${PREFIX}/lib/cmake/protobuf/protobuf-config.cmake              # [unix]

@@ -1,27 +1,49 @@
-From f47be5c3a47bce33b91d9ea3b1144e6f9c584199 Mon Sep 17 00:00:00 2001
+From 71b88e6595f2a587a3c3b3279b46dfe6d7c811f1 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Sun, 2 Mar 2025 22:14:34 +1100
 Subject: [PATCH 7/7] export symbols needed by grpc
 
+avoid that the potentially inlined IsDefaultSerializationDeterministic
+inherits a linker reference to default_serialization_deterministic_, which,
+while part of the .dll/.lib, is private and may not be linkable directly
 ---
- src/google/protobuf/io/coded_stream.cc | 2 +-
+ src/google/protobuf/io/coded_stream.cc | 4 ++++
+ src/google/protobuf/io/coded_stream.h  | 5 +----
  upb/mem/alloc.h                        | 2 +-
  upb/mem/internal/arena.h               | 2 ++
- 3 files changed, 4 insertions(+), 2 deletions(-)
+ 4 files changed, 8 insertions(+), 5 deletions(-)
 
 diff --git a/src/google/protobuf/io/coded_stream.cc b/src/google/protobuf/io/coded_stream.cc
-index f8d7b71a1..974df3571 100644
+index f8d7b71a1..92b82b04a 100644
 --- a/src/google/protobuf/io/coded_stream.cc
 +++ b/src/google/protobuf/io/coded_stream.cc
-@@ -1016,7 +1016,7 @@ uint8_t* EpsCopyOutputStream::WriteCordOutline(const absl::Cord& c, uint8_t* ptr
-   return WriteCord(c, ptr);
- }
- 
--std::atomic<bool> CodedOutputStream::default_serialization_deterministic_{
-+PROTOBUF_EXPORT std::atomic<bool> CodedOutputStream::default_serialization_deterministic_{
+@@ -1019,6 +1019,10 @@ uint8_t* EpsCopyOutputStream::WriteCordOutline(const absl::Cord& c, uint8_t* ptr
+ std::atomic<bool> CodedOutputStream::default_serialization_deterministic_{
      false};
  
++bool CodedOutputStream::IsDefaultSerializationDeterministic() {
++  return default_serialization_deterministic_.load(std::memory_order_relaxed) != 0;
++}
++
  CodedOutputStream::~CodedOutputStream() { Trim(); }
+ 
+ uint8_t* CodedOutputStream::WriteCordToArray(const absl::Cord& cord,
+diff --git a/src/google/protobuf/io/coded_stream.h b/src/google/protobuf/io/coded_stream.h
+index dc03435b2..70435c971 100644
+--- a/src/google/protobuf/io/coded_stream.h
++++ b/src/google/protobuf/io/coded_stream.h
+@@ -1255,10 +1255,7 @@ class PROTOBUF_EXPORT CodedOutputStream {
+     return impl_.IsSerializationDeterministic();
+   }
+ 
+-  static bool IsDefaultSerializationDeterministic() {
+-    return default_serialization_deterministic_.load(
+-               std::memory_order_relaxed) != 0;
+-  }
++  static bool IsDefaultSerializationDeterministic();
+ 
+   template <typename Func>
+   void Serialize(const Func& func);
 diff --git a/upb/mem/alloc.h b/upb/mem/alloc.h
 index 441731d2d..8f46e9afd 100644
 --- a/upb/mem/alloc.h
