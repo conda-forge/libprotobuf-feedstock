@@ -37,7 +37,7 @@ source:
       - patches/0007-export-symbols-needed-by-grpc.patch
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - name: libprotobuf
@@ -138,8 +138,10 @@ outputs:
     build:
       always_include_files:
         # Must overwrite the CMake metadata from shared libprotobuf
-        - lib/cmake/protobuf/           # [unix]
-        - Library/lib/cmake/protobuf/   # [win]
+        - lib/cmake/protobuf/            # [unix]
+        - lib/cmake/utf8_range/          # [unix]
+        - Library/lib/cmake/protobuf/    # [win]
+        - Library/lib/cmake/utf8_range/  # [win]
       ignore_run_exports_from:
         - jsoncpp
     requirements:
