@@ -2,7 +2,7 @@
 {% set version = "30.2" %}
 # protobuf doesn't add the major version in the tag, it's defined per language in
 # https://github.com/protocolbuffers/protobuf/blob/main/version.json
-{% set major = "5" %}
+{% set major = "6" %}
 # pkg-config metadata sets yet another version format, not using the major version
 # but adding the rc number as a patch version, or 0 for regular releases
 {% set pkgconfig_ver = version.split(".")[0] ~ "." ~ version.split(".")[1] %}
