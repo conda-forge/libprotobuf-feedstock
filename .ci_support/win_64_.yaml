@@ -1,7 +1,9 @@
 ace:
 - 8.0.2
 c_compiler:
-- vs2019
+- vs
+c_compiler_version:
+- '2022'
 c_stdlib:
 - vs
 channel_sources:
@@ -9,13 +11,15 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cxx_compiler:
-- vs2019
+- vs
+cxx_compiler_version:
+- '2022'
 jsoncpp:
 - 1.9.6
 libabseil:
-- '20250127'
+- '20250512'
 libprotobuf:
-- 5.29.3
+- 6.31.1
 target_platform:
 - win-64
 zlib:
