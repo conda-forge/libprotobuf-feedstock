@@ -13,6 +13,9 @@
 {% endif %}
 
 {% set libraries = ["libprotoc", "libprotobuf", "libprotobuf-lite"] %}
+# different patterns between unix & windows
+{% set libraries = libraries + ["libutf8_range", "libutf8_validity"] %}     # [unix]
+{% set libraries = libraries + ["utf8_range", "utf8_validity"] %}           # [win]
 
 package:
   name: libprotobuf-split
@@ -33,9 +36,14 @@ source:
       - patches/0005-install-a-missing-upb-header.patch
       # necessary for building grpc
       - patches/0006-export-symbols-needed-by-grpc.patch
+      # protobuf does a non-standard `libfoo.dll` naming pattern for protobuf;
+      # for now, we avoid extending it to utf8_range, because (despite correct CMake
+      # metadata), other libraries - not least grpcio - are still expecting to find
+      # utf8_range.{dll,lib}, not libutf8_range.{dll,lib}.
+      - patches/0007-do-not-add-LIB_PREFIX-to-utf8_-range-validity-on-win.patch     # [win]
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - name: libprotobuf
