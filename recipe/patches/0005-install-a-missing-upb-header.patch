@@ -1,7 +1,7 @@
-From 06f3c63e5c37e96e702d1f6b799cb8422796d281 Mon Sep 17 00:00:00 2001
+From 2bb1beaf921cc0559d7c88afd2d2df1c4f3de3d3 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Fri, 28 Feb 2025 21:31:52 +1100
-Subject: [PATCH 5/6] install a missing upb header
+Subject: [PATCH 5/7] install a missing upb header
 
 see https://github.com/protocolbuffers/protobuf/issues/20522
 ---
@@ -9,10 +9,10 @@ see https://github.com/protocolbuffers/protobuf/issues/20522
  1 file changed, 1 insertion(+)
 
 diff --git a/src/file_lists.cmake b/src/file_lists.cmake
-index a2c1997cc..7feb07eef 100644
+index e798ad903..b4778cb6e 100644
 --- a/src/file_lists.cmake
 +++ b/src/file_lists.cmake
-@@ -806,6 +806,7 @@ set(libupb_hdrs
+@@ -819,6 +819,7 @@ set(libupb_hdrs
    ${protobuf_SOURCE_DIR}/upb/wire/encode.h
    ${protobuf_SOURCE_DIR}/upb/wire/eps_copy_input_stream.h
    ${protobuf_SOURCE_DIR}/upb/wire/internal/decode_fast.h

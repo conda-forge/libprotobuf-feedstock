@@ -1,7 +1,7 @@
-From 19ce812efb2e5d9fd80eded31f9a87224748c990 Mon Sep 17 00:00:00 2001
+From 0d684ceb51178f6af88e2261d6084f45ce45338c Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Sun, 2 Mar 2025 22:14:34 +1100
-Subject: [PATCH 6/6] export symbols needed by grpc
+Subject: [PATCH 6/7] export symbols needed by grpc
 
 avoid that the potentially inlined IsDefaultSerializationDeterministic
 inherits a linker reference to default_serialization_deterministic_, which,
@@ -14,7 +14,7 @@ while part of the .dll/.lib, is private and may not be linkable directly
  4 files changed, 8 insertions(+), 5 deletions(-)
 
 diff --git a/src/google/protobuf/io/coded_stream.cc b/src/google/protobuf/io/coded_stream.cc
-index 7914b72b3..ee84130f9 100644
+index b9de939a8..b5379258b 100644
 --- a/src/google/protobuf/io/coded_stream.cc
 +++ b/src/google/protobuf/io/coded_stream.cc
 @@ -1012,6 +1012,10 @@ uint8_t* EpsCopyOutputStream::WriteCordOutline(const absl::Cord& c, uint8_t* ptr
@@ -58,7 +58,7 @@ index aa01fa99a..238985d75 100644
  /* Functions that hard-code the global malloc.
   *
 diff --git a/upb/mem/internal/arena.h b/upb/mem/internal/arena.h
-index e8b5afa0b..4b8504546 100644
+index 5ddf8fe02..fbe1205c5 100644
 --- a/upb/mem/internal/arena.h
 +++ b/upb/mem/internal/arena.h
 @@ -44,6 +44,8 @@ UPB_INLINE size_t UPB_PRIVATE(_upb_ArenaHas)(const struct upb_Arena* a) {
