@@ -12,10 +12,10 @@
   {% set pkgconfig_ver = pkgconfig_ver ~ "." ~ "0" %}
 {% endif %}
 
-{% set libraries = ["libprotoc", "libprotobuf", "libprotobuf-lite"] %}
+{% set proto_libraries = ["libprotoc", "libprotobuf", "libprotobuf-lite"] %}
 # different patterns between unix & windows
-{% set libraries = libraries + ["libutf8_range", "libutf8_validity"] %}     # [unix]
-{% set libraries = libraries + ["utf8_range", "utf8_validity"] %}           # [win]
+{% set utf8_libraries = ["libutf8_range", "libutf8_validity"] %}     # [unix]
+{% set utf8_libraries = ["utf8_range", "utf8_validity"] %}           # [win]
 
 package:
   name: libprotobuf-split
@@ -88,7 +88,7 @@ outputs:
       files:
         - cmake_test/
       commands:
-        {% for each_lib in libraries %}
+        {% for each_lib in proto_libraries + utf8_libraries %}
         # shared libraries
         - test -f ${PREFIX}/lib/{{ each_lib }}.so                      # [linux]
         - test -f ${PREFIX}/lib/{{ each_lib }}.dylib                   # [osx]
@@ -177,7 +177,7 @@ outputs:
       files:
         - cmake_test/
       commands:
-        {% for each_lib in libraries %}
+        {% for each_lib in proto_libraries %}
         # static libraries
         - test -f ${PREFIX}/lib/{{ each_lib }}.a                       # [unix]
         - if not exist %LIBRARY_LIB%\{{ each_lib }}-static.lib exit 1  # [win]
