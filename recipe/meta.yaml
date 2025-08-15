@@ -31,16 +31,13 @@ source:
       # skip annoyingly flaky test on windows, see
       # https://github.com/protocolbuffers/protobuf/issues/8645
       - patches/0004-disable-MapImplTest.RandomOrdering-due-to-flakiness.patch      # [win]
-      # missing header if we want to use upb for protobuf, see
-      # https://github.com/protocolbuffers/protobuf/issues/20522
-      - patches/0005-install-a-missing-upb-header.patch
       # necessary for building grpc
-      - patches/0006-export-symbols-needed-by-grpc.patch
+      - patches/0005-export-symbols-needed-by-grpc.patch
       # protobuf does a non-standard `libfoo.dll` naming pattern for protobuf;
       # for now, we avoid extending it to utf8_range, because (despite correct CMake
       # metadata), other libraries - not least grpcio - are still expecting to find
       # utf8_range.{dll,lib}, not libutf8_range.{dll,lib}.
-      - patches/0007-do-not-add-LIB_PREFIX-to-utf8_-range-validity-on-win.patch     # [win]
+      - patches/0006-do-not-add-LIB_PREFIX-to-utf8_-range-validity-on-win.patch     # [win]
 
 build:
   number: 0
