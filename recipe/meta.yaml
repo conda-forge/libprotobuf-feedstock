@@ -1,5 +1,5 @@
 # keep this without major version to let the bot pick it up
-{% set version = "31.1" %}
+{% set version = "32.0" %}
 # protobuf doesn't add the major version in the tag, it's defined per language in
 # https://github.com/protocolbuffers/protobuf/blob/main/version.json
 {% set major = "6" %}
@@ -23,7 +23,7 @@ package:
 
 source:
   - url: https://github.com/protocolbuffers/protobuf/archive/refs/tags/v{{ version.replace(".rc", "-rc") }}.tar.gz
-    sha256: c3a0a9ece8932e31c3b736e2db18b1c42e7070cd9b881388b26d01aa71e24ca2
+    sha256: 3ad017543e502ffaa9cd1f4bd4fe96cf117ce7175970f191705fa0518aff80cd
     patches:
       - patches/0001-set-static-lib-extension-on-windows.patch
       - patches/0002-always-look-for-shared-abseil-builds.patch
@@ -31,19 +31,16 @@ source:
       # skip annoyingly flaky test on windows, see
       # https://github.com/protocolbuffers/protobuf/issues/8645
       - patches/0004-disable-MapImplTest.RandomOrdering-due-to-flakiness.patch      # [win]
-      # missing header if we want to use upb for protobuf, see
-      # https://github.com/protocolbuffers/protobuf/issues/20522
-      - patches/0005-install-a-missing-upb-header.patch
       # necessary for building grpc
-      - patches/0006-export-symbols-needed-by-grpc.patch
+      - patches/0005-export-symbols-needed-by-grpc.patch
       # protobuf does a non-standard `libfoo.dll` naming pattern for protobuf;
       # for now, we avoid extending it to utf8_range, because (despite correct CMake
       # metadata), other libraries - not least grpcio - are still expecting to find
       # utf8_range.{dll,lib}, not libutf8_range.{dll,lib}.
-      - patches/0007-do-not-add-LIB_PREFIX-to-utf8_-range-validity-on-win.patch     # [win]
+      - patches/0006-do-not-add-LIB_PREFIX-to-utf8_-range-validity-on-win.patch     # [win]
 
 build:
-  number: 1
+  number: 0
 
 outputs:
   - name: libprotobuf
