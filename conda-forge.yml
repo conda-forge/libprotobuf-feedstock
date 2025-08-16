@@ -1,3 +1,7 @@
+azure:
+  free_disk_space: true
+  settings_linux:
+    swapfile_size: 10GiB
 bot:
   abi_migration_branches:
   - 4.25.x
