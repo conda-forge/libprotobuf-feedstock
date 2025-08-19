@@ -23,9 +23,9 @@ cxx_compiler_version:
 jsoncpp:
 - 1.9.6
 libabseil:
-- '20250512'
+- '20250814'
 libprotobuf:
-- 6.31.1
+- 6.32.0
 macos_machine:
 - arm64-apple-darwin20.0.0
 target_platform:
