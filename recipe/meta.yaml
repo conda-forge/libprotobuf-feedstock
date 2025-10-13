@@ -41,9 +41,10 @@ source:
       # metadata), other libraries - not least grpcio - are still expecting to find
       # utf8_range.{dll,lib}, not libutf8_range.{dll,lib}.
       - patches/0007-do-not-add-LIB_PREFIX-to-utf8_-range-validity-on-win.patch     # [win]
+      - patches/0010-Workaround-nvcc-bug-in-message_lite.h.patch
 
 build:
-  number: 1
+  number: 2
 
 outputs:
   - name: libprotobuf
