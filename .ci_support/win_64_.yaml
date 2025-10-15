@@ -15,7 +15,7 @@ jsoncpp:
 libabseil:
 - '20250814'
 libprotobuf:
-- 6.32.0
+- 6.32.1
 target_platform:
 - win-64
 zlib:
