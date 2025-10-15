@@ -1,5 +1,5 @@
 # keep this without major version to let the bot pick it up
-{% set version = "32.1" %}
+{% set version = "33.0" %}
 # protobuf doesn't add the major version in the tag, it's defined per language in
 # https://github.com/protocolbuffers/protobuf/blob/main/version.json
 {% set major = "6" %}
@@ -23,7 +23,7 @@ package:
 
 source:
   - url: https://github.com/protocolbuffers/protobuf/archive/refs/tags/v{{ version.replace(".rc", "-rc") }}.tar.gz
-    sha256: d2081ab9528292f7980ef2d88d2be472453eea4222141046ad4f660874d5f24e
+    sha256: b6b03fbaa3a90f3d4f2a3fa4ecc41d7cd0326f92fcc920a7843f12206c8d52cd
     patches:
       - patches/0001-set-static-lib-extension-on-windows.patch
       - patches/0002-always-look-for-shared-abseil-builds.patch
@@ -41,7 +41,7 @@ source:
       - patches/0010-Workaround-nvcc-bug-in-message_lite.h.patch
 
 build:
-  number: 1
+  number: 0
 
 outputs:
   - name: libprotobuf
