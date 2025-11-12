@@ -1,0 +1,405 @@
+# keep this without major version to let the bot pick it up
+context:
+  version: "33.0"
+  # protobuf doesn't add the major version in the tag, it's defined per language in
+  # https://github.com/protocolbuffers/protobuf/blob/main/version.json
+  major: "6"
+  # pkg-config metadata sets yet another version format, not using the major version
+  # but adding the rc number as a patch version, or 0 for regular releases
+  # For version "33.0", pkgconfig_ver should be "33.0.0"
+  # For version "33.0rc1", pkgconfig_ver should be "33.0.1"
+  # Simplified: since current version is "33.0" (no rc), we can compute directly
+  # Split version using Jinja filter and get first two parts, then append ".0"
+  _v0: ${{ (version | split("."))[0] }}
+  _v1: ${{ (version | split("."))[1] }}
+  pkgconfig_ver: ${{ _v0 ~ "." ~ _v1 ~ ".0" }}
+
+source:
+  - url: https://github.com/protocolbuffers/protobuf/archive/refs/tags/v${{ version | replace(".rc", "-rc") }}.tar.gz
+    sha256: b6b03fbaa3a90f3d4f2a3fa4ecc41d7cd0326f92fcc920a7843f12206c8d52cd
+    patches:
+      - patches/0001-set-static-lib-extension-on-windows.patch
+      - patches/0002-always-look-for-shared-abseil-builds.patch
+      - patches/0003-do-not-install-vendored-gmock.patch
+      # skip annoyingly flaky test on windows, see
+      # https://github.com/protocolbuffers/protobuf/issues/8645
+      - if: win
+        then:
+          - patches/0004-disable-MapImplTest.RandomOrdering-due-to-flakiness.patch
+      # necessary for building grpc
+      - patches/0005-export-symbols-needed-by-grpc.patch
+      # protobuf does a non-standard `libfoo.dll` naming pattern for protobuf;
+      # for now, we avoid extending it to utf8_range, because (despite correct CMake
+      # metadata), other libraries - not least grpcio - are still expecting to find
+      # utf8_range.{dll,lib}, not libutf8_range.{dll,lib}.
+      - if: win
+        then:
+          - patches/0006-do-not-add-LIB_PREFIX-to-utf8_-range-validity-on-win.patch
+      - patches/0010-Workaround-nvcc-bug-in-message_lite.h.patch
+
+build:
+  number: 1
+
+outputs:
+  - package:
+      name: libprotobuf
+      version: ${{ major ~ "." ~ version }}
+    build:
+      script:
+        - if: unix
+          then:
+            - build-lib.sh
+        - if: win
+          then:
+            - build-lib.bat
+    requirements:
+      run_exports:
+        # protobuf now (intentionally) increments the SOVER with every patch release, which
+        # breaks tools like grpc_plugin_cpp if they get the wrong libprotoc at runtime, see
+        # https://github.com/conda-forge/conda-forge-pinning-feedstock/issues/4075
+        - ${{ pin_subpackage('libprotobuf', upper_bound='x.x.x') }}
+      ignore_run_exports:
+        from_package:
+          - gtest
+          - jsoncpp
+      build:
+        - ${{ stdlib('c') }}
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+        - cmake
+        - ninja
+      host:
+        - gtest
+        - jsoncpp
+        - libabseil
+        # requires abseil test targets to build with tests enabled
+        - libabseil-tests
+        - zlib
+      run:
+        - if: win
+          then:
+            - ucrt
+    tests:
+      - requirements:
+          build:
+            - ${{ compiler('cxx') }}
+            - cmake
+            - ninja
+            - pkg-config
+            - if: unix
+              then:
+                - binutils
+                - grep
+            - if: win
+              then:
+                - m2-grep
+        files:
+          source:
+            - cmake_test/
+        script:
+          # shared libraries - libprotoc
+          - if: linux
+            then:
+              - test -f ${PREFIX}/lib/libprotoc.so
+          - if: osx
+            then:
+              - test -f ${PREFIX}/lib/libprotoc.dylib
+          - if: win
+            then:
+              - if not exist %LIBRARY_BIN%\libprotoc.dll exit 1
+              - if not exist %LIBRARY_LIB%\libprotoc.lib exit 1
+          - if: unix
+            then:
+              - test ! -f ${PREFIX}/lib/libprotoc.a
+          - if: win
+            then:
+              - if exist %LIBRARY_LIB%\libprotoc-static.lib exit 1
+
+          # shared libraries - libprotobuf
+          - if: linux
+            then:
+              - test -f ${PREFIX}/lib/libprotobuf.so
+          - if: osx
+            then:
+              - test -f ${PREFIX}/lib/libprotobuf.dylib
+          - if: win
+            then:
+              - if not exist %LIBRARY_BIN%\libprotobuf.dll exit 1
+              - if not exist %LIBRARY_LIB%\libprotobuf.lib exit 1
+          - if: unix
+            then:
+              - test ! -f ${PREFIX}/lib/libprotobuf.a
+          - if: win
+            then:
+              - if exist %LIBRARY_LIB%\libprotobuf-static.lib exit 1
+
+          # shared libraries - libprotobuf-lite
+          - if: linux
+            then:
+              - test -f ${PREFIX}/lib/libprotobuf-lite.so
+          - if: osx
+            then:
+              - test -f ${PREFIX}/lib/libprotobuf-lite.dylib
+          - if: win
+            then:
+              - if not exist %LIBRARY_BIN%\libprotobuf-lite.dll exit 1
+              - if not exist %LIBRARY_LIB%\libprotobuf-lite.lib exit 1
+          - if: unix
+            then:
+              - test ! -f ${PREFIX}/lib/libprotobuf-lite.a
+          - if: win
+            then:
+              - if exist %LIBRARY_LIB%\libprotobuf-lite-static.lib exit 1
+
+          # shared libraries - libutf8_range (unix) / utf8_range (win)
+          - if: linux
+            then:
+              - test -f ${PREFIX}/lib/libutf8_range.so
+          - if: osx
+            then:
+              - test -f ${PREFIX}/lib/libutf8_range.dylib
+          - if: win
+            then:
+              - if not exist %LIBRARY_BIN%\utf8_range.dll exit 1
+              - if not exist %LIBRARY_LIB%\utf8_range.lib exit 1
+          - if: unix
+            then:
+              - test ! -f ${PREFIX}/lib/libutf8_range.a
+          - if: win
+            then:
+              - if exist %LIBRARY_LIB%\utf8_range-static.lib exit 1
+
+          # shared libraries - libutf8_validity (unix) / utf8_validity (win)
+          - if: linux
+            then:
+              - test -f ${PREFIX}/lib/libutf8_validity.so
+          - if: osx
+            then:
+              - test -f ${PREFIX}/lib/libutf8_validity.dylib
+          - if: win
+            then:
+              - if not exist %LIBRARY_BIN%\utf8_validity.dll exit 1
+              - if not exist %LIBRARY_LIB%\utf8_validity.lib exit 1
+          - if: unix
+            then:
+              - test ! -f ${PREFIX}/lib/libutf8_validity.a
+          - if: win
+            then:
+              - if exist %LIBRARY_LIB%\utf8_validity-static.lib exit 1
+
+          # presence of upb-related includes & libraries (moved here from grpc), see
+          # https://github.com/protocolbuffers/protobuf/issues/12927
+          - if: unix
+            then:
+              - test -d ${PREFIX}/include/upb
+              - test -f ${PREFIX}/lib/libupb.a
+          - if: win
+            then:
+              - if not exist %LIBRARY_INC%\upb exit 1
+              - if not exist %LIBRARY_LIB%\libupb.lib exit 1
+
+          # upb headers needed by protobuf, see
+          # https://github.com/protocolbuffers/protobuf/issues/20522
+          - if: unix
+            then:
+              - test -f ${PREFIX}/include/upb/wire/internal/reader.h
+          - if: win
+            then:
+              - if not exist %LIBRARY_INC%\upb\wire\internal\reader.h exit 1
+
+          # check if required symbols are in libupb
+          - if: linux
+            then:
+              - nm -g $PREFIX/lib/libupb.a | grep -E "[TD] upb_Arena_Free"
+              - nm -g $PREFIX/lib/libupb.a | grep -E "[TD] upb_Arena_Init"
+              - nm -g $PREFIX/lib/libupb.a | grep -E "[TD] upb_Decode"
+              - nm -g $PREFIX/lib/libupb.a | grep -E "[TD] upb_Encode"
+              - nm -g $PREFIX/lib/libupb.a | grep -E "[TD] upb_alloc_global"
+              - nm -g $PREFIX/lib/libupb.a | grep -E "[TD] _upb_Arena_SlowMalloc_dont_copy_me__upb_internal_use_only"
+          - if: osx
+            then:
+              - nm -g $PREFIX/lib/libupb.a | grep -E "[TD] _upb_Arena_Free"
+              - nm -g $PREFIX/lib/libupb.a | grep -E "[TD] _upb_Arena_Init"
+              - nm -g $PREFIX/lib/libupb.a | grep -E "[TD] _upb_Decode"
+              - nm -g $PREFIX/lib/libupb.a | grep -E "[TD] _upb_Encode"
+              - nm -g $PREFIX/lib/libupb.a | grep -E "[TD] _upb_alloc_global"
+              - nm -g $PREFIX/lib/libupb.a | grep -E "[TD] __upb_Arena_SlowMalloc_dont_copy_me__upb_internal_use_only"
+          - if: win
+            then:
+              - dumpbin -symbols %LIBRARY_LIB%\libupb.lib | grep -E "SECT.*External.*upb_Arena_Free"
+              - dumpbin -symbols %LIBRARY_LIB%\libupb.lib | grep -E "SECT.*External.*upb_Arena_Init"
+              - dumpbin -symbols %LIBRARY_LIB%\libupb.lib | grep -E "SECT.*External.*upb_Decode"
+              - dumpbin -symbols %LIBRARY_LIB%\libupb.lib | grep -E "SECT.*External.*upb_Encode"
+              - dumpbin -symbols %LIBRARY_LIB%\libupb.lib | grep -E "SECT.*External.*upb_alloc_global"
+              - dumpbin -symbols %LIBRARY_LIB%\libupb.lib | grep -E "SECT.*External.*_upb_Arena_SlowMalloc_dont_copy_me__upb_internal_use_only"
+
+          # cmake
+          - if: unix
+            then:
+              - test -f ${PREFIX}/lib/cmake/protobuf/protobuf-config.cmake
+          - if: win
+            then:
+              - if not exist %LIBRARY_LIB%\cmake\protobuf\protobuf-config.cmake exit 1
+
+          # pkg-config
+          - pkg-config --print-errors --exact-version "${{ pkgconfig_ver }}" protobuf
+          - pkg-config --print-errors --exact-version "${{ pkgconfig_ver }}" protobuf-lite
+
+          # binary
+          - protoc --help
+
+          # more CMake integration
+          - cd cmake_test
+          - if: unix
+            then:
+              - cmake -GNinja $CMAKE_ARGS .
+          - if: win
+            then:
+              - cmake -GNinja %CMAKE_ARGS% .
+          - cmake --build .
+
+  - package:
+      name: libprotobuf-static
+      version: ${{ major ~ "." ~ version }}
+    build:
+      script:
+        - if: unix
+          then:
+            - build-lib.sh
+        - if: win
+          then:
+            - build-lib.bat
+      always_include_files:
+        # Must overwrite the CMake metadata from shared libprotobuf
+        - if: unix
+          then:
+            - lib/cmake/protobuf/
+            - lib/cmake/utf8_range/
+        - if: win
+          then:
+            - Library/lib/cmake/protobuf/
+            - Library/lib/cmake/utf8_range/
+    requirements:
+      ignore_run_exports:
+        from_package:
+          - jsoncpp
+      build:
+        - ${{ stdlib('c') }}
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+        - cmake
+        - ninja
+      host:
+        - gtest
+        - jsoncpp
+        - libabseil
+        - libabseil-tests
+        - zlib
+        - ${{ pin_subpackage('libprotobuf', exact=True) }}
+      run:
+        - ${{ pin_subpackage('libprotobuf', exact=True) }}
+    tests:
+      - requirements:
+          build:
+            # cmake needs compiler to be able to run package detection, see
+            # https://discourse.cmake.org/t/questions-about-find-package-cli-msvc/6194
+            - ${{ compiler('cxx') }}
+            - cmake
+            - ninja
+            - zlib
+        files:
+          source:
+            - cmake_test/
+        script:
+          # static libraries - libprotoc
+          - if: unix
+            then:
+              - test -f ${PREFIX}/lib/libprotoc.a
+          - if: win
+            then:
+              - if not exist %LIBRARY_LIB%\libprotoc-static.lib exit 1
+
+          # static libraries - libprotobuf
+          - if: unix
+            then:
+              - test -f ${PREFIX}/lib/libprotobuf.a
+          - if: win
+            then:
+              - if not exist %LIBRARY_LIB%\libprotobuf-static.lib exit 1
+
+          # static libraries - libprotobuf-lite
+          - if: unix
+            then:
+              - test -f ${PREFIX}/lib/libprotobuf-lite.a
+          - if: win
+            then:
+              - if not exist %LIBRARY_LIB%\libprotobuf-lite-static.lib exit 1
+
+          # more CMake integration
+          - cd cmake_test
+          - if: unix
+            then:
+              - cmake -GNinja $CMAKE_ARGS .
+          - if: win
+            then:
+              - cmake -GNinja %CMAKE_ARGS% .
+          - cmake --build .
+
+  - package:
+      name: libprotobuf-python-headers
+      version: ${{ major ~ "." ~ version }}
+    build:
+      script:
+        - if: unix
+          then:
+            - build-pyheaders.sh
+        - if: win
+          then:
+            - build-pyheaders.bat
+    requirements:
+      build:
+        - if: unix
+          then:
+            - rsync
+      host:
+        - ${{ pin_subpackage('libprotobuf', exact=True) }}
+      run_constraints:
+        - libprotobuf ==${{ major ~ "." ~ version }}
+    tests:
+      - script:
+          - if: unix
+            then:
+              - test -f $PREFIX/include/google/protobuf/proto_api.h
+              - test -f $PREFIX/include/google/protobuf/pyext/message.h
+          - if: win
+            then:
+              - if not exist %LIBRARY_PREFIX%\include\google\protobuf\proto_api.h exit 1
+              - if not exist %LIBRARY_PREFIX%\include\google\protobuf\pyext\message.h exit 1
+
+about:
+  homepage: https://developers.google.com/protocol-buffers/
+  license: BSD-3-Clause
+  license_family: BSD
+  license_file: LICENSE
+  summary: Protocol Buffers - Google's data interchange format. C++ Libraries and protoc, the protobuf compiler.
+  description: |
+    Protocol buffers are Google's language-neutral,
+    platform-neutral, extensible mechanism for serializing structured data-
+    think XML, but smaller, faster, and simpler.
+  repository: https://github.com/protocolbuffers/protobuf
+  documentation: https://developers.google.com/protocol-buffers/
+
+extra:
+  recipe-maintainers:
+    - JohanMabille
+    - jjerphan
+    - xylar
+    - dopplershift
+    - jakirkham
+    - ocefpaf
+    - wesm
+    - hajapy
+    - xhochy
+    - h-vetinari
+  feedstock-name: libprotobuf
+
