@@ -41,7 +41,7 @@ source:
       - patches/0010-Workaround-nvcc-bug-in-message_lite.h.patch
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - name: libprotobuf
