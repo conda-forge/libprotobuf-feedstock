@@ -1,15 +1,22 @@
+ace:
+- 8.0.5
 c_compiler:
-- vs2017
+- vs2022
+c_stdlib:
+- vs
 channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge libprotobuf_dev
 cxx_compiler:
-- vs2017
-pin_run_as_build:
-  zlib:
-    max_pin: x.x
+- vs2022
+jsoncpp:
+- 1.9.6
+libabseil:
+- '20250127'
+libprotobuf:
+- 5.29.3
 target_platform:
 - win-64
 zlib:
-- '1.2'
+- '1'
