@@ -1,8 +1,8 @@
 # keep this without major version to let the bot pick it up
-{% set version = "33.0" %}
+{% set version = "29.3" %}
 # protobuf doesn't add the major version in the tag, it's defined per language in
 # https://github.com/protocolbuffers/protobuf/blob/main/version.json
-{% set major = "6" %}
+{% set major = "5" %}
 # pkg-config metadata sets yet another version format, not using the major version
 # but adding the rc number as a patch version, or 0 for regular releases
 {% set pkgconfig_ver = version.split(".")[0] ~ "." ~ version.split(".")[1] %}
@@ -12,10 +12,7 @@
   {% set pkgconfig_ver = pkgconfig_ver ~ "." ~ "0" %}
 {% endif %}
 
-{% set proto_libraries = ["libprotoc", "libprotobuf", "libprotobuf-lite"] %}
-# different patterns between unix & windows
-{% set utf8_libraries = ["libutf8_range", "libutf8_validity"] %}     # [unix]
-{% set utf8_libraries = ["utf8_range", "utf8_validity"] %}           # [win]
+{% set libraries = ["libprotoc", "libprotobuf", "libprotobuf-lite"] %}
 
 package:
   name: libprotobuf-split
@@ -23,25 +20,24 @@ package:
 
 source:
   - url: https://github.com/protocolbuffers/protobuf/archive/refs/tags/v{{ version.replace(".rc", "-rc") }}.tar.gz
-    sha256: b6b03fbaa3a90f3d4f2a3fa4ecc41d7cd0326f92fcc920a7843f12206c8d52cd
+    sha256: 008a11cc56f9b96679b4c285fd05f46d317d685be3ab524b2a310be0fbad987e
     patches:
       - patches/0001-set-static-lib-extension-on-windows.patch
       - patches/0002-always-look-for-shared-abseil-builds.patch
-      - patches/0003-do-not-install-vendored-gmock.patch
+      # grpc_cpp_java_plugin links against otherwise internal symbols
+      - patches/0003-Export-functions-in-google-compiler-java-names.patch
+      - patches/0004-do-not-install-vendored-gmock.patch
       # skip annoyingly flaky test on windows, see
       # https://github.com/protocolbuffers/protobuf/issues/8645
-      - patches/0004-disable-MapImplTest.RandomOrdering-due-to-flakiness.patch      # [win]
+      - patches/0005-disable-MapImplTest.RandomOrdering-due-to-flakiness.patch      # [win]
+      # missing header if we want to use upb for protobuf, see
+      # https://github.com/protocolbuffers/protobuf/issues/20522
+      - patches/0006-install-a-missing-upb-header.patch
       # necessary for building grpc
-      - patches/0005-export-symbols-needed-by-grpc.patch
-      # protobuf does a non-standard `libfoo.dll` naming pattern for protobuf;
-      # for now, we avoid extending it to utf8_range, because (despite correct CMake
-      # metadata), other libraries - not least grpcio - are still expecting to find
-      # utf8_range.{dll,lib}, not libutf8_range.{dll,lib}.
-      - patches/0006-do-not-add-LIB_PREFIX-to-utf8_-range-validity-on-win.patch     # [win]
-      - patches/0010-Workaround-nvcc-bug-in-message_lite.h.patch
+      - patches/0007-export-symbols-needed-by-grpc.patch
 
 build:
-  number: 1
+  number: 0
 
 outputs:
   - name: libprotobuf
@@ -86,7 +82,7 @@ outputs:
       files:
         - cmake_test/
       commands:
-        {% for each_lib in proto_libraries + utf8_libraries %}
+        {% for each_lib in libraries %}
         # shared libraries
         - test -f ${PREFIX}/lib/{{ each_lib }}.so                      # [linux]
         - test -f ${PREFIX}/lib/{{ each_lib }}.dylib                   # [osx]
@@ -175,7 +171,7 @@ outputs:
       files:
         - cmake_test/
       commands:
-        {% for each_lib in proto_libraries %}
+        {% for each_lib in libraries %}
         # static libraries
         - test -f ${PREFIX}/lib/{{ each_lib }}.a                       # [unix]
         - if not exist %LIBRARY_LIB%\{{ each_lib }}-static.lib exit 1  # [win]
