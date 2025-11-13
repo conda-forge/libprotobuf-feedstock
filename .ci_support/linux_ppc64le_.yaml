@@ -20,8 +20,8 @@ docker_image:
 - quay.io/condaforge/linux-anvil-x86_64:alma9
 jsoncpp:
 - 1.9.6
-libabseil:
-- '20250814'
+libabseil_version:
+- '20250127.1'
 libprotobuf:
 - 6.32.1
 target_platform:

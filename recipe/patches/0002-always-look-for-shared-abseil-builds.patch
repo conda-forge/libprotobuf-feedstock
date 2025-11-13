@@ -1,18 +1,18 @@
-From 90c78608c958a731563614eb749d67dfcca7b7ec Mon Sep 17 00:00:00 2001
+From 1687bad287717b68f2ff4f1aac31cee8e8ae4858 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Sat, 13 May 2023 22:43:45 +1100
-Subject: [PATCH 2/6] always look for shared abseil builds
+Subject: [PATCH 2/7] always look for shared abseil builds
 
 ---
  cmake/abseil-cpp.cmake | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/cmake/abseil-cpp.cmake b/cmake/abseil-cpp.cmake
-index bc08ff30e..70ae564a9 100644
+index 1b64affa5..cced07ef1 100644
 --- a/cmake/abseil-cpp.cmake
 +++ b/cmake/abseil-cpp.cmake
-@@ -42,7 +42,7 @@ endif()
- 
+@@ -37,7 +37,7 @@ elseif(protobuf_ABSL_PROVIDER STREQUAL "package")
+ endif()
  set(_protobuf_FIND_ABSL "if(NOT TARGET absl::strings)\n  find_package(absl CONFIG)\nendif()")
  
 -if (BUILD_SHARED_LIBS AND MSVC)
