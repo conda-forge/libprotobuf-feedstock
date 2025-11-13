@@ -1,2 +1,5 @@
 channel_targets:
   - conda-forge libprotobuf_dev
+
+libabseil_version:
+  - "20250127.1"

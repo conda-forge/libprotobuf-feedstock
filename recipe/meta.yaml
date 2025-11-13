@@ -62,7 +62,8 @@ outputs:
       host:
         - gtest
         - jsoncpp
-        - libabseil
+        # See the version defined in `conda_build_config.yaml`
+        - libabseil {{ libabseil_version }}
         # requires abseil test targets to build with tests enabled
         - libabseil-tests
         - zlib
@@ -154,7 +155,8 @@ outputs:
       host:
         - gtest
         - jsoncpp
-        - libabseil
+        # See the version defined in `conda_build_config.yaml`
+        - libabseil {{ libabseil_version }}
         - libabseil-tests
         - zlib
         - {{ pin_subpackage('libprotobuf', exact=True) }}
