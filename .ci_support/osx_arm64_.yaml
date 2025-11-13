@@ -22,8 +22,8 @@ cxx_compiler_version:
 - '19'
 jsoncpp:
 - 1.9.6
-libabseil:
-- '20250814'
+libabseil_version:
+- '20250127.1'
 libprotobuf:
 - 6.32.1
 macos_machine:
