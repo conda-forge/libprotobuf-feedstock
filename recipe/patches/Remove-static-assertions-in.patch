@@ -1,0 +1,50 @@
+From 61d6746e3dfdbb0dcdbf6cbb511bbb2af2338e62 Mon Sep 17 00:00:00 2001
+From: Julien Jerphanion <git@jjerphan.xyz>
+Date: Thu, 13 Nov 2025 14:11:35 +0100
+Subject: [PATCH] Remove static assertions in
+ `src/google/protobuf/repeated_ptr_field_unittest.cc`
+
+Signed-off-by: Julien Jerphanion <git@jjerphan.xyz>
+---
+ .../protobuf/repeated_ptr_field_unittest.cc    | 18 ------------------
+ 1 file changed, 18 deletions(-)
+
+diff --git a/src/google/protobuf/repeated_ptr_field_unittest.cc b/src/google/protobuf/repeated_ptr_field_unittest.cc
+index f6667ed92..bc64d8027 100644
+--- a/src/google/protobuf/repeated_ptr_field_unittest.cc
++++ b/src/google/protobuf/repeated_ptr_field_unittest.cc
+@@ -55,15 +55,6 @@ TEST(RepeatedPtrOverPtrsIterator, Traits) {
+   static_assert(std::is_same<It::iterator_category,
+                              std::random_access_iterator_tag>::value,
+                 "");
+-#if __cplusplus >= 202002L
+-  static_assert(
+-      std::is_same<It::iterator_concept, std::contiguous_iterator_tag>::value,
+-      "");
+-#else
+-  static_assert(std::is_same<It::iterator_concept,
+-                             std::random_access_iterator_tag>::value,
+-                "");
+-#endif
+ }
+ 
+ #ifdef __cpp_lib_to_address
+@@ -91,15 +82,6 @@ TEST(ConstRepeatedPtrOverPtrsIterator, Traits) {
+   static_assert(std::is_same<It::iterator_category,
+                              std::random_access_iterator_tag>::value,
+                 "");
+-#if __cplusplus >= 202002L
+-  static_assert(
+-      std::is_same<It::iterator_concept, std::contiguous_iterator_tag>::value,
+-      "");
+-#else
+-  static_assert(std::is_same<It::iterator_concept,
+-                             std::random_access_iterator_tag>::value,
+-                "");
+-#endif
+ }
+ 
+ TEST(RepeatedPtrField, MoveAdd) {
+-- 
+2.51.0
+

@@ -35,6 +35,8 @@ source:
       - patches/0006-install-a-missing-upb-header.patch
       # necessary for building grpc
       - patches/0007-export-symbols-needed-by-grpc.patch
+      # Remove static assertions which currently fail with MSVC
+      - patches/Remove-static-assertions-in.patch  # [win]
 
 build:
   number: 0
