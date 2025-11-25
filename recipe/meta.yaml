@@ -37,9 +37,10 @@ source:
       - patches/0007-export-symbols-needed-by-grpc.patch
       # Remove static assertions which currently fail with MSVC
       - patches/Remove-static-assertions-in.patch  # [win]
+      - patches/Adapt-fixed_address_empty_string-definition.patch                   # [win]
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - name: libprotobuf

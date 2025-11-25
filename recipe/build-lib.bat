@@ -15,7 +15,7 @@ if "%PKG_NAME%"=="libprotobuf-static" (
 :: Configure and install based on protobuf's instructions and other `bld.bat`s.
 cmake -G "Ninja" ^
     -DCMAKE_BUILD_TYPE=Release ^
-    -DCMAKE_CXX_STANDARD=20 ^
+    -DCMAKE_CXX_STANDARD=17 ^
     -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
     -DCMAKE_PREFIX_PATH=%LIBRARY_PREFIX% ^
     -Dprotobuf_ABSL_PROVIDER="package" ^
