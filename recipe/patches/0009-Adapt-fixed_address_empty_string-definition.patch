@@ -1,0 +1,28 @@
+From 9f4e442c28322ee889d8470ce07eaf4a0a65de37 Mon Sep 17 00:00:00 2001
+From: Julien Jerphanion <git@jjerphan.xyz>
+Date: Tue, 25 Nov 2025 14:08:27 +0100
+Subject: [PATCH 9/9] Adapt `fixed_address_empty_string` definition
+
+Signed-off-by: Julien Jerphanion <git@jjerphan.xyz>
+Co-Authored-By: H. Vetinari <h.vetinari@gmx.com>
+---
+ src/google/protobuf/port.cc | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/src/google/protobuf/port.cc b/src/google/protobuf/port.cc
+index a9e6d9c52..be819dd0c 100644
+--- a/src/google/protobuf/port.cc
++++ b/src/google/protobuf/port.cc
+@@ -115,7 +115,11 @@ void RealDebugCounter::Register(absl::string_view name) {
+   }
+ }
+ 
+-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
++// Do not use `PROTOBUF_CONSTINIT` to ensure ABI compatibility on Windows
++// when using libprotobuf with other projects which depend on C++20.
++// When building with C++17 on Windows, `fixed_address_empty_string`
++// is not properly defined to be used in C++20 downstream code.
++PROTOBUF_ATTRIBUTE_NO_DESTROY // PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GlobalEmptyString
+         fixed_address_empty_string{};
+ 

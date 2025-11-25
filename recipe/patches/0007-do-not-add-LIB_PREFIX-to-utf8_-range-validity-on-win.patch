@@ -1,7 +1,7 @@
 From e60957e6f8bacd6e1fd22816d20903e54e17e8a3 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Sat, 5 Jul 2025 12:22:19 +1100
-Subject: [PATCH 7/7] do not add LIB_PREFIX to utf8_{range,validity} on windows
+Subject: [PATCH 7/9] do not add LIB_PREFIX to utf8_{range,validity} on windows
 
 ---
  third_party/utf8_range/CMakeLists.txt | 4 ++--
