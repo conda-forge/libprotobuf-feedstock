@@ -35,9 +35,10 @@ source:
       - patches/0006-install-a-missing-upb-header.patch
       # necessary for building grpc
       - patches/0007-export-symbols-needed-by-grpc.patch
+      - patches/Adapt-fixed_address_empty_string-definition.patch                   # [win]
 
 build:
-  number: 2
+  number: 3
 
 outputs:
   - name: libprotobuf
