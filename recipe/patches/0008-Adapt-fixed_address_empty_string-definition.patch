@@ -1,0 +1,27 @@
+From 1dae0d4f33ba264f48b3d024fd523bc562cdb733 Mon Sep 17 00:00:00 2001
+From: Julien Jerphanion <git@jjerphan.xyz>
+Date: Tue, 25 Nov 2025 14:08:27 +0100
+Subject: [PATCH 8/8] Adapt `fixed_address_empty_string` definition
+
+Signed-off-by: Julien Jerphanion <git@jjerphan.xyz>
+---
+ src/google/protobuf/generated_message_util.cc | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/src/google/protobuf/generated_message_util.cc b/src/google/protobuf/generated_message_util.cc
+index 09b7db5d6..3bffdcced 100644
+--- a/src/google/protobuf/generated_message_util.cc
++++ b/src/google/protobuf/generated_message_util.cc
+@@ -42,7 +42,11 @@ void DestroyString(const void* s) {
+   static_cast<const std::string*>(s)->~basic_string();
+ }
+ 
+-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
++// Do not use `PROTOBUF_CONSTINIT` to ensure ABI compatibility on Windows
++// when using libprotobuf with other projects which depend on C++20.
++// When building with C++17 on Windows, `fixed_address_empty_string`
++// is not properly defined to be used in C++20 downstream code.
++PROTOBUF_ATTRIBUTE_NO_DESTROY // PROTOBUF_CONSTINIT
+     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ExplicitlyConstructedArenaString
+         fixed_address_empty_string{};  // NOLINT
+ 
