@@ -1,7 +1,7 @@
 From 0d684ceb51178f6af88e2261d6084f45ce45338c Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Sun, 2 Mar 2025 22:14:34 +1100
-Subject: [PATCH 6/7] export symbols needed by grpc
+Subject: [PATCH 6/9] export symbols needed by grpc
 
 avoid that the potentially inlined IsDefaultSerializationDeterministic
 inherits a linker reference to default_serialization_deterministic_, which,
