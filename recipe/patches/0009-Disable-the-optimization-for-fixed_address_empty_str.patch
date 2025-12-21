@@ -1,0 +1,34 @@
+From abf74665bd0f7d448585516d0e1fe17fbe01087d Mon Sep 17 00:00:00 2001
+From: Samuel Benzaquen <sbenza@google.com>
+Date: Tue, 27 May 2025 13:39:23 -0700
+Subject: [PATCH 9/9] Disable the optimization for fixed_address_empty_string
+ for MSVC. The definition for MSVC/C++20/DEBUG build breaks our assumptions.
+
+Fixes https://github.com/protocolbuffers/protobuf/issues/21957
+
+PiperOrigin-RevId: 763929623
+---
+ src/google/protobuf/port.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/src/google/protobuf/port.h b/src/google/protobuf/port.h
+index 30d6f36d4..151112635 100644
+--- a/src/google/protobuf/port.h
++++ b/src/google/protobuf/port.h
+@@ -518,10 +518,16 @@ class alignas(8) GlobalEmptyStringConstexpr {
+   // Nothing to init, or destroy.
+   std::string* Init() const { return nullptr; }
+ 
++  // Disable the optimization for MSVC.
++  // There are some builds where the default constructed string can't be used as
++  // `constinit` even though the constructor is `constexpr` and can be used
++  // during constant evaluation.
++#if !defined(_MSC_VER)
+   template <typename T = std::string, bool = (T(), true)>
+   static constexpr std::true_type HasConstexprDefaultConstructor(int) {
+     return {};
+   }
++#endif
+   static constexpr std::false_type HasConstexprDefaultConstructor(char) {
+     return {};
+   }
