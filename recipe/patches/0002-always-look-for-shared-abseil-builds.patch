@@ -1,7 +1,7 @@
 From b8c7107982fc6ab1eac942389342b135c8e10012 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Sat, 13 May 2023 22:43:45 +1100
-Subject: [PATCH 2/8] always look for shared abseil builds
+Subject: [PATCH 2/7] always look for shared abseil builds
 
 ---
  cmake/abseil-cpp.cmake | 2 +-

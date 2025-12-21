@@ -39,11 +39,9 @@ source:
       # utf8_range.{dll,lib}, not libutf8_range.{dll,lib}.
       - patches/0006-do-not-add-LIB_PREFIX-to-utf8_-range-validity-on-win.patch     # [win]
       - patches/0007-Workaround-nvcc-bug-in-message_lite.h.patch
-      # see #275
-      - patches/0008-Adapt-fixed_address_empty_string-definition.patch              # [win]
 
 build:
-  number: 1
+  number: 2
 
 outputs:
   - name: libprotobuf
