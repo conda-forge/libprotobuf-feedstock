@@ -46,7 +46,7 @@ source:
       - patches/0009-Adapt-fixed_address_empty_string-definition.patch              # [win]
 
 build:
-  number: 2
+  number: 3
 
 outputs:
   - name: libprotobuf
