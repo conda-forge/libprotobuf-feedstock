@@ -1,7 +1,7 @@
 From 4b5aed696ebc260e847f18aeca5d3543d7b0c0e4 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Wed, 9 Aug 2023 14:06:35 +1100
-Subject: [PATCH 3/8] do not install vendored gmock
+Subject: [PATCH 3/7] do not install vendored gmock
 
 ---
  cmake/install.cmake | 7 -------
