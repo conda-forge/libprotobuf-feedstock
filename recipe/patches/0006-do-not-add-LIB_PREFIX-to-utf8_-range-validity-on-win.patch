@@ -1,14 +1,14 @@
-From b229753982c2c592236fa7189f5d405133d17ab7 Mon Sep 17 00:00:00 2001
+From 7a84fc5c69001e7666808f09f5110b6b5a654a94 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Sat, 5 Jul 2025 12:22:19 +1100
-Subject: [PATCH 6/6] do not add LIB_PREFIX to utf8_{range,validity} on windows
+Subject: [PATCH 6/8] do not add LIB_PREFIX to utf8_{range,validity} on windows
 
 ---
  third_party/utf8_range/CMakeLists.txt | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/third_party/utf8_range/CMakeLists.txt b/third_party/utf8_range/CMakeLists.txt
-index 82d1965b5..1f26f23a4 100644
+index 231197022..23139474b 100644
 --- a/third_party/utf8_range/CMakeLists.txt
 +++ b/third_party/utf8_range/CMakeLists.txt
 @@ -21,11 +21,11 @@ add_library (utf8_validity utf8_range.c)
@@ -24,4 +24,4 @@ index 82d1965b5..1f26f23a4 100644
 +  OUTPUT_NAME utf8_validity
  )
  
- # Load Abseil dependency.
+ target_include_directories(utf8_validity PUBLIC
