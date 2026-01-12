@@ -11,9 +11,9 @@ cxx_compiler:
 jsoncpp:
 - 1.9.6
 libabseil:
-- '20250814'
+- '20260107'
 libprotobuf:
-- 6.32.1
+- 6.33.3
 target_platform:
 - win-64
 zlib:
