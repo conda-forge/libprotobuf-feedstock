@@ -23,7 +23,7 @@ jsoncpp:
 libabseil:
 - '20260107'
 libprotobuf:
-- 6.33.3
+- 6.33.4
 macos_machine:
 - x86_64-apple-darwin13.4.0
 target_platform:
