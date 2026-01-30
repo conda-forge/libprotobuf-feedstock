@@ -21,7 +21,7 @@ jsoncpp:
 libabseil:
 - '20260107'
 libprotobuf:
-- 6.33.3
+- 6.33.4
 target_platform:
 - linux-64
 zip_keys:
