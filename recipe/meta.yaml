@@ -39,6 +39,7 @@ source:
       # utf8_range.{dll,lib}, not libutf8_range.{dll,lib}.
       - patches/0006-do-not-add-LIB_PREFIX-to-utf8_-range-validity-on-win.patch     # [win]
       - patches/0007-Workaround-nvcc-bug-in-message_lite.h.patch
+      - patches/0008-Ensure-exact-same-retain-attributes-for-UPB-link-tim.patch
 
 build:
   number: 0
