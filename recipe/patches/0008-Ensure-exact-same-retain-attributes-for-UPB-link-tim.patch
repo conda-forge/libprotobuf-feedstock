@@ -1,4 +1,4 @@
-From 42b921502923195d064a8b55bbfcfc2a95a8820f Mon Sep 17 00:00:00 2001
+From c2230be610cd6319f9210da654cedff504fcd910 Mon Sep 17 00:00:00 2001
 From: Julien Jerphanion <git@jjerphan.xyz>
 Date: Fri, 27 Feb 2026 11:09:59 +0100
 Subject: [PATCH 8/8] Ensure exact same retain attributes for UPB link-time
@@ -13,10 +13,10 @@ Signed-off-by: Julien Jerphanion <git@jjerphan.xyz>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/upb/port/def.inc b/upb/port/def.inc
-index c35ccea38..e5e8c2d74 100644
+index 4616c65..7c1276c 100644
 --- a/upb/port/def.inc
 +++ b/upb/port/def.inc
-@@ -569,7 +569,7 @@ Error, UINTPTR_MAX is undefined
+@@ -577,7 +577,7 @@ Error, UINTPTR_MAX is undefined
  #if defined(__ELF__) || defined(__wasm__)
  
  #define UPB_LINKARR_APPEND(name) \

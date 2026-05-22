@@ -1,4 +1,4 @@
-From 3d88e36a013822a9315f56a9a23186764048162a Mon Sep 17 00:00:00 2001
+From e6e288b835753e1abc2e38269f79eedeb6ee3a8a Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Sat, 5 Jul 2025 12:22:19 +1100
 Subject: [PATCH 6/8] do not add LIB_PREFIX to utf8_{range,validity} on windows
@@ -8,7 +8,7 @@ Subject: [PATCH 6/8] do not add LIB_PREFIX to utf8_{range,validity} on windows
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/third_party/utf8_range/CMakeLists.txt b/third_party/utf8_range/CMakeLists.txt
-index 231197022..23139474b 100644
+index 2311970..2313947 100644
 --- a/third_party/utf8_range/CMakeLists.txt
 +++ b/third_party/utf8_range/CMakeLists.txt
 @@ -21,11 +21,11 @@ add_library (utf8_validity utf8_range.c)

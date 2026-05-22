@@ -1,4 +1,4 @@
-From ac6de5b7bc6bd878ca59127f224c87ab9317bfa5 Mon Sep 17 00:00:00 2001
+From 5cbc6cfae7734bc44a4e3d7ecba75573be923feb Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Sun, 2 Mar 2025 22:14:34 +1100
 Subject: [PATCH 5/8] export symbols needed by grpc
@@ -14,10 +14,10 @@ while part of the .dll/.lib, is private and may not be linkable directly
  4 files changed, 9 insertions(+), 5 deletions(-)
 
 diff --git a/src/google/protobuf/io/coded_stream.cc b/src/google/protobuf/io/coded_stream.cc
-index 2d05fde5d..f9e6e9119 100644
+index f10df0b..5072f9c 100644
 --- a/src/google/protobuf/io/coded_stream.cc
 +++ b/src/google/protobuf/io/coded_stream.cc
-@@ -1018,6 +1018,11 @@ uint8_t* EpsCopyOutputStream::WriteCordOutline(const absl::Cord& c,
+@@ -1023,6 +1023,11 @@ uint8_t* EpsCopyOutputStream::WriteCordOutline(const absl::Cord& c,
  std::atomic<bool> CodedOutputStream::default_serialization_deterministic_{
      false};
  
@@ -30,10 +30,10 @@ index 2d05fde5d..f9e6e9119 100644
  
  uint8_t* CodedOutputStream::WriteCordToArray(const absl::Cord& cord,
 diff --git a/src/google/protobuf/io/coded_stream.h b/src/google/protobuf/io/coded_stream.h
-index f8acbf2a6..a3b39cf00 100644
+index b68b300..58feee9 100644
 --- a/src/google/protobuf/io/coded_stream.h
 +++ b/src/google/protobuf/io/coded_stream.h
-@@ -1337,10 +1337,7 @@ class PROTOBUF_EXPORT PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED CodedOutputStream {
+@@ -1315,10 +1315,7 @@ class PROTOBUF_EXPORT PROTOBUF_FUTURE_ADD_EARLY_WARN_UNUSED CodedOutputStream {
    }
  
    PROTOBUF_FUTURE_ADD_EARLY_NODISCARD static bool
@@ -46,7 +46,7 @@ index f8acbf2a6..a3b39cf00 100644
    template <typename Func>
    void Serialize(const Func& func);
 diff --git a/upb/mem/alloc.h b/upb/mem/alloc.h
-index 04da2337b..5f85c6951 100644
+index 04da233..5f85c69 100644
 --- a/upb/mem/alloc.h
 +++ b/upb/mem/alloc.h
 @@ -76,7 +76,7 @@ UPB_INLINE void upb_free_sized(upb_alloc* alloc, void* ptr, size_t size) {
@@ -59,10 +59,10 @@ index 04da2337b..5f85c6951 100644
  /* Functions that hard-code the global malloc.
   *
 diff --git a/upb/mem/internal/arena.h b/upb/mem/internal/arena.h
-index d5ac3b2b2..dbb75f87a 100644
+index 1df9785..6e98a0c 100644
 --- a/upb/mem/internal/arena.h
 +++ b/upb/mem/internal/arena.h
-@@ -69,6 +69,8 @@ UPB_INLINE bool UPB_PRIVATE(_upb_Arena_IsAligned)(const void* ptr) {
+@@ -70,6 +70,8 @@ UPB_INLINE bool UPB_PRIVATE(_upb_Arena_IsAligned)(const void* ptr) {
    return (uintptr_t)ptr % UPB_MALLOC_ALIGN == 0;
  }
  
