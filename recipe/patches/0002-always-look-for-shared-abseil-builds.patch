@@ -1,4 +1,4 @@
-From 31817d5e890cc1a76fddfd17e735306d902b28b0 Mon Sep 17 00:00:00 2001
+From 4cb68e75d55f4c857c76280c69b1cf303293d7b9 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Sat, 13 May 2023 22:43:45 +1100
 Subject: [PATCH 2/8] always look for shared abseil builds
@@ -8,7 +8,7 @@ Subject: [PATCH 2/8] always look for shared abseil builds
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/cmake/abseil-cpp.cmake b/cmake/abseil-cpp.cmake
-index 9ef06a23d..cee436f28 100644
+index 9ef06a2..cee436f 100644
 --- a/cmake/abseil-cpp.cmake
 +++ b/cmake/abseil-cpp.cmake
 @@ -42,7 +42,7 @@ endif()
