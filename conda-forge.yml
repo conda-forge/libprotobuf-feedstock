@@ -4,6 +4,7 @@ azure:
     swapfile_size: 10GiB
 bot:
   abi_migration_branches:
+  - 7.34.x
   - 6.33.x
   - 6.31.x
 build_platform:
