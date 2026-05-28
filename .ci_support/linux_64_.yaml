@@ -17,11 +17,11 @@ cxx_compiler_version:
 docker_image:
 - quay.io/condaforge/linux-anvil-x86_64:alma9
 jsoncpp:
-- 1.9.6
+- 1.9.7
 libabseil:
 - '20260107'
 libprotobuf:
-- 6.33.4
+- 6.33.5
 target_platform:
 - linux-64
 zip_keys:
