@@ -9,7 +9,7 @@ channel_targets:
 cxx_compiler:
 - vs2022
 jsoncpp:
-- 1.9.6
+- 1.9.7
 libabseil:
 - '20260107'
 libprotobuf:
