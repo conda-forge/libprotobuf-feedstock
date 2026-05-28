@@ -19,7 +19,7 @@ cxx_compiler:
 cxx_compiler_version:
 - '19'
 jsoncpp:
-- 1.9.6
+- 1.9.7
 libabseil:
 - '20250512'
 libprotobuf:
