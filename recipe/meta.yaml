@@ -42,7 +42,7 @@ source:
       - patches/0008-Ensure-exact-same-retain-attributes-for-UPB-link-tim.patch
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - name: libprotobuf
