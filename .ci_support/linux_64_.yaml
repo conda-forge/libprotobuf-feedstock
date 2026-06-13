@@ -19,9 +19,9 @@ docker_image:
 jsoncpp:
 - 1.9.7
 libabseil:
-- '20260107'
+- '20260526'
 libprotobuf:
-- 6.33.5
+- 7.35.1
 target_platform:
 - linux-64
 zip_keys:
