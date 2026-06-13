@@ -1,7 +1,7 @@
-From c2230be610cd6319f9210da654cedff504fcd910 Mon Sep 17 00:00:00 2001
+From b1f19d13d00fcf64e6440322b0a99fb1072f4683 Mon Sep 17 00:00:00 2001
 From: Julien Jerphanion <git@jjerphan.xyz>
 Date: Fri, 27 Feb 2026 11:09:59 +0100
-Subject: [PATCH 8/8] Ensure exact same retain attributes for UPB link-time
+Subject: [PATCH 8/9] Ensure exact same retain attributes for UPB link-time
  entries
 
 Ensure the UPB link-time array entries have the same retain attributes
@@ -13,7 +13,7 @@ Signed-off-by: Julien Jerphanion <git@jjerphan.xyz>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/upb/port/def.inc b/upb/port/def.inc
-index 4616c65..7c1276c 100644
+index b398a95a55..0b128faa9f 100644
 --- a/upb/port/def.inc
 +++ b/upb/port/def.inc
 @@ -577,7 +577,7 @@ Error, UINTPTR_MAX is undefined

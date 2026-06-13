@@ -1,7 +1,7 @@
-From 2c2ecc156335d0a389292ff6a5c9d34ec4f78554 Mon Sep 17 00:00:00 2001
+From 1654ab9c668c6815a35f4e06f1b3a14c96e56f1b Mon Sep 17 00:00:00 2001
 From: Isuru Fernando <isuruf@gmail.com>
 Date: Mon, 13 Oct 2025 16:10:25 -0500
-Subject: [PATCH 7/8] Workaround nvcc bug in message_lite.h
+Subject: [PATCH 7/9] Workaround nvcc bug in message_lite.h
 
 See https://github.com/protocolbuffers/protobuf/issues/21542
 
@@ -11,7 +11,7 @@ Patch by Samuel Benzaquen (sbenzaquen)
  1 file changed, 7 insertions(+)
 
 diff --git a/src/google/protobuf/message_lite.h b/src/google/protobuf/message_lite.h
-index c416114..3994762 100644
+index c416114aa9..3994762f06 100644
 --- a/src/google/protobuf/message_lite.h
 +++ b/src/google/protobuf/message_lite.h
 @@ -273,6 +273,12 @@ struct MessageTraitsImpl {
