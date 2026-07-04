@@ -15,6 +15,7 @@ jobs:
         build_workspace_dir: ~/miniforge3/conda-bld
         free_disk_space: skip
         pagefile_size: 0
+        resize_partitions: false
         store_build_artifacts: false
         tools_install_dir: ~/miniforge3
       osx_arm64_:
@@ -24,6 +25,7 @@ jobs:
         build_workspace_dir: ~/miniforge3/conda-bld
         free_disk_space: skip
         pagefile_size: 0
+        resize_partitions: false
         store_build_artifacts: false
         tools_install_dir: ~/miniforge3
   timeoutInMinutes: 360

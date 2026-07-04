@@ -4,6 +4,7 @@ bot:
   - 6.33.x
   - 6.31.x
 build_platform:
+  linux_aarch64: linux_64
   linux_ppc64le: linux_64
 conda_build:
   pkg_format: '2'
@@ -17,8 +18,8 @@ provider:
 test: native_and_emulated
 workflow_settings:
   free_disk_space:
-    - value: quick
-      os: linux
+  - os: linux
+    value: quick
   pagefile_size:
-    - value: 10
-      os: linux
+  - os: linux
+    value: 10
