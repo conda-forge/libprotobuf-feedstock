@@ -14,6 +14,7 @@ jobs:
         build_workspace_dir: D:\\bld\\
         free_disk_space: skip
         pagefile_size: 0
+        resize_partitions: false
         store_build_artifacts: false
         tools_install_dir: D:\Miniforge
   timeoutInMinutes: 360
