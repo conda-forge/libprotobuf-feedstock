@@ -74,7 +74,7 @@ outputs:
         - libabseil-tests
         - zlib
       run:
-        - ucrt  # [win]
+        - ucrt  # [win and not arm64]
     test:
       requires:
         # cmake needs compiler to be able to run package detection, see
