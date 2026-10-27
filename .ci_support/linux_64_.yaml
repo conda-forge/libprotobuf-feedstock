@@ -1,3 +1,5 @@
+DOCKER_PLATFORM:
+- linux/amd64
 c_compiler:
 - gcc
 c_compiler_version:
@@ -19,7 +21,7 @@ docker_image:
 jsoncpp:
 - 1.9.8
 libabseil:
-- '20260526'
+- '20260817'
 libprotobuf:
 - 7.35.1
 target_platform:
